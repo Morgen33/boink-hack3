@@ -20,13 +20,13 @@ const Hero = () => {
       <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
         <div className="backdrop-blur-sm bg-white/10 rounded-3xl p-8 md:p-12 border border-white/20">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
-            Web3 Hearts
+            Boink
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-4 animate-fade-in" style={{animationDelay: '0.2s'}}>
-            The safest place to find love and connections in the decentralized world
+            The safest place to find love and connections in the Bonk ecosystem
           </p>
           <p className="text-lg text-white/80 mb-8 max-w-3xl mx-auto animate-fade-in" style={{animationDelay: '0.4s'}}>
-            Connect with like-minded crypto enthusiasts, DeFi innovators, and Web3 builders. 
+            Connect with like-minded crypto enthusiasts, DeFi innovators, and Bonk builders. 
             Built with security first, powered by blockchain trust.
           </p>
           
@@ -58,7 +58,7 @@ const Hero = () => {
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Users className="w-8 h-8 text-white" />
               </div>
-              <p className="text-white/90 font-semibold">Web3 Community</p>
+              <p className="text-white/90 font-semibold">Bonk Community</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">

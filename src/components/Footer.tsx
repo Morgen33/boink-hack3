@@ -1,4 +1,3 @@
-
 import { Heart, Shield, Users, Mail } from "lucide-react";
 
 const Footer = () => {
@@ -52,11 +51,11 @@ const Footer = () => {
                 <Heart className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-web3-yellow to-web3-orange bg-clip-text text-transparent">
-                Web3 Hearts
+                Boink
               </span>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              The safest and most trusted Web3 dating platform. 
+              The safest and most trusted Web3 dating platform for the Bonk community. 
               Connecting crypto enthusiasts, DeFi builders, and 
               blockchain innovators worldwide.
             </p>

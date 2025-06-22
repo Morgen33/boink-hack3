@@ -8,7 +8,7 @@ const Pricing = () => {
       name: "Explorer",
       price: "Free",
       period: "forever",
-      description: "Perfect for getting started in Web3 dating",
+      description: "Perfect for getting started in Bonk dating",
       icon: Star,
       gradient: "from-web3-yellow to-web3-orange",
       features: [
@@ -24,9 +24,9 @@ const Pricing = () => {
     },
     {
       name: "Connector",
-      price: "$19",
+      price: "$9.99",
       period: "per month",
-      description: "For serious Web3 relationship seekers",
+      description: "For serious Bonk relationship seekers",
       icon: Crown,
       gradient: "from-web3-coral to-web3-red",
       features: [
@@ -45,9 +45,9 @@ const Pricing = () => {
     },
     {
       name: "Builder",
-      price: "$49",
+      price: "$19.99",
       period: "per month",
-      description: "For Web3 entrepreneurs and thought leaders",
+      description: "For Bonk entrepreneurs and thought leaders",
       icon: Rocket,
       gradient: "from-web3-magenta to-web3-pink",
       features: [
@@ -75,7 +75,7 @@ const Pricing = () => {
             Choose Your Journey
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Start free and upgrade as you build meaningful connections in the Web3 ecosystem. 
+            Start free and upgrade as you build meaningful connections in the Bonk ecosystem. 
             Every plan includes our industry-leading safety features.
           </p>
         </div>
