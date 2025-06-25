@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
@@ -56,14 +55,14 @@ const Hero = () => {
             />
           </div>
 
-          {/* Character Image - Moved down with color-changing circle */}
+          {/* Character Image - Moved down with color-changing ring */}
           <div className="relative mb-12 mt-8">
-            {/* Color-changing circle background */}
+            {/* Color-changing ring background */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div 
-                className="w-48 h-48 rounded-full opacity-20 animate-pulse"
+                className="w-48 h-48 rounded-full border-8 border-transparent"
                 style={{
-                  background: `conic-gradient(
+                  borderImage: `conic-gradient(
                     from 0deg,
                     #FBE24F 0deg,
                     #FFA70F 72deg,
@@ -71,8 +70,8 @@ const Hero = () => {
                     #F51F3B 216deg,
                     #E809CB 288deg,
                     #FBE24F 360deg
-                  )`,
-                  animation: 'spin 8s linear infinite, pulse 4s ease-in-out infinite'
+                  ) 1`,
+                  animation: 'spin 8s linear infinite'
                 }}
               />
             </div>
@@ -82,8 +81,7 @@ const Hero = () => {
               <img 
                 src="/lovable-uploads/a9bb1df3-dee7-4ab2-bf64-8287b4fd2229.png" 
                 alt="Cute demon character with heart eyes" 
-                className="w-32 h-32 mx-auto animate-bounce relative z-10"
-                style={{ animationDuration: '3s' }}
+                className="w-32 h-32 mx-auto relative z-10"
               />
               {/* Character-specific floating elements */}
               <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse z-20" />
