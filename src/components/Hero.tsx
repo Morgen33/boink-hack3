@@ -56,7 +56,7 @@ const Hero = () => {
           </div>
           
           {/* Character Image - Between Logo and Subtitle with proper spacing */}
-          <div className="relative mb-12">
+          <div className="relative mb-6">
             {/* Character-specific floating elements */}
             <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse" />
             <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse" />

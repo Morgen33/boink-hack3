@@ -169,8 +169,11 @@ const ParticleTextEffect: React.FC<ParticleTextEffectProps> = ({
     if (!canvas || !ctx) return;
 
     textBox.str = text;
-    // Make the text much bigger - double the previous size
-    textBox.h = Math.max(200, Math.floor(canvas.width / (textBox.str.length * 1.5)));
+    // Calculate text size based on canvas width with more conservative sizing to prevent cutoff
+    const maxTextWidth = canvas.width * 0.9; // Use 90% of canvas width to prevent cutoff
+    let fontSize = Math.floor(maxTextWidth / (textBox.str.length * 0.8));
+    fontSize = Math.min(fontSize, canvas.height * 0.6); // Don't exceed 60% of canvas height
+    textBox.h = Math.max(120, fontSize);
 
     interactionRadiusRef.current = Math.max(100, textBox.h * 1.2);
 
