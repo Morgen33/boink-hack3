@@ -19,6 +19,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const navigation = [
+    { name: 'Discover', href: '/discover' },
     { name: 'Features', href: '#features' },
     { name: 'Safety', href: '#safety' },
     { name: 'Events', href: '/events' },
