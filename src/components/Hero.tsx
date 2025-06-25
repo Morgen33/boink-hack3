@@ -1,21 +1,53 @@
 
 import { Button } from "@/components/ui/button";
-import { Shield, Heart, Users, Sparkles } from "lucide-react";
+import { Shield, Heart, Users, Sparkles, Coins } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-white">
+    <section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden">
+      {/* Floating Hearts and Coins */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Hearts */}
+        <Heart className="absolute top-20 left-10 w-6 h-6 text-[#F51F3B] animate-bounce" style={{ animationDelay: '0s' }} />
+        <Heart className="absolute top-32 right-16 w-4 h-4 text-[#E809CB] animate-bounce" style={{ animationDelay: '1s' }} />
+        <Heart className="absolute bottom-40 left-20 w-5 h-5 text-[#F51F3B] animate-bounce" style={{ animationDelay: '2s' }} />
+        <Heart className="absolute top-60 left-1/4 w-4 h-4 text-[#FF7A55] animate-bounce" style={{ animationDelay: '0.5s' }} />
+        <Heart className="absolute bottom-60 right-1/4 w-6 h-6 text-[#E809CB] animate-bounce" style={{ animationDelay: '1.5s' }} />
+        
+        {/* Coins */}
+        <Coins className="absolute top-40 right-10 w-6 h-6 text-[#FFA70F] animate-bounce" style={{ animationDelay: '0.8s' }} />
+        <Coins className="absolute bottom-32 left-32 w-5 h-5 text-[#FBE24F] animate-bounce" style={{ animationDelay: '2.2s' }} />
+        <Coins className="absolute top-72 right-1/3 w-4 h-4 text-[#FFA70F] animate-bounce" style={{ animationDelay: '1.8s' }} />
+        <Coins className="absolute bottom-72 left-1/3 w-6 h-6 text-[#FBE24F] animate-bounce" style={{ animationDelay: '0.3s' }} />
+      </div>
+
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
-          {/* Logo/Brand */}
-          <div className="flex items-center justify-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-              <Heart className="w-10 h-10 text-white" />
+          {/* Character and Logo */}
+          <div className="flex flex-col items-center justify-center mb-8">
+            {/* Character Image */}
+            <div className="relative mb-6">
+              <img 
+                src="/lovable-uploads/ec0f32f2-7f29-4076-9886-c578ad860830.png" 
+                alt="Boink Character" 
+                className="w-32 h-32 md:w-40 md:h-40 object-contain animate-bounce"
+                style={{ animationDuration: '3s' }}
+              />
+              {/* Character-specific floating elements */}
+              <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse" />
+              <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse" />
             </div>
-            <h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] bg-clip-text text-transparent">
-              Boink
-            </h1>
+            
+            {/* Logo */}
+            <div className="flex items-center justify-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-2xl flex items-center justify-center mr-4 shadow-lg">
+                <Heart className="w-10 h-10 text-white" />
+              </div>
+              <h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] bg-clip-text text-transparent">
+                Boink
+              </h1>
+            </div>
           </div>
           
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-6">
