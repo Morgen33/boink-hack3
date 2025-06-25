@@ -55,9 +55,9 @@ const Hero = () => {
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
           {/* Character and Logo */}
-          <div className="flex flex-col items-center justify-center mb-8">
-            {/* Character Image with Gradient Circle */}
-            <div className="relative mb-6">
+          <div className="flex flex-col items-center justify-center mb-16">
+            {/* Character Image with Gradient Circle - Moved Higher */}
+            <div className="relative mb-12">
               {/* Gradient Circle Background */}
               <div className="absolute inset-0 w-44 h-44 md:w-52 md:h-52 rounded-full bg-gradient-to-r from-[#FBE24F] via-[#FFA70F] via-[#FF7A55] via-[#F51F3B] to-[#E809CB] animate-gradient-shift bg-[length:200%_200%] flex items-center justify-center">
                 <div className={`w-40 h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center ${
@@ -76,7 +76,7 @@ const Hero = () => {
             </div>
             
             {/* Logo */}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mb-8">
               <div className="w-20 h-20 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-2xl flex items-center justify-center mr-4 shadow-lg">
                 <Heart className="w-10 h-10 text-white" />
               </div>

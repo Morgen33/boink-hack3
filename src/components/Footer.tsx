@@ -1,3 +1,4 @@
+
 import { Heart, Shield, Users, Mail } from "lucide-react";
 
 const Footer = () => {
@@ -40,6 +41,13 @@ const Footer = () => {
     }
   ];
 
+  const socialLinks = [
+    { name: "X (Twitter)", href: "https://x.com/BoinkOnBonk", emoji: "🐦" },
+    { name: "Instagram", href: "https://www.instagram.com/boinkonbonk/", emoji: "📸" },
+    { name: "TikTok", href: "https://www.tiktok.com/@boinkonbonk", emoji: "🎥" },
+    { name: "X Community", href: "https://x.com/i/communities/1937727712627450353", emoji: "👥" }
+  ];
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 py-16">
@@ -59,7 +67,7 @@ const Footer = () => {
               Connecting crypto enthusiasts, DeFi builders, and 
               blockchain innovators worldwide.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 mb-6">
               <div className="flex items-center text-sm text-gray-400">
                 <Shield className="w-4 h-4 mr-2 text-green-400" />
                 <span>Verified Safe</span>
@@ -67,6 +75,25 @@ const Footer = () => {
               <div className="flex items-center text-sm text-gray-400">
                 <Users className="w-4 h-4 mr-2 text-blue-400" />
                 <span>50K+ Members</span>
+              </div>
+            </div>
+            
+            {/* Social Links */}
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold text-gray-300 mb-3">Follow Us</h4>
+              <div className="flex flex-wrap gap-4">
+                {socialLinks.map((social, index) => (
+                  <a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-gray-300 hover:text-white transition-colors duration-200 text-sm"
+                  >
+                    <span className="mr-2">{social.emoji}</span>
+                    <span>{social.name}</span>
+                  </a>
+                ))}
               </div>
             </div>
           </div>
@@ -116,7 +143,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
           <div className="mb-4 md:mb-0">
-            <p>&copy; 2024 Web3 Hearts. All rights reserved.</p>
+            <p>&copy; 2024 Boink. All rights reserved.</p>
           </div>
           <div className="flex space-x-6">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
