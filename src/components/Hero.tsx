@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
 import { useState } from "react";
@@ -55,8 +54,8 @@ const Hero = () => {
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
           <div className="flex flex-col items-center justify-center mb-16">
-            {/* Logo First */}
-            <div className="flex items-center justify-center mb-12">
+            {/* Logo */}
+            <div className="flex items-center justify-center mb-8">
               <div className="w-20 h-20 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-2xl flex items-center justify-center mr-4 shadow-lg">
                 <Heart className="w-10 h-10 text-white" />
               </div>
@@ -65,7 +64,7 @@ const Hero = () => {
               </h1>
             </div>
             
-            {/* Character Image with Gradient Circle - Now Below Logo */}
+            {/* Character Image - Between Logo and Subtitle */}
             <div className="relative mb-8">
               {/* Gradient Circle Background */}
               <div className="absolute inset-0 w-44 h-44 md:w-52 md:h-52 rounded-full bg-gradient-to-r from-[#FBE24F] via-[#FFA70F] via-[#FF7A55] via-[#F51F3B] to-[#E809CB] animate-gradient-shift bg-[length:200%_200%] flex items-center justify-center">
