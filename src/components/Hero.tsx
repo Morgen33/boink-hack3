@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button";
+import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 
@@ -44,14 +45,15 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
-          {/* Logo */}
-          <div className="flex items-center justify-center mb-12">
-            <div className="w-20 h-20 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-              <Heart className="w-10 h-10 text-white" />
-            </div>
-            <h1 className={`text-7xl md:text-8xl font-bold bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] bg-clip-text text-transparent`}>
-              Boink
-            </h1>
+          {/* Interactive BOINK Title */}
+          <div className="relative h-32 md:h-40 mb-8">
+            <ParticleTextEffect
+              text="BOINK"
+              colors={['FBE24F', 'FFA70F', 'FF7A55', 'F51F3B', 'E809CB']}
+              className="absolute inset-0"
+              animationForce={100}
+              particleDensity={3}
+            />
           </div>
           
           {/* Character Image - Between Logo and Subtitle with proper spacing */}
