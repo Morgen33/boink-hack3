@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarDays, MapPin, Users, Clock, Heart } from "lucide-react";
@@ -56,15 +55,15 @@ const Events = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-yellow-50/30">
       {/* Hero Section */}
       <div className="pt-24 pb-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-3">
-              <CalendarDays className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-xl flex items-center justify-center mr-3">
+              <CalendarDays className="w-6 h-6 text-gray-800" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#F51F3B] to-[#E809CB] bg-clip-text text-transparent">
               Community Events
             </h1>
           </div>
@@ -72,7 +71,7 @@ const Events = () => {
             Join fellow crypto enthusiasts and Bonk community members at exclusive events. 
             Build meaningful connections in person while exploring the world of Web3 together.
           </p>
-          <Button size="lg" className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white">
+          <Button size="lg" className="bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] hover:from-[#FFA70F] hover:to-[#FF7A55] text-white">
             Host an Event
           </Button>
         </div>
@@ -84,8 +83,8 @@ const Events = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {events.map((event) => (
               <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white/80 backdrop-blur-sm border border-gray-200/50">
-                <div className="aspect-video bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center">
-                  <Heart className="w-12 h-12 text-blue-400" />
+                <div className="aspect-video bg-gradient-to-r from-[#FBE24F]/20 to-[#FFA70F]/20 flex items-center justify-center">
+                  <Heart className="w-12 h-12 text-[#F51F3B]" />
                 </div>
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start mb-2">
@@ -96,7 +95,7 @@ const Events = () => {
                       {event.tags.slice(0, 2).map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full"
+                          className="px-2 py-1 text-xs bg-[#FBE24F]/30 text-[#F51F3B] rounded-full"
                         >
                           {tag}
                         </span>
@@ -131,7 +130,7 @@ const Events = () => {
                   
                   <div className="flex gap-3">
                     <Button 
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
+                      className="flex-1 bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] hover:from-[#FFA70F] hover:to-[#FF7A55] text-white"
                       size="sm"
                     >
                       Join Event
@@ -139,7 +138,7 @@ const Events = () => {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                      className="border-[#FFA70F] text-[#F51F3B] hover:bg-[#FBE24F]/20"
                     >
                       Learn More
                     </Button>
@@ -152,7 +151,7 @@ const Events = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 py-16 px-6">
+      <div className="bg-gradient-to-r from-[#FBE24F]/10 to-[#FFA70F]/10 py-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Want to Host Your Own Event?
@@ -164,14 +163,14 @@ const Events = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
+              className="bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] hover:from-[#FFA70F] hover:to-[#FF7A55] text-white"
             >
               Host an Event
             </Button>
             <Button 
               size="lg" 
               variant="outline"
-              className="border-blue-300 text-blue-600 hover:bg-blue-50"
+              className="border-[#FFA70F] text-[#F51F3B] hover:bg-[#FBE24F]/20"
             >
               Event Guidelines
             </Button>
