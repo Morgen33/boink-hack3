@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
@@ -45,7 +46,7 @@ const Hero = () => {
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
           {/* Interactive BOINK Title */}
-          <div className="relative h-80 md:h-96 mb-8">
+          <div className="relative h-80 md:h-96 mb-2">
             <ParticleTextEffect
               text="BOINK"
               colors={['FBE24F', 'FFA70F', 'FF7A55', 'F51F3B', 'E809CB']}
