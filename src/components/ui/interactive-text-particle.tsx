@@ -17,6 +17,8 @@ interface Particle {
   ov: number;
   f: number;
   rgb: number[];
+  draw(): void;
+  move(interactionRadius: number, hasPointer: boolean): boolean;
 }
 
 interface TextBox {
@@ -166,7 +168,8 @@ const ParticleTextEffect: React.FC<ParticleTextEffectProps> = ({
     if (!canvas || !ctx) return;
 
     textBox.str = text;
-    textBox.h = Math.floor(canvas.width / textBox.str.length);
+    // Make the text much taller - increased from canvas.width / textBox.str.length to a larger base size
+    textBox.h = Math.max(120, Math.floor(canvas.width / (textBox.str.length * 3)));
 
     interactionRadiusRef.current = Math.max(50, textBox.h * 1.5);
 
