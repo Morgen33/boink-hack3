@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
@@ -60,9 +61,9 @@ const Hero = () => {
             {/* Color-changing circular ring background */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div 
-                className="w-80 h-80 rounded-full border-8 border-transparent"
+                className="w-80 h-80 rounded-full p-2"
                 style={{
-                  borderImage: `conic-gradient(
+                  background: `conic-gradient(
                     from 0deg,
                     #FBE24F 0deg,
                     #FFA70F 72deg,
@@ -70,10 +71,12 @@ const Hero = () => {
                     #F51F3B 216deg,
                     #E809CB 288deg,
                     #FBE24F 360deg
-                  ) 1`,
+                  )`,
                   animation: 'spin 8s linear infinite'
                 }}
-              />
+              >
+                <div className={`w-full h-full rounded-full ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`} />
+              </div>
             </div>
             
             {/* Character image */}
