@@ -54,10 +54,11 @@ const ParticleTextEffect: React.FC<ParticleTextEffectProps> = ({
   const pointerRef = useRef<Pointer>({});
   const hasPointerRef = useRef<boolean>(false);
   const interactionRadiusRef = useRef<number>(100);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [canvasSize, setCanvasSize] = useState<{ width: number; height: number }>({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 800,
+    height: 400,
   });
 
   const [textBox] = useState<TextBox>({ str: text });
@@ -168,10 +169,10 @@ const ParticleTextEffect: React.FC<ParticleTextEffectProps> = ({
     if (!canvas || !ctx) return;
 
     textBox.str = text;
-    // Make the text much taller - increased from canvas.width / textBox.str.length to a larger base size
-    textBox.h = Math.max(120, Math.floor(canvas.width / (textBox.str.length * 3)));
+    // Make the text much bigger - double the previous size
+    textBox.h = Math.max(200, Math.floor(canvas.width / (textBox.str.length * 1.5)));
 
-    interactionRadiusRef.current = Math.max(50, textBox.h * 1.5);
+    interactionRadiusRef.current = Math.max(100, textBox.h * 1.2);
 
     ctx.font = `900 ${textBox.h}px Verdana, sans-serif`;
     ctx.textAlign = 'center';
@@ -202,11 +203,13 @@ const ParticleTextEffect: React.FC<ParticleTextEffectProps> = ({
 
   const initialize = () => {
     const canvas = canvasRef.current;
+    const container = containerRef.current;
     const ctx = ctxRef.current;
-    if (!canvas || !ctx) return;
+    if (!canvas || !ctx || !container) return;
 
-    canvas.width = canvasSize.width;
-    canvas.height = canvasSize.height;
+    const rect = container.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     write();
@@ -214,13 +217,18 @@ const ParticleTextEffect: React.FC<ParticleTextEffectProps> = ({
 
   useEffect(() => {
     const handleResize = () => {
-      setCanvasSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+      const container = containerRef.current;
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        setCanvasSize({
+          width: rect.width,
+          height: rect.height,
+        });
+      }
     };
 
     window.addEventListener('resize', handleResize);
+    handleResize(); // Initial call
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -247,11 +255,9 @@ const ParticleTextEffect: React.FC<ParticleTextEffectProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
 
-    pointerRef.current.x = (e.clientX - rect.left) * scaleX;
-    pointerRef.current.y = (e.clientY - rect.top) * scaleY;
+    pointerRef.current.x = (e.clientX - rect.left) * (canvas.width / rect.width);
+    pointerRef.current.y = (e.clientY - rect.top) * (canvas.height / rect.height);
     hasPointerRef.current = true;
 
     if (!animationIdRef.current) animate();
@@ -270,13 +276,15 @@ const ParticleTextEffect: React.FC<ParticleTextEffectProps> = ({
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={`w-full h-full ${className} cursor-none`}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      onPointerEnter={handlePointerEnter}
-    />
+    <div ref={containerRef} className={`w-full h-full ${className}`}>
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full cursor-pointer"
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        onPointerEnter={handlePointerEnter}
+      />
+    </div>
   );
 };
 
