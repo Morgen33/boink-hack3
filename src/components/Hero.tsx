@@ -46,7 +46,7 @@ const Hero = () => {
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
           {/* Interactive BOINK Title */}
-          <div className="relative h-80 md:h-96 mb-2">
+          <div className="relative h-80 md:h-96 -mb-4">
             <ParticleTextEffect
               text="BOINK"
               colors={['FBE24F', 'FFA70F', 'FF7A55', 'F51F3B', 'E809CB']}
