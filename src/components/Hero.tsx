@@ -1,4 +1,5 @@
 
+
 import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
@@ -82,7 +83,7 @@ const Hero = () => {
               <img 
                 src="/lovable-uploads/a9bb1df3-dee7-4ab2-bf64-8287b4fd2229.png" 
                 alt="Cute demon character with heart eyes" 
-                className="w-64 h-64 mx-auto relative z-10"
+                className="w-64 h-64 mx-auto relative z-10 rounded-full"
               />
               {/* Character-specific floating elements */}
               <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse z-20" />
@@ -154,3 +155,4 @@ const Hero = () => {
 };
 
 export default Hero;
+
