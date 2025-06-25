@@ -45,6 +45,19 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
+          {/* Character Image - Above BOINK */}
+          <div className="relative mb-6">
+            <img 
+              src="/lovable-uploads/a9bb1df3-dee7-4ab2-bf64-8287b4fd2229.png" 
+              alt="Cute demon character with heart eyes" 
+              className="w-32 h-32 mx-auto animate-bounce"
+              style={{ animationDuration: '3s' }}
+            />
+            {/* Character-specific floating elements */}
+            <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse" />
+            <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse" />
+          </div>
+
           {/* Interactive BOINK Title */}
           <div className="relative h-80 md:h-96 -mb-4">
             <ParticleTextEffect
@@ -54,13 +67,6 @@ const Hero = () => {
               animationForce={100}
               particleDensity={3}
             />
-          </div>
-          
-          {/* Character Image - Between Logo and Subtitle with proper spacing */}
-          <div className="relative mb-6">
-            {/* Character-specific floating elements */}
-            <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse" />
-            <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse" />
           </div>
           
           <h2 className={`text-3xl md:text-4xl font-semibold mb-4 transition-colors duration-500 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
