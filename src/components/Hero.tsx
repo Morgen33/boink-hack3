@@ -45,19 +45,6 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
-          {/* Character Image - Above BOINK */}
-          <div className="relative mb-6">
-            <img 
-              src="/lovable-uploads/a9bb1df3-dee7-4ab2-bf64-8287b4fd2229.png" 
-              alt="Cute demon character with heart eyes" 
-              className="w-32 h-32 mx-auto animate-bounce"
-              style={{ animationDuration: '3s' }}
-            />
-            {/* Character-specific floating elements */}
-            <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse" />
-            <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse" />
-          </div>
-
           {/* Interactive BOINK Title */}
           <div className="relative h-80 md:h-96 -mb-4">
             <ParticleTextEffect
@@ -67,6 +54,41 @@ const Hero = () => {
               animationForce={100}
               particleDensity={3}
             />
+          </div>
+
+          {/* Character Image - Moved down with color-changing circle */}
+          <div className="relative mb-12 mt-8">
+            {/* Color-changing circle background */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div 
+                className="w-48 h-48 rounded-full opacity-20 animate-pulse"
+                style={{
+                  background: `conic-gradient(
+                    from 0deg,
+                    #FBE24F 0deg,
+                    #FFA70F 72deg,
+                    #FF7A55 144deg,
+                    #F51F3B 216deg,
+                    #E809CB 288deg,
+                    #FBE24F 360deg
+                  )`,
+                  animation: 'spin 8s linear infinite, pulse 4s ease-in-out infinite'
+                }}
+              />
+            </div>
+            
+            {/* Character image */}
+            <div className="relative z-10">
+              <img 
+                src="/lovable-uploads/a9bb1df3-dee7-4ab2-bf64-8287b4fd2229.png" 
+                alt="Cute demon character with heart eyes" 
+                className="w-32 h-32 mx-auto animate-bounce relative z-10"
+                style={{ animationDuration: '3s' }}
+              />
+              {/* Character-specific floating elements */}
+              <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse z-20" />
+              <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse z-20" />
+            </div>
           </div>
           
           <h2 className={`text-3xl md:text-4xl font-semibold mb-4 transition-colors duration-500 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
