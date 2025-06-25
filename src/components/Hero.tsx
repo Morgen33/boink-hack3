@@ -1,5 +1,3 @@
-
-
 import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
@@ -59,10 +57,10 @@ const Hero = () => {
 
           {/* Character Image - Moved down with color-changing ring */}
           <div className="relative mb-12 mt-8">
-            {/* Color-changing ring background */}
+            {/* Color-changing circular ring background */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div 
-                className="w-96 h-96 rounded-full border-8 border-transparent"
+                className="w-80 h-80 rounded-full border-8 border-transparent"
                 style={{
                   borderImage: `conic-gradient(
                     from 0deg,
@@ -155,4 +153,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
