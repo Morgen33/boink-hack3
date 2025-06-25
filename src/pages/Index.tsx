@@ -1,6 +1,7 @@
 
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import PrototypeSlider from "@/components/PrototypeSlider";
 import SafetyFeatures from "@/components/SafetyFeatures";
 import Web3Features from "@/components/Web3Features";
 import Pricing from "@/components/Pricing";
@@ -13,6 +14,7 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
+        <PrototypeSlider />
         <section id="safety">
           <SafetyFeatures />
         </section>
