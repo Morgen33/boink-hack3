@@ -2,25 +2,47 @@
 import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // Check for saved theme preference or default to light mode
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   };
 
   return (
-    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden pt-24 transition-colors duration-500 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 bg-background text-foreground">
       {/* Day/Night Toggle Button */}
       <div className="absolute top-28 right-6 z-20">
         <Button 
           onClick={toggleDarkMode} 
           variant="outline" 
           size="icon" 
-          className={`rounded-full border-2 transition-all duration-300 ${isDarkMode ? 'border-yellow-400 bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}
+          className="rounded-full border-2 transition-all duration-300"
         >
           {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
@@ -75,7 +97,7 @@ const Hero = () => {
                   animation: 'spin 8s linear infinite'
                 }}
               >
-                <div className={`w-full h-full rounded-full ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`} />
+                <div className="w-full h-full rounded-full bg-background" />
               </div>
             </div>
             
@@ -92,18 +114,18 @@ const Hero = () => {
             </div>
           </div>
           
-          <h2 className={`text-3xl md:text-4xl font-semibold mb-4 transition-colors duration-500 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+          <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground">
             Where Degens Find Their Forever Person
           </h2>
           
           {/* Hackathon Badge */}
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#FBE24F]/20 to-[#FFA70F]/20 rounded-full border border-[#FFA70F]/30 mb-6">
-            <span className={`text-sm font-medium ${isDarkMode ? 'text-yellow-300' : 'text-orange-700'}`}>
+            <span className="text-sm font-medium text-[#FFA70F] dark:text-yellow-300">
               Built for Bonk Hackathon 2024 🚀
             </span>
           </div>
           
-          <p className={`text-xl mb-8 max-w-2xl mx-auto leading-relaxed transition-colors duration-500 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+          <p className="text-xl mb-8 max-w-2xl mx-auto leading-relaxed text-muted-foreground">
             Tired of rugpulls in love? Join the wildest crypto dating scene where diamond hands meet diamond hearts. 
             For serious lovers who speak fluent degen but want something real AF.
           </p>
@@ -113,40 +135,40 @@ const Hero = () => {
             <Button size="lg" className="bg-gradient-to-r from-[#F51F3B] to-[#E809CB] hover:from-[#F51F3B]/90 hover:to-[#E809CB]/90 text-white text-xl px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
               Let's Fucking Go! 🚀
             </Button>
-            <Button size="lg" variant="outline" className={`border-2 text-xl px-12 py-6 rounded-full transition-all duration-300 ${isDarkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-800' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}>
+            <Button size="lg" variant="outline" className="border-2 text-xl px-12 py-6 rounded-full transition-all duration-300">
               Show Me the Alpha
             </Button>
           </div>
 
           {/* Trust Indicators */}
-          <div className={`grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t transition-colors duration-500 ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-border">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <Shield className="w-8 h-8 text-green-600" />
+              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/20 dark:to-green-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Shield className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <p className={`text-lg font-semibold transition-colors duration-500 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>No Rug Pulls</p>
-              <p className={`text-sm transition-colors duration-500 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Wallet & Soul Verified</p>
+              <p className="text-lg font-semibold text-foreground">No Rug Pulls</p>
+              <p className="text-sm text-muted-foreground">Wallet & Soul Verified</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-pink-200 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <Heart className="w-8 h-8 text-red-500" />
+              <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-pink-200 dark:from-red-900/20 dark:to-pink-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Heart className="w-8 h-8 text-red-500 dark:text-red-400" />
               </div>
-              <p className={`text-lg font-semibold transition-colors duration-500 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Real Feels</p>
-              <p className={`text-sm transition-colors duration-500 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Actual Relationships</p>
+              <p className="text-lg font-semibold text-foreground">Real Feels</p>
+              <p className="text-sm text-muted-foreground">Actual Relationships</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <Users className="w-8 h-8 text-blue-600" />
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Users className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <p className={`text-lg font-semibold transition-colors duration-500 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>50K+ Degens</p>
-              <p className={`text-sm transition-colors duration-500 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Active & Based</p>
+              <p className="text-lg font-semibold text-foreground">50K+ Degens</p>
+              <p className="text-sm text-muted-foreground">Active & Based</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-[#FBE24F]/20 to-[#FFA70F]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                 <Sparkles className="w-8 h-8 text-[#FFA70F]" />
               </div>
-              <p className={`text-lg font-semibold transition-colors duration-500 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Alpha Features</p>
-              <p className={`text-sm transition-colors duration-500 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Next-Level Matching</p>
+              <p className="text-lg font-semibold text-foreground">Alpha Features</p>
+              <p className="text-sm text-muted-foreground">Next-Level Matching</p>
             </div>
           </div>
         </div>

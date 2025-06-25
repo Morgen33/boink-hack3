@@ -35,7 +35,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -55,7 +55,7 @@ const Header = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-gray-700 hover:text-gray-900 transition-colors duration-200 font-medium"
+                  className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium"
                 >
                   {item.name}
                 </a>
@@ -63,7 +63,7 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-gray-700 hover:text-gray-900 transition-colors duration-200 font-medium"
+                  className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium"
                 >
                   {item.name}
                 </Link>
@@ -74,7 +74,7 @@ const Header = () => {
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {loading ? (
-              <div className="w-8 h-8 animate-spin rounded-full border-2 border-gray-300 border-t-web3-red"></div>
+              <div className="w-8 h-8 animate-spin rounded-full border-2 border-border border-t-web3-red"></div>
             ) : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -108,7 +108,7 @@ const Header = () => {
               <>
                 <Button
                   variant="outline"
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                  className="border-border text-foreground hover:bg-accent"
                   onClick={() => navigate('/auth')}
                 >
                   Sign In
@@ -129,23 +129,23 @@ const Header = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-gray-700" />
+              <X className="w-6 h-6 text-foreground" />
             ) : (
-              <Menu className="w-6 h-6 text-gray-700" />
+              <Menu className="w-6 h-6 text-foreground" />
             )}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 bg-white">
+          <div className="md:hidden py-4 border-t border-border bg-background">
             <nav className="flex flex-col space-y-4">
               {navigation.map((item) => (
                 item.href.startsWith('#') ? (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="text-gray-700 hover:text-gray-900 transition-colors duration-200 font-medium px-4 py-2"
+                    className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium px-4 py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
@@ -154,14 +154,14 @@ const Header = () => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="text-gray-700 hover:text-gray-900 transition-colors duration-200 font-medium px-4 py-2"
+                    className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium px-4 py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
                   </Link>
                 )
               ))}
-              <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-gray-200">
+              <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-border">
                 {user ? (
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2 px-2 py-1">
@@ -188,7 +188,7 @@ const Header = () => {
                   <>
                     <Button
                       variant="outline"
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                      className="border-border text-foreground hover:bg-accent"
                       onClick={() => {
                         navigate('/auth');
                         setIsMenuOpen(false);
