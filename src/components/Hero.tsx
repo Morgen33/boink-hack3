@@ -53,35 +53,33 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8">
-          <div className="flex flex-col items-center justify-center mb-16">
-            {/* Logo */}
-            <div className="flex items-center justify-center mb-8">
-              <div className="w-20 h-20 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-                <Heart className="w-10 h-10 text-white" />
-              </div>
-              <h1 className={`text-7xl md:text-8xl font-bold bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] bg-clip-text text-transparent`}>
-                Boink
-              </h1>
+          {/* Logo */}
+          <div className="flex items-center justify-center mb-12">
+            <div className="w-20 h-20 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-2xl flex items-center justify-center mr-4 shadow-lg">
+              <Heart className="w-10 h-10 text-white" />
             </div>
-            
-            {/* Character Image - Between Logo and Subtitle */}
-            <div className="relative mb-8">
-              {/* Gradient Circle Background */}
-              <div className="absolute inset-0 w-44 h-44 md:w-52 md:h-52 rounded-full bg-gradient-to-r from-[#FBE24F] via-[#FFA70F] via-[#FF7A55] via-[#F51F3B] to-[#E809CB] animate-gradient-shift bg-[length:200%_200%] flex items-center justify-center">
-                <div className={`w-40 h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center ${
-                  isDarkMode ? 'bg-gray-900' : 'bg-white'
-                } transition-colors duration-500`}>
-                  <img 
-                    src="/lovable-uploads/ec0f32f2-7f29-4076-9886-c578ad860830.png" 
-                    alt="Boink Character" 
-                    className="w-32 h-32 md:w-40 md:h-40 object-contain"
-                  />
-                </div>
+            <h1 className={`text-7xl md:text-8xl font-bold bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] bg-clip-text text-transparent`}>
+              Boink
+            </h1>
+          </div>
+          
+          {/* Character Image - Between Logo and Subtitle with proper spacing */}
+          <div className="relative mb-12">
+            {/* Gradient Circle Background */}
+            <div className="absolute inset-0 w-44 h-44 md:w-52 md:h-52 rounded-full bg-gradient-to-r from-[#FBE24F] via-[#FFA70F] via-[#FF7A55] via-[#F51F3B] to-[#E809CB] animate-gradient-shift bg-[length:200%_200%] flex items-center justify-center">
+              <div className={`w-40 h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center ${
+                isDarkMode ? 'bg-gray-900' : 'bg-white'
+              } transition-colors duration-500`}>
+                <img 
+                  src="/lovable-uploads/ec0f32f2-7f29-4076-9886-c578ad860830.png" 
+                  alt="Boink Character" 
+                  className="w-32 h-32 md:w-40 md:h-40 object-contain"
+                />
               </div>
-              {/* Character-specific floating elements */}
-              <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse" />
-              <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse" />
             </div>
+            {/* Character-specific floating elements */}
+            <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse" />
+            <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse" />
           </div>
           
           <h2 className={`text-3xl md:text-4xl font-semibold mb-6 transition-colors duration-500 ${
