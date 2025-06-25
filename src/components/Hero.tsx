@@ -4,20 +4,20 @@ import { Shield, Heart, Users, Sparkles, Coins } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden pt-24">
       {/* Floating Hearts and Coins */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Hearts */}
-        <Heart className="absolute top-20 left-10 w-6 h-6 text-[#F51F3B] animate-bounce" style={{ animationDelay: '0s' }} />
-        <Heart className="absolute top-32 right-16 w-4 h-4 text-[#E809CB] animate-bounce" style={{ animationDelay: '1s' }} />
+        <Heart className="absolute top-32 left-10 w-6 h-6 text-[#F51F3B] animate-bounce" style={{ animationDelay: '0s' }} />
+        <Heart className="absolute top-44 right-16 w-4 h-4 text-[#E809CB] animate-bounce" style={{ animationDelay: '1s' }} />
         <Heart className="absolute bottom-40 left-20 w-5 h-5 text-[#F51F3B] animate-bounce" style={{ animationDelay: '2s' }} />
-        <Heart className="absolute top-60 left-1/4 w-4 h-4 text-[#FF7A55] animate-bounce" style={{ animationDelay: '0.5s' }} />
+        <Heart className="absolute top-72 left-1/4 w-4 h-4 text-[#FF7A55] animate-bounce" style={{ animationDelay: '0.5s' }} />
         <Heart className="absolute bottom-60 right-1/4 w-6 h-6 text-[#E809CB] animate-bounce" style={{ animationDelay: '1.5s' }} />
         
         {/* Coins */}
-        <Coins className="absolute top-40 right-10 w-6 h-6 text-[#FFA70F] animate-bounce" style={{ animationDelay: '0.8s' }} />
+        <Coins className="absolute top-52 right-10 w-6 h-6 text-[#FFA70F] animate-bounce" style={{ animationDelay: '0.8s' }} />
         <Coins className="absolute bottom-32 left-32 w-5 h-5 text-[#FBE24F] animate-bounce" style={{ animationDelay: '2.2s' }} />
-        <Coins className="absolute top-72 right-1/3 w-4 h-4 text-[#FFA70F] animate-bounce" style={{ animationDelay: '1.8s' }} />
+        <Coins className="absolute top-84 right-1/3 w-4 h-4 text-[#FFA70F] animate-bounce" style={{ animationDelay: '1.8s' }} />
         <Coins className="absolute bottom-72 left-1/3 w-6 h-6 text-[#FBE24F] animate-bounce" style={{ animationDelay: '0.3s' }} />
       </div>
 
