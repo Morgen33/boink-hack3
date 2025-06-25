@@ -53,44 +53,48 @@ const PrototypeSlider = () => {
           </p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-12 py-8">
           {/* First row - normal direction */}
-          <InfiniteSlider direction="horizontal" duration={20}>
-            {prototypes.map((prototype, index) => (
-              <div key={index} className="flex-shrink-0 w-80">
-                <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className={`w-12 h-12 bg-gradient-to-r ${prototype.color} rounded-xl flex items-center justify-center mb-4`}>
-                    <prototype.icon className="w-6 h-6 text-white" />
+          <div className="overflow-visible">
+            <InfiniteSlider direction="horizontal" duration={20} className="py-4">
+              {prototypes.map((prototype, index) => (
+                <div key={index} className="flex-shrink-0 w-80">
+                  <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 mx-2">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${prototype.color} rounded-xl flex items-center justify-center mb-4`}>
+                      <prototype.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {prototype.title}
+                    </h3>
+                    <p className="text-gray-600">
+                      {prototype.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {prototype.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {prototype.description}
-                  </p>
                 </div>
-              </div>
-            ))}
-          </InfiniteSlider>
+              ))}
+            </InfiniteSlider>
+          </div>
 
           {/* Second row - reverse direction */}
-          <InfiniteSlider direction="horizontal" reverse duration={25}>
-            {prototypes.map((prototype, index) => (
-              <div key={index} className="flex-shrink-0 w-80">
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className={`w-12 h-12 bg-gradient-to-r ${prototype.color} rounded-xl flex items-center justify-center mb-4`}>
-                    <prototype.icon className="w-6 h-6 text-white" />
+          <div className="overflow-visible">
+            <InfiniteSlider direction="horizontal" reverse duration={25} className="py-4">
+              {prototypes.map((prototype, index) => (
+                <div key={index} className="flex-shrink-0 w-80">
+                  <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 mx-2">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${prototype.color} rounded-xl flex items-center justify-center mb-4`}>
+                      <prototype.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {prototype.title}
+                    </h3>
+                    <p className="text-gray-600">
+                      {prototype.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {prototype.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {prototype.description}
-                  </p>
                 </div>
-              </div>
-            ))}
-          </InfiniteSlider>
+              ))}
+            </InfiniteSlider>
+          </div>
         </div>
       </div>
     </section>
