@@ -26,7 +26,7 @@ const GMGNLink = () => {
   };
 
   return (
-    <div className="fixed top-20 right-4 z-40 bg-background/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg">
+    <div className="fixed top-20 left-4 z-40 bg-background/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg">
       <div className="flex flex-col space-y-2">
         <Button
           onClick={() => window.open(gmgnUrl, '_blank')}
