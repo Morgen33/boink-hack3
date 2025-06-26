@@ -29,7 +29,7 @@ const WeSupport = () => {
       name: "Tradies",
       description: "The Tradie community",
       twitter: "https://x.com/tradiecoinmeme",
-      imagePlaceholder: "Upload Tradies logo",
+      imageUrl: "/lovable-uploads/8cb46f23-d9ec-49b0-a0f1-ff41811cb303.png",
       socialType: "twitter" as const
     },
     {
