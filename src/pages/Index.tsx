@@ -9,6 +9,7 @@ import Pricing from "@/components/Pricing";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import MVPOverlay from "@/components/MVPOverlay";
+import GMGNLink from "@/components/header/GMGNLink";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -32,6 +33,7 @@ const Index = () => {
       {showOverlay && <MVPOverlay onEnter={handleEnterApp} />}
       
       <Header />
+      <GMGNLink />
       <main>
         <Hero />
         <PrototypeSlider />
