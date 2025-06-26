@@ -11,6 +11,10 @@ interface SocialMediaConnection {
   profile_url: string | null;
   verified: boolean | null;
   connected_at: string;
+  oauth_provider: string | null;
+  oauth_provider_id: string | null;
+  access_token: string | null;
+  refresh_token: string | null;
 }
 
 export const useSocialMediaConnections = (user: User | null) => {
