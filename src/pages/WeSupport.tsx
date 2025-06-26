@@ -1,3 +1,4 @@
+
 import { ExternalLink, Twitter, Instagram } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -91,7 +92,7 @@ const WeSupport = () => {
                         <div className="w-8 h-8 mx-auto mb-2 bg-gray-400 rounded-full flex items-center justify-center">
                           <span className="text-white text-sm">📸</span>
                         </div>
-                        <p className="text-xs text-gray-500">{community.imagePlaceholder}</p>
+                        <p className="text-xs text-gray-500">Image placeholder</p>
                       </div>
                     </div>
                   )}

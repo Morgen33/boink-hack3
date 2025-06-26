@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -105,6 +104,18 @@ const Profile = () => {
           interests: data.interests?.join(', ') || '',
           looking_for: data.looking_for || '',
           date_of_birth: data.date_of_birth || '',
+          // Initialize crypto fields
+          wallet_address: data.wallet_address || '',
+          favorite_crypto: data.favorite_crypto || '',
+          crypto_experience: data.crypto_experience || '',
+          portfolio_size: data.portfolio_size || '',
+          trading_style: data.trading_style || '',
+          defi_protocols: data.defi_protocols?.join(', ') || '',
+          nft_collections: data.nft_collections?.join(', ') || '',
+          meme_coin_holdings: data.meme_coin_holdings?.join(', ') || '',
+          biggest_crypto_win: data.biggest_crypto_win || '',
+          biggest_crypto_loss: data.biggest_crypto_loss || '',
+          crypto_motto: data.crypto_motto || '',
         });
       } catch (error: any) {
         console.error('Error fetching profile:', error);
