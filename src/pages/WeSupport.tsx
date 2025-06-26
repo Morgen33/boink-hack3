@@ -35,9 +35,9 @@ const WeSupport = () => {
     {
       name: "Kori",
       description: "Content creator and crypto enthusiast",
-      twitter: "https://www.instagram.com/reel/DI8tBqyNOjT/?utm_source=ig_web_copy_link",
-      imagePlaceholder: "Upload Kori photo",
-      socialType: "instagram" as const
+      twitter: "https://x.com/pomkori",
+      imageUrl: "/lovable-uploads/e6e0a477-c9fe-46b3-b7a4-04c351f7e3b5.png",
+      socialType: "twitter" as const
     }
   ];
 
@@ -78,14 +78,24 @@ const WeSupport = () => {
           {supportedCommunities.map((community, index) => (
             <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <CardContent className="p-6">
-                {/* Image Placeholder */}
-                <div className="w-full h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg mb-4 flex items-center justify-center border-2 border-dashed border-gray-300">
-                  <div className="text-center">
-                    <div className="w-8 h-8 mx-auto mb-2 bg-gray-400 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm">📸</span>
+                {/* Image or Placeholder */}
+                <div className="w-full h-32 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                  {community.imageUrl ? (
+                    <img 
+                      src={community.imageUrl} 
+                      alt={community.name}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                      <div className="text-center">
+                        <div className="w-8 h-8 mx-auto mb-2 bg-gray-400 rounded-full flex items-center justify-center">
+                          <span className="text-white text-sm">📸</span>
+                        </div>
+                        <p className="text-xs text-gray-500">{community.imagePlaceholder}</p>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-500">{community.imagePlaceholder}</p>
-                  </div>
+                  )}
                 </div>
 
                 {/* Community Info */}
