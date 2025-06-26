@@ -1,0 +1,99 @@
+
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import Logo from "./Logo";
+import Navigation from "./Navigation";
+import UserMenu from "./UserMenu";
+import AuthButtons from "./AuthButtons";
+import MobileMenu from "./MobileMenu";
+
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut, loading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
+  const handleNavigation = (href: string) => {
+    if (href.startsWith('/#')) {
+      // If we're already on the homepage, scroll to the section
+      if (location.pathname === '/') {
+        const element = document.querySelector(href.substring(1));
+        element?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Navigate to homepage with hash
+        navigate(href);
+      }
+    } else {
+      // Regular navigation
+      navigate(href);
+    }
+    setIsMenuOpen(false);
+  };
+
+  const handleAuthNavigation = () => {
+    navigate('/auth');
+    setIsMenuOpen(false);
+  };
+
+  const handleProfileNavigation = () => {
+    navigate('/profile');
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <Logo />
+          
+          <Navigation onNavClick={handleNavigation} />
+
+          {/* Desktop CTA Buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            {loading ? (
+              <div className="w-8 h-8 animate-spin rounded-full border-2 border-border border-t-web3-red"></div>
+            ) : user ? (
+              <UserMenu user={user} onSignOut={handleSignOut} />
+            ) : (
+              <AuthButtons />
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className="w-6 h-6 text-foreground" />
+            ) : (
+              <Menu className="w-6 h-6 text-foreground" />
+            )}
+          </button>
+        </div>
+
+        <MobileMenu
+          isOpen={isMenuOpen}
+          user={user}
+          onNavClick={handleNavigation}
+          onAuthClick={handleAuthNavigation}
+          onProfileClick={handleProfileNavigation}
+          onSignOut={handleSignOut}
+        />
+      </div>
+    </header>
+  );
+};
+
+export default Header;
