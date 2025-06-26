@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from 'react';
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import PrototypeSlider from "@/components/PrototypeSlider";
@@ -7,10 +8,29 @@ import Web3Features from "@/components/Web3Features";
 import Pricing from "@/components/Pricing";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
+import MVPOverlay from "@/components/MVPOverlay";
 
 const Index = () => {
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  useEffect(() => {
+    // Check if user has seen the MVP disclaimer before
+    const hasSeenDisclaimer = localStorage.getItem('boink-mvp-disclaimer-seen');
+    if (!hasSeenDisclaimer) {
+      setShowOverlay(true);
+    }
+  }, []);
+
+  const handleEnterApp = () => {
+    // Mark as seen and hide overlay
+    localStorage.setItem('boink-mvp-disclaimer-seen', 'true');
+    setShowOverlay(false);
+  };
+
   return (
     <div className="min-h-screen">
+      {showOverlay && <MVPOverlay onEnter={handleEnterApp} />}
+      
       <Header />
       <main>
         <Hero />
