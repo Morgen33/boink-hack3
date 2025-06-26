@@ -1,5 +1,5 @@
 
-import { ExternalLink, Twitter } from "lucide-react";
+import { ExternalLink, Twitter, Instagram } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const WeSupport = () => {
@@ -8,25 +8,36 @@ const WeSupport = () => {
       name: "OG $PEANUT",
       description: "The original peanut community on Solana",
       twitter: "https://x.com/OgPeanut_solana",
-      imagePlaceholder: "Upload OG $PEANUT logo"
+      imagePlaceholder: "Upload OG $PEANUT logo",
+      socialType: "twitter" as const
     },
     {
       name: "Dundies",
       description: "The Dundies District community",
       twitter: "https://x.com/DundiesDistrict",
-      imagePlaceholder: "Upload Dundies logo"
+      imagePlaceholder: "Upload Dundies logo",
+      socialType: "twitter" as const
     },
     {
       name: "Dong",
       description: "DongCoin community on Cardano",
       twitter: "https://x.com/DongCoinADA",
-      imagePlaceholder: "Upload Dong logo"
+      imagePlaceholder: "Upload Dong logo",
+      socialType: "twitter" as const
     },
     {
       name: "Tradies",
       description: "The Tradie community",
       twitter: "https://x.com/tradiecoinmeme",
-      imagePlaceholder: "Upload Tradies logo"
+      imagePlaceholder: "Upload Tradies logo",
+      socialType: "twitter" as const
+    },
+    {
+      name: "Kori",
+      description: "Content creator and crypto enthusiast",
+      twitter: "https://www.instagram.com/reel/DI8tBqyNOjT/?utm_source=ig_web_copy_link",
+      imagePlaceholder: "Upload Kori photo",
+      socialType: "instagram" as const
     }
   ];
 
@@ -63,7 +74,7 @@ const WeSupport = () => {
         </div>
 
         {/* Communities Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           {supportedCommunities.map((community, index) => (
             <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <CardContent className="p-6">
@@ -85,15 +96,24 @@ const WeSupport = () => {
                   {community.description}
                 </p>
 
-                {/* Twitter Link */}
+                {/* Social Link */}
                 <a
                   href={community.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors group-hover:scale-105 transform duration-200"
                 >
-                  <Twitter className="w-4 h-4 mr-2" />
-                  <span className="text-sm font-medium">Follow on X</span>
+                  {community.socialType === "twitter" ? (
+                    <>
+                      <Twitter className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Follow on X</span>
+                    </>
+                  ) : (
+                    <>
+                      <Instagram className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Follow on Instagram</span>
+                    </>
+                  )}
                   <ExternalLink className="w-3 h-3 ml-1" />
                 </a>
               </CardContent>
