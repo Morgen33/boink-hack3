@@ -1,4 +1,3 @@
-
 import { InfiniteSlider } from "@/components/ui/infinite-slider-horizontal";
 import { Heart, Coins, Star, Sparkles } from "lucide-react";
 
@@ -40,11 +39,6 @@ const PrototypeSlider = () => {
     <section className="py-16 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#FBE24F]/20 to-[#FFA70F]/20 rounded-full border border-[#FFA70F]/30 mb-4">
-            <span className="text-sm font-medium text-orange-700">
-              🚀 Built as My Initial Prototype
-            </span>
-          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             The Future of Web3 Dating
           </h2>
