@@ -98,7 +98,7 @@ export const demoProfiles: ProfileCard[] = [
     location: 'Cambridge, MA',
     interests: ['Blockchain Research', 'Cryptography', 'Privacy Coins', 'Academic Papers', 'Zero Knowledge'],
     looking_for: 'Seeking someone who appreciates the beauty of cryptographic proofs',
-    avatar_url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&h=600&fit=crop&crop=face',
+    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop&crop=face',
     isDemo: true
   },
   {
