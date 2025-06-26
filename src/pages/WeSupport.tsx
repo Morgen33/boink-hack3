@@ -1,4 +1,3 @@
-
 import { ExternalLink, Twitter, Instagram } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -22,7 +21,7 @@ const WeSupport = () => {
       name: "Dong",
       description: "DongCoin community on Cardano",
       twitter: "https://x.com/DongCoinADA",
-      imagePlaceholder: "Upload Dong logo",
+      imageUrl: "/lovable-uploads/0ae100ee-46dd-4f1c-b302-6eacd6dd6a36.png",
       socialType: "twitter" as const
     },
     {
