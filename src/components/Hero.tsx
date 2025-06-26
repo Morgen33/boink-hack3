@@ -115,7 +115,7 @@ const Hero = () => {
           </div>
           
           <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground">
-            Where Degens Find Their Forever Person
+            Where crypto culture meets human connection. Finally.
           </h2>
           
           {/* Hackathon Badge */}
@@ -133,7 +133,7 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button size="lg" className="bg-gradient-to-r from-[#F51F3B] to-[#E809CB] hover:from-[#F51F3B]/90 hover:to-[#E809CB]/90 text-white text-xl px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-              Let's Fucking Go! 🚀
+              Let's Go! 🚀
             </Button>
             <Button size="lg" variant="outline" className="border-2 text-xl px-12 py-6 rounded-full transition-all duration-300">
               Show Me the Alpha
