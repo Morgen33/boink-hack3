@@ -13,47 +13,83 @@ export type Database = {
         Row: {
           age: number | null
           avatar_url: string | null
+          biggest_crypto_loss: string | null
+          biggest_crypto_win: string | null
           bio: string | null
           created_at: string
+          crypto_experience: string | null
+          crypto_motto: string | null
           date_of_birth: string | null
+          defi_protocols: string[] | null
+          degen_score: number | null
           email: string | null
+          favorite_crypto: string | null
           full_name: string | null
           id: string
           interests: string[] | null
           location: string | null
           looking_for: string | null
+          meme_coin_holdings: string[] | null
+          nft_collections: string[] | null
+          portfolio_size: string | null
           profile_completed: boolean | null
+          trading_style: string | null
           updated_at: string
+          wallet_address: string | null
         }
         Insert: {
           age?: number | null
           avatar_url?: string | null
+          biggest_crypto_loss?: string | null
+          biggest_crypto_win?: string | null
           bio?: string | null
           created_at?: string
+          crypto_experience?: string | null
+          crypto_motto?: string | null
           date_of_birth?: string | null
+          defi_protocols?: string[] | null
+          degen_score?: number | null
           email?: string | null
+          favorite_crypto?: string | null
           full_name?: string | null
           id: string
           interests?: string[] | null
           location?: string | null
           looking_for?: string | null
+          meme_coin_holdings?: string[] | null
+          nft_collections?: string[] | null
+          portfolio_size?: string | null
           profile_completed?: boolean | null
+          trading_style?: string | null
           updated_at?: string
+          wallet_address?: string | null
         }
         Update: {
           age?: number | null
           avatar_url?: string | null
+          biggest_crypto_loss?: string | null
+          biggest_crypto_win?: string | null
           bio?: string | null
           created_at?: string
+          crypto_experience?: string | null
+          crypto_motto?: string | null
           date_of_birth?: string | null
+          defi_protocols?: string[] | null
+          degen_score?: number | null
           email?: string | null
+          favorite_crypto?: string | null
           full_name?: string | null
           id?: string
           interests?: string[] | null
           location?: string | null
           looking_for?: string | null
+          meme_coin_holdings?: string[] | null
+          nft_collections?: string[] | null
+          portfolio_size?: string | null
           profile_completed?: boolean | null
+          trading_style?: string | null
           updated_at?: string
+          wallet_address?: string | null
         }
         Relationships: []
       }
