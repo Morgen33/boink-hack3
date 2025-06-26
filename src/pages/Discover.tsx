@@ -151,54 +151,48 @@ const Discover = () => {
     }
   }, [user, authLoading, navigate]);
 
-  // Fetch real user profiles and combine with demo profiles
+  // Initialize with demo profiles immediately, then try to fetch real ones
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const initializeProfiles = async () => {
       if (!user) return;
 
-      console.log('Starting to fetch profiles...');
+      console.log('Initializing profiles...');
       console.log('Demo profiles available:', demoProfiles.length);
 
+      // Always start with demo profiles
+      setProfiles([...demoProfiles]);
+      setLoading(false);
+
+      // Then try to fetch real profiles and add them
       try {
         const { data, error } = await supabase
           .from('profiles')
           .select('id, full_name, age, bio, location, interests, looking_for, avatar_url')
-          .neq('id', user.id) // Exclude current user
-          .eq('profile_completed', true) // Only show completed profiles
+          .neq('id', user.id)
+          .eq('profile_completed', true)
           .limit(10);
 
         if (error) {
           console.error('Supabase query error:', error);
-          throw error;
+        } else {
+          console.log('Real profiles fetched:', data?.length || 0);
+          
+          if (data && data.length > 0) {
+            // Combine demo profiles with real profiles and shuffle
+            const allProfiles = [...demoProfiles, ...data];
+            const shuffledProfiles = allProfiles.sort(() => Math.random() - 0.5);
+            console.log('Updated profiles with real data:', shuffledProfiles.length);
+            setProfiles(shuffledProfiles);
+          }
         }
-
-        console.log('Real profiles fetched:', data?.length || 0);
-
-        // Combine real profiles with demo profiles
-        const realProfiles = data || [];
-        const allProfiles = [...demoProfiles, ...realProfiles];
-        
-        console.log('Total profiles (demo + real):', allProfiles.length);
-        
-        // Shuffle the profiles to mix demo and real profiles
-        const shuffledProfiles = allProfiles.sort(() => Math.random() - 0.5);
-        
-        console.log('Shuffled profiles:', shuffledProfiles.length);
-        console.log('First profile:', shuffledProfiles[0]);
-        
-        setProfiles(shuffledProfiles);
       } catch (error: any) {
         console.error('Error fetching profiles:', error);
-        // If there's an error, just show demo profiles
-        console.log('Fallback: Using only demo profiles');
-        setProfiles(demoProfiles);
-      } finally {
-        setLoading(false);
+        // Demo profiles are already set, so we're good
       }
     };
 
-    fetchProfiles();
-  }, [user, toast]);
+    initializeProfiles();
+  }, [user]);
 
   const handleLike = () => {
     const profileName = currentProfile?.full_name || 'this person';
@@ -238,8 +232,8 @@ const Discover = () => {
     return age;
   };
 
-  if (authLoading || loading) {
-    console.log('Loading state - authLoading:', authLoading, 'loading:', loading);
+  if (authLoading) {
+    console.log('Auth loading...');
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -251,7 +245,7 @@ const Discover = () => {
   }
 
   if (!user) {
-    console.log('No user found, should redirect to auth');
+    console.log('No user found, redirecting to auth');
     return null;
   }
 
@@ -259,6 +253,17 @@ const Discover = () => {
   console.log('Current profile:', currentProfile);
   console.log('Current index:', currentIndex);
   console.log('Total profiles:', profiles.length);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      </div>
+    );
+  }
 
   if (!currentProfile) {
     console.log('No current profile available');
