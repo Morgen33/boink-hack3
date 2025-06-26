@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Heart, Menu, X, User, LogOut, Settings } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -17,14 +17,15 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const navigation = [
     { name: 'Discover', href: '/discover' },
-    { name: 'Features', href: '#features' },
-    { name: 'Safety', href: '#safety' },
+    { name: 'Features', href: '/#features' },
+    { name: 'Safety', href: '/#safety' },
     { name: 'Events', href: '/events' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'Stories', href: '#testimonials' },
+    { name: 'Pricing', href: '/#pricing' },
+    { name: 'Stories', href: '/#testimonials' },
   ];
 
   const handleSignOut = async () => {
@@ -34,6 +35,23 @@ const Header = () => {
     } catch (error) {
       console.error('Error signing out:', error);
     }
+  };
+
+  const handleNavigation = (href: string) => {
+    if (href.startsWith('/#')) {
+      // If we're already on the homepage, scroll to the section
+      if (location.pathname === '/') {
+        const element = document.querySelector(href.substring(1));
+        element?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Navigate to homepage with hash
+        navigate(href);
+      }
+    } else {
+      // Regular navigation
+      navigate(href);
+    }
+    setIsMenuOpen(false);
   };
 
   return (
@@ -53,23 +71,13 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => (
-              item.href.startsWith('#') ? (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium"
-                >
-                  {item.name}
-                </a>
-              ) : (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium"
-                >
-                  {item.name}
-                </Link>
-              )
+              <button
+                key={item.name}
+                onClick={() => handleNavigation(item.href)}
+                className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium bg-transparent border-none cursor-pointer"
+              >
+                {item.name}
+              </button>
             ))}
           </nav>
 
@@ -148,25 +156,13 @@ const Header = () => {
           <div className="md:hidden py-4 border-t border-border bg-background">
             <nav className="flex flex-col space-y-4">
               {navigation.map((item) => (
-                item.href.startsWith('#') ? (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium px-4 py-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </a>
-                ) : (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium px-4 py-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                )
+                <button
+                  key={item.name}
+                  onClick={() => handleNavigation(item.href)}
+                  className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium px-4 py-2 text-left bg-transparent border-none cursor-pointer"
+                >
+                  {item.name}
+                </button>
               ))}
               <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-border">
                 {user ? (
