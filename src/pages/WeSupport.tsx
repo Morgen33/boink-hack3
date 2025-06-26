@@ -14,7 +14,7 @@ const WeSupport = () => {
       name: "Dundies",
       description: "The Dundies District community",
       twitter: "https://x.com/DundiesDistrict",
-      imagePlaceholder: "Upload Dundies logo",
+      imageUrl: "/lovable-uploads/dc258823-b296-4c84-b5b7-d579ea1aa53b.png",
       socialType: "twitter" as const
     },
     {
