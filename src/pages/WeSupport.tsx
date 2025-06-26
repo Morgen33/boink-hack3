@@ -7,7 +7,7 @@ const WeSupport = () => {
       name: "OG $PEANUT",
       description: "The original peanut community on Solana",
       twitter: "https://x.com/OgPeanut_solana",
-      imagePlaceholder: "Upload OG $PEANUT logo",
+      imageUrl: "/lovable-uploads/b4303f13-613e-4a0e-ab8e-2cd5c4b529ef.png",
       socialType: "twitter" as const
     },
     {
