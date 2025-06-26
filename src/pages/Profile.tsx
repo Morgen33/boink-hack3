@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { User, Calendar, MapPin, Heart, Loader2, Wallet, Bitcoin, Coins, Zap } from 'lucide-react';
+import { User, Calendar, MapPin, Heart, Loader2, Wallet, Bitcoin, Coins, Zap, CheckCircle, Edit } from 'lucide-react';
 import Header from '@/components/Header';
 import SocialMediaConnections from '@/components/SocialMediaConnections';
 import DegenQuestionnaire from '@/components/DegenQuestionnaire';
@@ -51,6 +51,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [showDegenQuestionnaire, setShowDegenQuestionnaire] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileJustCompleted, setProfileJustCompleted] = useState(false);
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -204,12 +206,17 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Your degen profile has been updated! 🚀",
+        title: "Success! 🎉",
+        description: "Your degen profile has been saved! Time to find your crypto tribe! 🚀",
       });
 
-      // Refresh profile data
+      // Update local profile data
       setProfile(prev => prev ? { ...prev, ...updateData } : null);
+      setIsEditing(false);
+      setProfileJustCompleted(true);
+      
+      // Auto-hide the completion message after 5 seconds
+      setTimeout(() => setProfileJustCompleted(false), 5000);
     } catch (error: any) {
       console.error('Error updating profile:', error);
       toast({
@@ -237,6 +244,211 @@ const Profile = () => {
     return null;
   }
 
+  // Show completed profile view if profile is completed and not editing
+  if (profile?.profile_completed && !isEditing) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="max-w-4xl mx-auto p-6 pt-24">
+          {profileJustCompleted && (
+            <div className="mb-6 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20 rounded-lg">
+              <div className="flex items-center gap-2 text-green-600">
+                <CheckCircle className="w-5 h-5" />
+                <span className="font-semibold">Profile Complete! 🎉</span>
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Your degen profile is now live and ready to attract fellow crypto enthusiasts!
+              </p>
+            </div>
+          )}
+
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
+                {profile.full_name || 'Anonymous Degen'} 🚀
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Degen Profile Complete
+              </p>
+            </div>
+            <Button onClick={() => setIsEditing(true)} variant="outline">
+              <Edit className="w-4 h-4 mr-2" />
+              Edit Profile
+            </Button>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            {/* Profile Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="w-5 h-5" />
+                  About Me
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-20 h-20 bg-gradient-to-r from-web3-red to-web3-magenta rounded-full flex items-center justify-center">
+                    {profile.avatar_url ? (
+                      <img 
+                        src={profile.avatar_url} 
+                        alt="Profile" 
+                        className="w-20 h-20 rounded-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-10 h-10 text-white" />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold">{profile.full_name}</h3>
+                    {profile.age && <p className="text-muted-foreground">Age: {profile.age}</p>}
+                    {profile.location && (
+                      <p className="text-muted-foreground flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        {profile.location}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                
+                {profile.bio && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Bio</h4>
+                    <p className="text-muted-foreground">{profile.bio}</p>
+                  </div>
+                )}
+
+                {profile.looking_for && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Looking For</h4>
+                    <p className="text-muted-foreground">{profile.looking_for}</p>
+                  </div>
+                )}
+
+                {profile.interests && profile.interests.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Interests</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {profile.interests.map((interest, index) => (
+                        <Badge key={index} variant="outline">
+                          {interest}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Crypto Profile Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bitcoin className="w-5 h-5" />
+                  Crypto Profile
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {profile.favorite_crypto && (
+                  <div>
+                    <h4 className="font-semibold mb-1">Favorite Crypto</h4>
+                    <p className="text-muted-foreground">{profile.favorite_crypto}</p>
+                  </div>
+                )}
+
+                {profile.crypto_experience && (
+                  <div>
+                    <h4 className="font-semibold mb-1">Experience Level</h4>
+                    <Badge variant="outline">{profile.crypto_experience}</Badge>
+                  </div>
+                )}
+
+                {profile.portfolio_size && (
+                  <div>
+                    <h4 className="font-semibold mb-1">Portfolio Size</h4>
+                    <p className="text-muted-foreground">{profile.portfolio_size}</p>
+                  </div>
+                )}
+
+                {profile.trading_style && (
+                  <div>
+                    <h4 className="font-semibold mb-1">Trading Style</h4>
+                    <p className="text-muted-foreground">{profile.trading_style}</p>
+                  </div>
+                )}
+
+                {profile.meme_coin_holdings && profile.meme_coin_holdings.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Meme Coin Holdings</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {profile.meme_coin_holdings.map((coin, index) => (
+                        <Badge key={index} variant="secondary">
+                          {coin}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {profile.crypto_motto && (
+                  <div>
+                    <h4 className="font-semibold mb-1">Crypto Motto</h4>
+                    <p className="text-muted-foreground italic">"{profile.crypto_motto}"</p>
+                  </div>
+                )}
+
+                {profile.degen_score && (
+                  <div>
+                    <h4 className="font-semibold mb-1">Degen Score</h4>
+                    <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+                      {profile.degen_score}/100
+                    </Badge>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Additional sections */}
+          {(profile.nft_collections && profile.nft_collections.length > 0) && (
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle>NFT Collections</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  {profile.nft_collections.map((collection, index) => (
+                    <Badge key={index} variant="outline">
+                      {collection}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {(profile.defi_protocols && profile.defi_protocols.length > 0) && (
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle>DeFi Protocols</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  {profile.defi_protocols.map((protocol, index) => (
+                    <Badge key={index} variant="outline">
+                      {protocol}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Show editing form (existing form code)
   return (
     <div className="min-h-screen bg-background">
       <Header />
