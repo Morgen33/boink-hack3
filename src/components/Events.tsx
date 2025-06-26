@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarDays, MapPin, Users, Clock, Heart } from "lucide-react";
@@ -13,7 +14,7 @@ const Events = () => {
       attendees: 24,
       maxAttendees: 30,
       description: "Casual meetup for crypto enthusiasts to connect over coffee and discuss the latest in Web3.",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=200&fit=crop",
       tags: ["Casual", "Networking", "Coffee"]
     },
     {
@@ -25,7 +26,7 @@ const Events = () => {
       attendees: 18,
       maxAttendees: 20,
       description: "Fun speed dating event exclusively for verified Bonk community members.",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=200&fit=crop",
       tags: ["Dating", "Speed Dating", "Bonk"]
     },
     {
@@ -37,7 +38,7 @@ const Events = () => {
       attendees: 12,
       maxAttendees: 16,
       description: "Intimate dinner for DeFi builders and enthusiasts to network and share experiences.",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=200&fit=crop",
       tags: ["Dinner", "DeFi", "Networking"]
     },
     {
@@ -49,7 +50,7 @@ const Events = () => {
       attendees: 32,
       maxAttendees: 40,
       description: "Fun game night with crypto-themed games and prizes. Perfect for breaking the ice!",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=400&h=200&fit=crop",
       tags: ["Games", "Fun", "Social"]
     }
   ];
@@ -83,8 +84,13 @@ const Events = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {events.map((event) => (
               <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white/80 backdrop-blur-sm border border-gray-200/50">
-                <div className="aspect-video bg-gradient-to-r from-[#FBE24F]/20 to-[#FFA70F]/20 flex items-center justify-center">
-                  <Heart className="w-12 h-12 text-[#F51F3B]" />
+                <div className="aspect-video relative overflow-hidden">
+                  <img 
+                    src={event.image} 
+                    alt={event.title}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </div>
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start mb-2">
