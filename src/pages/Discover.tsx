@@ -156,6 +156,9 @@ const Discover = () => {
     const fetchProfiles = async () => {
       if (!user) return;
 
+      console.log('Starting to fetch profiles...');
+      console.log('Demo profiles available:', demoProfiles.length);
+
       try {
         const { data, error } = await supabase
           .from('profiles')
@@ -164,19 +167,30 @@ const Discover = () => {
           .eq('profile_completed', true) // Only show completed profiles
           .limit(10);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Supabase query error:', error);
+          throw error;
+        }
+
+        console.log('Real profiles fetched:', data?.length || 0);
 
         // Combine real profiles with demo profiles
         const realProfiles = data || [];
         const allProfiles = [...demoProfiles, ...realProfiles];
         
+        console.log('Total profiles (demo + real):', allProfiles.length);
+        
         // Shuffle the profiles to mix demo and real profiles
         const shuffledProfiles = allProfiles.sort(() => Math.random() - 0.5);
+        
+        console.log('Shuffled profiles:', shuffledProfiles.length);
+        console.log('First profile:', shuffledProfiles[0]);
         
         setProfiles(shuffledProfiles);
       } catch (error: any) {
         console.error('Error fetching profiles:', error);
         // If there's an error, just show demo profiles
+        console.log('Fallback: Using only demo profiles');
         setProfiles(demoProfiles);
       } finally {
         setLoading(false);
@@ -225,6 +239,7 @@ const Discover = () => {
   };
 
   if (authLoading || loading) {
+    console.log('Loading state - authLoading:', authLoading, 'loading:', loading);
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -236,12 +251,17 @@ const Discover = () => {
   }
 
   if (!user) {
+    console.log('No user found, should redirect to auth');
     return null;
   }
 
   const currentProfile = profiles[currentIndex];
+  console.log('Current profile:', currentProfile);
+  console.log('Current index:', currentIndex);
+  console.log('Total profiles:', profiles.length);
 
   if (!currentProfile) {
+    console.log('No current profile available');
     return (
       <div className="min-h-screen bg-background">
         <Header />
