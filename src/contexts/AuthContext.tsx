@@ -8,6 +8,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  signInWithTwitter: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -34,6 +35,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Handle Twitter OAuth connection after successful authentication
+        if (event === 'SIGNED_IN' && session?.user) {
+          // Check if this is a Twitter OAuth sign-in by looking at the provider
+          const provider = session.user.app_metadata?.provider;
+          if (provider === 'twitter') {
+            setTimeout(() => {
+              handleTwitterConnection(session.user);
+            }, 0);
+          }
+        }
       }
     );
 
@@ -47,6 +59,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
+  const handleTwitterConnection = async (user: User) => {
+    try {
+      // Extract Twitter username from user metadata
+      const twitterUsername = user.user_metadata?.user_name || user.user_metadata?.preferred_username;
+      const twitterProfileUrl = `https://twitter.com/${twitterUsername}`;
+
+      if (twitterUsername) {
+        // Check if Twitter connection already exists
+        const { data: existingConnection } = await supabase
+          .from('social_media_connections')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('platform', 'twitter')
+          .single();
+
+        if (!existingConnection) {
+          // Add Twitter connection to social_media_connections table
+          await supabase
+            .from('social_media_connections')
+            .insert({
+              user_id: user.id,
+              platform: 'twitter',
+              username: twitterUsername,
+              profile_url: twitterProfileUrl,
+              oauth_provider: 'twitter',
+              oauth_provider_id: user.user_metadata?.provider_id,
+              verified: true, // OAuth connections are considered verified
+            });
+        }
+      }
+    } catch (error) {
+      console.error('Error handling Twitter connection:', error);
+    }
+  };
+
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -56,6 +103,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
     if (error) {
       console.error('Error signing in with Google:', error);
+      throw error;
+    }
+  };
+
+  const signInWithTwitter = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'twitter',
+      options: {
+        redirectTo: `${window.location.origin}/profile`
+      }
+    });
+    if (error) {
+      console.error('Error signing in with Twitter:', error);
       throw error;
     }
   };
@@ -73,6 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     session,
     loading,
     signInWithGoogle,
+    signInWithTwitter,
     signOut,
   };
 

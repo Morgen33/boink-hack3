@@ -19,6 +19,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { useSocialMediaConnections } from '@/hooks/useSocialMediaConnections';
+import { useAuth } from '@/contexts/AuthContext';
 import { User } from '@supabase/supabase-js';
 
 interface SocialMediaConnectionsProps {
@@ -50,12 +51,14 @@ const platformNames = {
 };
 
 const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
+  const { signInWithTwitter } = useAuth();
   const { connections, loading, addConnection, removeConnection } = useSocialMediaConnections(user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<string>('');
   const [username, setUsername] = useState('');
   const [profileUrl, setProfileUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isConnectingTwitter, setIsConnectingTwitter] = useState(false);
 
   const handleAddConnection = async () => {
     if (!selectedPlatform || !username.trim()) return;
@@ -72,6 +75,16 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
     setIsSubmitting(false);
   };
 
+  const handleTwitterOAuth = async () => {
+    setIsConnectingTwitter(true);
+    try {
+      await signInWithTwitter();
+    } catch (error) {
+      console.error('Error connecting Twitter:', error);
+      setIsConnectingTwitter(false);
+    }
+  };
+
   const getConnectedPlatforms = () => {
     return connections.map(conn => conn.platform);
   };
@@ -80,6 +93,8 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
     const connected = getConnectedPlatforms();
     return Object.keys(platformNames).filter(platform => !connected.includes(platform));
   };
+
+  const isTwitterConnected = getConnectedPlatforms().includes('twitter');
 
   if (loading) {
     return (
@@ -111,6 +126,39 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Twitter OAuth Connection Button */}
+        {!isTwitterConnected && (
+          <div className="p-4 border border-blue-200 rounded-lg bg-blue-50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-blue-500">
+                  <Twitter className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-medium">Connect Twitter</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Connect your Twitter account with OAuth for instant verification
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={handleTwitterOAuth}
+                disabled={isConnectingTwitter}
+                className="bg-blue-500 hover:bg-blue-600"
+              >
+                {isConnectingTwitter ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Connecting...
+                  </>
+                ) : (
+                  'Connect'
+                )}
+              </Button>
+            </div>
+          </div>
+        )}
+
         {connections.length > 0 && (
           <div className="space-y-3">
             {connections.map((connection) => {
@@ -130,6 +178,11 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
                         {connection.verified && (
                           <Badge variant="secondary" className="text-xs">
                             Verified
+                          </Badge>
+                        )}
+                        {connection.oauth_provider && (
+                          <Badge variant="default" className="text-xs bg-green-500">
+                            OAuth
                           </Badge>
                         )}
                       </div>
@@ -160,26 +213,26 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
           </div>
         )}
 
-        {getAvailablePlatforms().length > 0 && (
+        {getAvailablePlatforms().filter(platform => platform !== 'twitter').length > 0 && (
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" className="w-full">
                 <Plus className="w-4 h-4 mr-2" />
-                Connect Social Media Account
+                Add Manual Connection
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Connect Social Media Account</DialogTitle>
+                <DialogTitle>Add Social Media Account</DialogTitle>
                 <DialogDescription>
-                  Add your social media account for identity verification
+                  Manually add your social media account information
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label>Platform</Label>
                   <div className="grid grid-cols-2 gap-2">
-                    {getAvailablePlatforms().map((platform) => {
+                    {getAvailablePlatforms().filter(platform => platform !== 'twitter').map((platform) => {
                       const Icon = platformIcons[platform as keyof typeof platformIcons];
                       const platformName = platformNames[platform as keyof typeof platformNames];
                       const colorClass = platformColors[platform as keyof typeof platformColors];
@@ -231,10 +284,10 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Connecting...
+                          Adding...
                         </>
                       ) : (
-                        'Connect Account'
+                        'Add Account'
                       )}
                     </Button>
                   </>

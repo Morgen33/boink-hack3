@@ -59,30 +59,42 @@ export type Database = {
       }
       social_media_connections: {
         Row: {
+          access_token: string | null
           connected_at: string
           id: string
+          oauth_provider: string | null
+          oauth_provider_id: string | null
           platform: string
           profile_url: string | null
+          refresh_token: string | null
           updated_at: string
           user_id: string
           username: string
           verified: boolean | null
         }
         Insert: {
+          access_token?: string | null
           connected_at?: string
           id?: string
+          oauth_provider?: string | null
+          oauth_provider_id?: string | null
           platform: string
           profile_url?: string | null
+          refresh_token?: string | null
           updated_at?: string
           user_id: string
           username: string
           verified?: boolean | null
         }
         Update: {
+          access_token?: string | null
           connected_at?: string
           id?: string
+          oauth_provider?: string | null
+          oauth_provider_id?: string | null
           platform?: string
           profile_url?: string | null
+          refresh_token?: string | null
           updated_at?: string
           user_id?: string
           username?: string
