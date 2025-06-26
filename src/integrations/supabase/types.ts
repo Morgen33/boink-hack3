@@ -57,6 +57,47 @@ export type Database = {
         }
         Relationships: []
       }
+      social_media_connections: {
+        Row: {
+          connected_at: string
+          id: string
+          platform: string
+          profile_url: string | null
+          updated_at: string
+          user_id: string
+          username: string
+          verified: boolean | null
+        }
+        Insert: {
+          connected_at?: string
+          id?: string
+          platform: string
+          profile_url?: string | null
+          updated_at?: string
+          user_id: string
+          username: string
+          verified?: boolean | null
+        }
+        Update: {
+          connected_at?: string
+          id?: string
+          platform?: string
+          profile_url?: string | null
+          updated_at?: string
+          user_id?: string
+          username?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_media_connections_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

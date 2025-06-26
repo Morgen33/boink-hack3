@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { User, Calendar, MapPin, Heart, Loader2 } from 'lucide-react';
 import Header from '@/components/Header';
+import SocialMediaConnections from '@/components/SocialMediaConnections';
 
 interface Profile {
   id: string;
@@ -229,6 +229,11 @@ const Profile = () => {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Social Media Connections */}
+        <div className="mt-6">
+          <SocialMediaConnections user={user} />
         </div>
 
         {/* Profile Form */}
