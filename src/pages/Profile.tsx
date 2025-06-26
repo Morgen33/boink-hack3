@@ -95,7 +95,35 @@ const Profile = () => {
 
         if (error) throw error;
 
-        setProfile(data);
+        // Create a profile object with all required fields, using defaults for missing crypto fields
+        const profileData: Profile = {
+          id: data.id,
+          email: data.email,
+          full_name: data.full_name,
+          avatar_url: data.avatar_url,
+          bio: data.bio,
+          age: data.age,
+          location: data.location,
+          interests: data.interests,
+          looking_for: data.looking_for,
+          date_of_birth: data.date_of_birth,
+          profile_completed: data.profile_completed,
+          // Initialize crypto fields with null defaults
+          wallet_address: (data as any).wallet_address || null,
+          favorite_crypto: (data as any).favorite_crypto || null,
+          crypto_experience: (data as any).crypto_experience || null,
+          portfolio_size: (data as any).portfolio_size || null,
+          trading_style: (data as any).trading_style || null,
+          defi_protocols: (data as any).defi_protocols || null,
+          nft_collections: (data as any).nft_collections || null,
+          degen_score: (data as any).degen_score || null,
+          meme_coin_holdings: (data as any).meme_coin_holdings || null,
+          biggest_crypto_win: (data as any).biggest_crypto_win || null,
+          biggest_crypto_loss: (data as any).biggest_crypto_loss || null,
+          crypto_motto: (data as any).crypto_motto || null,
+        };
+
+        setProfile(profileData);
         setFormData({
           full_name: data.full_name || '',
           bio: data.bio || '',
@@ -105,17 +133,17 @@ const Profile = () => {
           looking_for: data.looking_for || '',
           date_of_birth: data.date_of_birth || '',
           // Initialize crypto fields
-          wallet_address: data.wallet_address || '',
-          favorite_crypto: data.favorite_crypto || '',
-          crypto_experience: data.crypto_experience || '',
-          portfolio_size: data.portfolio_size || '',
-          trading_style: data.trading_style || '',
-          defi_protocols: data.defi_protocols?.join(', ') || '',
-          nft_collections: data.nft_collections?.join(', ') || '',
-          meme_coin_holdings: data.meme_coin_holdings?.join(', ') || '',
-          biggest_crypto_win: data.biggest_crypto_win || '',
-          biggest_crypto_loss: data.biggest_crypto_loss || '',
-          crypto_motto: data.crypto_motto || '',
+          wallet_address: (data as any).wallet_address || '',
+          favorite_crypto: (data as any).favorite_crypto || '',
+          crypto_experience: (data as any).crypto_experience || '',
+          portfolio_size: (data as any).portfolio_size || '',
+          trading_style: (data as any).trading_style || '',
+          defi_protocols: (data as any).defi_protocols?.join(', ') || '',
+          nft_collections: (data as any).nft_collections?.join(', ') || '',
+          meme_coin_holdings: (data as any).meme_coin_holdings?.join(', ') || '',
+          biggest_crypto_win: (data as any).biggest_crypto_win || '',
+          biggest_crypto_loss: (data as any).biggest_crypto_loss || '',
+          crypto_motto: (data as any).crypto_motto || '',
         });
       } catch (error: any) {
         console.error('Error fetching profile:', error);
