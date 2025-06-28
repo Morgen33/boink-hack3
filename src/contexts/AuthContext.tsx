@@ -38,8 +38,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Check if this is a new user signup
-        if (event === 'SIGNED_UP' || (event === 'SIGNED_IN' && session?.user)) {
+        // Check if this is a new user signup or signin
+        if (event === 'SIGNED_IN' && session?.user) {
           setTimeout(async () => {
             try {
               const { data: profile } = await supabase
@@ -55,11 +55,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               console.error('Error checking profile:', error);
             }
           }, 0);
-        }
 
-        // Handle Twitter OAuth connection after successful authentication
-        if (event === 'SIGNED_IN' && session?.user) {
-          // Check if this is a Twitter OAuth sign-in by looking at the provider
+          // Handle Twitter OAuth connection after successful authentication
           const provider = session.user.app_metadata?.provider;
           if (provider === 'twitter') {
             setTimeout(() => {
