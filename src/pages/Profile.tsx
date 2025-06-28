@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -183,6 +184,36 @@ const Profile = () => {
     }
   };
 
+  // Convert Profile to ProfileFormData format for the wizard
+  const convertProfileToFormData = (profile: Profile) => {
+    return {
+      full_name: profile.full_name || '',
+      username: profile.username || '',
+      age: profile.age ? profile.age.toString() : '', // Convert number to string
+      date_of_birth: profile.date_of_birth || '',
+      location: profile.location || '',
+      avatar_url: profile.avatar_url || '',
+      bio: profile.bio || '',
+      interests: profile.interests ? profile.interests.join(', ') : '',
+      looking_for: profile.looking_for || '',
+      gender_identity: profile.gender_identity || '',
+      sexual_orientation: profile.sexual_orientation || '',
+      looking_for_gender: profile.looking_for_gender || [],
+      relationship_type: profile.relationship_type || '',
+      wallet_address: profile.wallet_address || '',
+      favorite_crypto: profile.favorite_crypto || '',
+      crypto_experience: profile.crypto_experience || '',
+      portfolio_size: profile.portfolio_size || '',
+      trading_style: profile.trading_style || '',
+      defi_protocols: profile.defi_protocols ? profile.defi_protocols.join(', ') : '',
+      nft_collections: profile.nft_collections ? profile.nft_collections.join(', ') : '',
+      meme_coin_holdings: profile.meme_coin_holdings ? profile.meme_coin_holdings.join(', ') : '',
+      biggest_crypto_win: profile.biggest_crypto_win || '',
+      biggest_crypto_loss: profile.biggest_crypto_loss || '',
+      crypto_motto: profile.crypto_motto || '',
+    };
+  };
+
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -232,7 +263,7 @@ const Profile = () => {
       <div className="pt-20">
         <ProfileWizard
           user={user}
-          initialData={profile || undefined}
+          initialData={profile ? convertProfileToFormData(profile) : undefined}
           onComplete={handleProfileComplete}
         />
       </div>
