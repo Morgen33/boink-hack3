@@ -35,7 +35,7 @@ export const useMatchingProfiles = (user: User | null) => {
         // First, get the current user's profile and preferences
         const { data: currentUserProfile, error: userError } = await supabase
           .from('profiles')
-          .select('id, gender_identity, sexual_orientation, looking_for_gender, relationship_type')
+          .select('*')
           .eq('id', user.id)
           .single();
 
