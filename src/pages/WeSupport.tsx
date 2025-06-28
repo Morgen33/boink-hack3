@@ -74,12 +74,12 @@ const WeSupport = () => {
         </div>
 
         {/* Communities Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {supportedCommunities.map((community, index) => (
             <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 {/* Image or Placeholder */}
-                <div className="w-full h-64 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-40 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
                   {community.imageUrl ? (
                     <img 
                       src={community.imageUrl} 
@@ -99,10 +99,10 @@ const WeSupport = () => {
                 </div>
 
                 {/* Community Info */}
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
                   {community.name}
                 </h3>
-                <p className="text-gray-600 mb-4 text-sm">
+                <p className="text-gray-600 mb-3 text-sm">
                   {community.description}
                 </p>
 
