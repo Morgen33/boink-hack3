@@ -25,14 +25,18 @@ export type Database = {
           email: string | null
           favorite_crypto: string | null
           full_name: string | null
+          gender_identity: string | null
           id: string
           interests: string[] | null
           location: string | null
           looking_for: string | null
+          looking_for_gender: string[] | null
           meme_coin_holdings: string[] | null
           nft_collections: string[] | null
           portfolio_size: string | null
           profile_completed: boolean | null
+          relationship_type: string | null
+          sexual_orientation: string | null
           trading_style: string | null
           updated_at: string
           wallet_address: string | null
@@ -52,14 +56,18 @@ export type Database = {
           email?: string | null
           favorite_crypto?: string | null
           full_name?: string | null
+          gender_identity?: string | null
           id: string
           interests?: string[] | null
           location?: string | null
           looking_for?: string | null
+          looking_for_gender?: string[] | null
           meme_coin_holdings?: string[] | null
           nft_collections?: string[] | null
           portfolio_size?: string | null
           profile_completed?: boolean | null
+          relationship_type?: string | null
+          sexual_orientation?: string | null
           trading_style?: string | null
           updated_at?: string
           wallet_address?: string | null
@@ -79,14 +87,18 @@ export type Database = {
           email?: string | null
           favorite_crypto?: string | null
           full_name?: string | null
+          gender_identity?: string | null
           id?: string
           interests?: string[] | null
           location?: string | null
           looking_for?: string | null
+          looking_for_gender?: string[] | null
           meme_coin_holdings?: string[] | null
           nft_collections?: string[] | null
           portfolio_size?: string | null
           profile_completed?: boolean | null
+          relationship_type?: string | null
+          sexual_orientation?: string | null
           trading_style?: string | null
           updated_at?: string
           wallet_address?: string | null

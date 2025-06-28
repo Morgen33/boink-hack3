@@ -15,6 +15,7 @@ import Header from '@/components/Header';
 import SocialMediaConnections from '@/components/SocialMediaConnections';
 import DegenQuestionnaire from '@/components/DegenQuestionnaire';
 import NFTShowcase from '@/components/NFTShowcase';
+import GenderPreferences from '@/components/profile/GenderPreferences';
 
 interface Profile {
   id: string;
@@ -28,7 +29,12 @@ interface Profile {
   looking_for: string | null;
   date_of_birth: string | null;
   profile_completed: boolean | null;
-  // New crypto fields
+  // Dating preference fields
+  gender_identity: string | null;
+  sexual_orientation: string | null;
+  looking_for_gender: string[] | null;
+  relationship_type: string | null;
+  // Crypto fields
   wallet_address: string | null;
   favorite_crypto: string | null;
   crypto_experience: string | null;
@@ -62,7 +68,12 @@ const Profile = () => {
     interests: '',
     looking_for: '',
     date_of_birth: '',
-    // New crypto fields
+    // Dating preferences
+    gender_identity: '',
+    sexual_orientation: '',
+    looking_for_gender: [] as string[],
+    relationship_type: '',
+    // Crypto fields
     wallet_address: '',
     favorite_crypto: '',
     crypto_experience: '',
@@ -97,7 +108,7 @@ const Profile = () => {
 
         if (error) throw error;
 
-        // Create a profile object with all required fields, using defaults for missing crypto fields
+        // Create a profile object with all required fields
         const profileData: Profile = {
           id: data.id,
           email: data.email,
@@ -110,19 +121,24 @@ const Profile = () => {
           looking_for: data.looking_for,
           date_of_birth: data.date_of_birth,
           profile_completed: data.profile_completed,
-          // Initialize crypto fields with null defaults
-          wallet_address: (data as any).wallet_address || null,
-          favorite_crypto: (data as any).favorite_crypto || null,
-          crypto_experience: (data as any).crypto_experience || null,
-          portfolio_size: (data as any).portfolio_size || null,
-          trading_style: (data as any).trading_style || null,
-          defi_protocols: (data as any).defi_protocols || null,
-          nft_collections: (data as any).nft_collections || null,
-          degen_score: (data as any).degen_score || null,
-          meme_coin_holdings: (data as any).meme_coin_holdings || null,
-          biggest_crypto_win: (data as any).biggest_crypto_win || null,
-          biggest_crypto_loss: (data as any).biggest_crypto_loss || null,
-          crypto_motto: (data as any).crypto_motto || null,
+          // Dating preferences
+          gender_identity: data.gender_identity,
+          sexual_orientation: data.sexual_orientation,
+          looking_for_gender: data.looking_for_gender,
+          relationship_type: data.relationship_type,
+          // Crypto fields
+          wallet_address: data.wallet_address || null,
+          favorite_crypto: data.favorite_crypto || null,
+          crypto_experience: data.crypto_experience || null,
+          portfolio_size: data.portfolio_size || null,
+          trading_style: data.trading_style || null,
+          defi_protocols: data.defi_protocols || null,
+          nft_collections: data.nft_collections || null,
+          degen_score: data.degen_score || null,
+          meme_coin_holdings: data.meme_coin_holdings || null,
+          biggest_crypto_win: data.biggest_crypto_win || null,
+          biggest_crypto_loss: data.biggest_crypto_loss || null,
+          crypto_motto: data.crypto_motto || null,
         };
 
         setProfile(profileData);
@@ -134,18 +150,23 @@ const Profile = () => {
           interests: data.interests?.join(', ') || '',
           looking_for: data.looking_for || '',
           date_of_birth: data.date_of_birth || '',
-          // Initialize crypto fields
-          wallet_address: (data as any).wallet_address || '',
-          favorite_crypto: (data as any).favorite_crypto || '',
-          crypto_experience: (data as any).crypto_experience || '',
-          portfolio_size: (data as any).portfolio_size || '',
-          trading_style: (data as any).trading_style || '',
-          defi_protocols: (data as any).defi_protocols?.join(', ') || '',
-          nft_collections: (data as any).nft_collections?.join(', ') || '',
-          meme_coin_holdings: (data as any).meme_coin_holdings?.join(', ') || '',
-          biggest_crypto_win: (data as any).biggest_crypto_win || '',
-          biggest_crypto_loss: (data as any).biggest_crypto_loss || '',
-          crypto_motto: (data as any).crypto_motto || '',
+          // Dating preferences
+          gender_identity: data.gender_identity || '',
+          sexual_orientation: data.sexual_orientation || '',
+          looking_for_gender: data.looking_for_gender || [],
+          relationship_type: data.relationship_type || '',
+          // Crypto fields
+          wallet_address: data.wallet_address || '',
+          favorite_crypto: data.favorite_crypto || '',
+          crypto_experience: data.crypto_experience || '',
+          portfolio_size: data.portfolio_size || '',
+          trading_style: data.trading_style || '',
+          defi_protocols: data.defi_protocols?.join(', ') || '',
+          nft_collections: data.nft_collections?.join(', ') || '',
+          meme_coin_holdings: data.meme_coin_holdings?.join(', ') || '',
+          biggest_crypto_win: data.biggest_crypto_win || '',
+          biggest_crypto_loss: data.biggest_crypto_loss || '',
+          crypto_motto: data.crypto_motto || '',
         });
       } catch (error: any) {
         console.error('Error fetching profile:', error);
@@ -162,7 +183,7 @@ const Profile = () => {
     fetchProfile();
   }, [user, toast]);
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | string[]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -182,7 +203,12 @@ const Profile = () => {
         interests: formData.interests ? formData.interests.split(',').map(i => i.trim()).filter(Boolean) : null,
         looking_for: formData.looking_for || null,
         date_of_birth: formData.date_of_birth || null,
-        // New crypto fields
+        // Dating preferences
+        gender_identity: formData.gender_identity || null,
+        sexual_orientation: formData.sexual_orientation || null,
+        looking_for_gender: formData.looking_for_gender.length > 0 ? formData.looking_for_gender : null,
+        relationship_type: formData.relationship_type || null,
+        // Crypto fields
         wallet_address: formData.wallet_address || null,
         favorite_crypto: formData.favorite_crypto || null,
         crypto_experience: formData.crypto_experience || null,
@@ -340,69 +366,46 @@ const Profile = () => {
               </CardContent>
             </Card>
 
-            {/* Crypto Profile Card */}
+            {/* Dating Preferences Card */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Bitcoin className="w-5 h-5" />
-                  Crypto Profile
+                  <Heart className="w-5 h-5" />
+                  Dating Preferences
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {profile.favorite_crypto && (
+                {profile.gender_identity && (
                   <div>
-                    <h4 className="font-semibold mb-1">Favorite Crypto</h4>
-                    <p className="text-muted-foreground">{profile.favorite_crypto}</p>
+                    <h4 className="font-semibold mb-1">Gender Identity</h4>
+                    <Badge variant="outline">{profile.gender_identity}</Badge>
                   </div>
                 )}
 
-                {profile.crypto_experience && (
+                {profile.sexual_orientation && (
                   <div>
-                    <h4 className="font-semibold mb-1">Experience Level</h4>
-                    <Badge variant="outline">{profile.crypto_experience}</Badge>
+                    <h4 className="font-semibold mb-1">Sexual Orientation</h4>
+                    <Badge variant="outline">{profile.sexual_orientation}</Badge>
                   </div>
                 )}
 
-                {profile.portfolio_size && (
+                {profile.looking_for_gender && profile.looking_for_gender.length > 0 && (
                   <div>
-                    <h4 className="font-semibold mb-1">Portfolio Size</h4>
-                    <p className="text-muted-foreground">{profile.portfolio_size}</p>
-                  </div>
-                )}
-
-                {profile.trading_style && (
-                  <div>
-                    <h4 className="font-semibold mb-1">Trading Style</h4>
-                    <p className="text-muted-foreground">{profile.trading_style}</p>
-                  </div>
-                )}
-
-                {profile.meme_coin_holdings && profile.meme_coin_holdings.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold mb-2">Meme Coin Holdings</h4>
+                    <h4 className="font-semibold mb-2">Looking For</h4>
                     <div className="flex flex-wrap gap-2">
-                      {profile.meme_coin_holdings.map((coin, index) => (
+                      {profile.looking_for_gender.map((gender, index) => (
                         <Badge key={index} variant="secondary">
-                          {coin}
+                          {gender}
                         </Badge>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {profile.crypto_motto && (
+                {profile.relationship_type && (
                   <div>
-                    <h4 className="font-semibold mb-1">Crypto Motto</h4>
-                    <p className="text-muted-foreground italic">"{profile.crypto_motto}"</p>
-                  </div>
-                )}
-
-                {profile.degen_score && (
-                  <div>
-                    <h4 className="font-semibold mb-1">Degen Score</h4>
-                    <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
-                      {profile.degen_score}/100
-                    </Badge>
+                    <h4 className="font-semibold mb-1">Relationship Type</h4>
+                    <p className="text-muted-foreground">{profile.relationship_type}</p>
                   </div>
                 )}
               </CardContent>
@@ -448,7 +451,7 @@ const Profile = () => {
     );
   }
 
-  // Show editing form (existing form code)
+  // Show editing form
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -576,12 +579,26 @@ const Profile = () => {
           <SocialMediaConnections user={user} />
         </div>
 
+        {/* Dating Preferences Section */}
+        <div className="mt-6">
+          <GenderPreferences
+            genderIdentity={formData.gender_identity}
+            sexualOrientation={formData.sexual_orientation}
+            lookingForGender={formData.looking_for_gender}
+            relationshipType={formData.relationship_type}
+            onGenderIdentityChange={(value) => handleInputChange('gender_identity', value)}
+            onSexualOrientationChange={(value) => handleInputChange('sexual_orientation', value)}
+            onLookingForGenderChange={(values) => handleInputChange('looking_for_gender', values)}
+            onRelationshipTypeChange={(value) => handleInputChange('relationship_type', value)}
+          />
+        </div>
+
         {/* Main Profile Form */}
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Crypto Profile</CardTitle>
+            <CardTitle>Basic Profile</CardTitle>
             <CardDescription>
-              Complete your crypto profile to find your degen tribe
+              Complete your basic info and crypto profile
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
