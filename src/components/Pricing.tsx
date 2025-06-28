@@ -8,7 +8,7 @@ const Pricing = () => {
       name: "Explorer",
       price: "Free",
       period: "forever",
-      description: "Perfect for getting started in Bonk dating",
+      description: "Perfect for getting started in Boink dating",
       icon: Star,
       gradient: "from-web3-yellow to-web3-orange",
       features: [
@@ -26,7 +26,7 @@ const Pricing = () => {
       name: "Connector",
       price: "$9.99",
       period: "per month",
-      description: "For serious Bonk relationship seekers",
+      description: "For serious Boink relationship seekers",
       icon: Crown,
       gradient: "from-web3-coral to-web3-red",
       features: [
@@ -47,7 +47,7 @@ const Pricing = () => {
       name: "Builder",
       price: "$19.99",
       period: "per month",
-      description: "For Bonk entrepreneurs and thought leaders",
+      description: "For Boink entrepreneurs and thought leaders",
       icon: Rocket,
       gradient: "from-web3-magenta to-web3-pink",
       features: [
@@ -75,7 +75,7 @@ const Pricing = () => {
             Choose Your Journey
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Start free and upgrade as you build meaningful connections in the Bonk ecosystem. 
+            Start free and upgrade as you build meaningful connections in the Boink ecosystem. 
             Every plan includes our industry-leading safety features.
           </p>
         </div>
