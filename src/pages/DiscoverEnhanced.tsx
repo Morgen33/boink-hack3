@@ -3,16 +3,18 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEnhancedMatching } from '@/hooks/useEnhancedMatching';
 import ProfileCard from '@/components/ProfileCard';
+import MatchScore from '@/components/MatchScore';
 import Header from '@/components/Header';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, User, Sparkles } from 'lucide-react';
+import { Loader2, User, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const Discover = () => {
+const DiscoverEnhanced = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const [showMatchScore, setShowMatchScore] = useState(false);
   const { 
     currentProfile, 
     hasMoreProfiles, 
@@ -20,6 +22,19 @@ const Discover = () => {
     loading,
     userProfile 
   } = useEnhancedMatching(user);
+
+  // Mock compatibility score for demo (in real app, this would come from the matching hook)
+  const mockScore = {
+    score: 0.78,
+    breakdown: {
+      genderMatch: 1.0,
+      ageCompatibility: 0.8,
+      locationScore: 0.6,
+      interestMatch: 0.85,
+      cryptoCompatibility: 0.72,
+      relationshipMatch: 0.9,
+    }
+  };
 
   const handleLike = () => {
     console.log('Liked profile:', currentProfile?.id);
@@ -68,21 +83,15 @@ const Discover = () => {
       <div className="pt-20 px-4">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-6">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
-                Discover 💎
-              </h1>
-              <Badge variant="secondary" className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-                <Sparkles className="w-3 h-3 mr-1" />
-                AI Enhanced
-              </Badge>
-            </div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
+              Smart Discover ✨
+            </h1>
             <p className="text-muted-foreground mt-2">
-              Smart crypto compatibility matching
+              AI-powered crypto compatibility matching
             </p>
             {userProfile && (
               <p className="text-sm text-muted-foreground mt-1">
-                Showing matches based on age, location, interests, and crypto preferences
+                Showing matches based on your complete profile
               </p>
             )}
           </div>
@@ -93,20 +102,60 @@ const Discover = () => {
             </div>
           ) : currentProfile ? (
             <div className="space-y-4">
-              <ProfileCard
-                profile={currentProfile}
-                onLike={handleLike}
-                onPass={handlePass}
-              />
+              <Tabs defaultValue="profile" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="profile">Profile</TabsTrigger>
+                  <TabsTrigger value="compatibility">Match Score</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="profile" className="space-y-4">
+                  <ProfileCard
+                    profile={currentProfile}
+                    onLike={handleLike}
+                    onPass={handlePass}
+                  />
+                </TabsContent>
+                
+                <TabsContent value="compatibility" className="space-y-4">
+                  <MatchScore 
+                    score={mockScore.score} 
+                    breakdown={mockScore.breakdown} 
+                  />
+                  
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      className="flex-1" 
+                      onClick={handlePass}
+                    >
+                      Pass
+                    </Button>
+                    <Button 
+                      className="flex-1 bg-gradient-to-r from-web3-red to-web3-magenta" 
+                      onClick={handleLike}
+                    >
+                      Like
+                    </Button>
+                  </div>
+                </TabsContent>
+              </Tabs>
               
               {!hasMoreProfiles && (
                 <Card>
                   <CardContent className="p-6 text-center">
                     <User className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="font-semibold mb-2">No more compatible matches</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Our AI has shown you the most compatible crypto enthusiasts. Check back later for more!
+                    <h3 className="font-semibold mb-2">No more compatible profiles</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Check back later for more crypto matches, or update your preferences!
                     </p>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => navigate('/profile?edit=true')}
+                      className="gap-2"
+                    >
+                      <Settings className="w-4 h-4" />
+                      Update Preferences
+                    </Button>
                   </CardContent>
                 </Card>
               )}
@@ -115,9 +164,9 @@ const Discover = () => {
             <Card>
               <CardContent className="p-6 text-center">
                 <User className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="font-semibold mb-2">Complete your profile for smart matching</h3>
+                <h3 className="font-semibold mb-2">Complete your profile for better matches</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Fill out your crypto interests, location, and preferences to see AI-powered matches!
+                  Fill out your crypto interests, location, and preferences to see compatible matches!
                 </p>
                 <Button onClick={() => navigate('/profile')}>
                   Complete Profile
@@ -131,4 +180,4 @@ const Discover = () => {
   );
 };
 
-export default Discover;
+export default DiscoverEnhanced;
