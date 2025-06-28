@@ -39,6 +39,7 @@ export type Database = {
           sexual_orientation: string | null
           trading_style: string | null
           updated_at: string
+          username: string | null
           wallet_address: string | null
         }
         Insert: {
@@ -70,6 +71,7 @@ export type Database = {
           sexual_orientation?: string | null
           trading_style?: string | null
           updated_at?: string
+          username?: string | null
           wallet_address?: string | null
         }
         Update: {
@@ -101,6 +103,7 @@ export type Database = {
           sexual_orientation?: string | null
           trading_style?: string | null
           updated_at?: string
+          username?: string | null
           wallet_address?: string | null
         }
         Relationships: []
