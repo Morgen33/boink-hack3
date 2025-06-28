@@ -79,7 +79,7 @@ const WeSupport = () => {
             <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <CardContent className="p-6">
                 {/* Image or Placeholder */}
-                <div className="w-full h-48 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-64 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                   {community.imageUrl ? (
                     <img 
                       src={community.imageUrl} 
