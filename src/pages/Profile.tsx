@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -66,6 +65,7 @@ const Profile = () => {
       if (!user) return;
 
       try {
+        console.log('Fetching profile for user:', user.id);
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
@@ -73,6 +73,8 @@ const Profile = () => {
           .single();
 
         if (error) throw error;
+
+        console.log('Profile data fetched:', data);
 
         // Create a profile object with all required fields
         const profileData: Profile = {
@@ -128,6 +130,8 @@ const Profile = () => {
     if (!user) return;
 
     try {
+      console.log('Completing profile with data:', formData);
+      
       const updateData = {
         full_name: formData.full_name || null,
         username: formData.username || null,
@@ -158,12 +162,16 @@ const Profile = () => {
         updated_at: new Date().toISOString(),
       };
 
+      console.log('Updating profile with:', updateData);
+
       const { error } = await supabase
         .from('profiles')
         .update(updateData)
         .eq('id', user.id);
 
       if (error) throw error;
+
+      console.log('Profile updated successfully, profile_completed set to true');
 
       toast({
         title: "Success! 🎉",

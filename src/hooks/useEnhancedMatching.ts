@@ -59,7 +59,7 @@ export const useEnhancedMatching = (user: User | null) => {
 
     // 1. Gender Preference Matching (25% weight)
     const genderWeight = 0.25;
-    let genderScore = 0;
+    let genderScore = 0.7; // Default to reasonable compatibility
     
     // Check if user wants other's gender
     const userWantsOther = !userProfile.looking_for_gender || 
@@ -74,7 +74,7 @@ export const useEnhancedMatching = (user: User | null) => {
     if (userWantsOther && otherWantsUser) {
       genderScore = 1.0;
     } else if (userWantsOther || otherWantsUser) {
-      genderScore = 0.5;
+      genderScore = 0.7;
     }
     
     breakdown.genderMatch = genderScore;
@@ -82,11 +82,10 @@ export const useEnhancedMatching = (user: User | null) => {
 
     // 2. Age Compatibility (15% weight)
     const ageWeight = 0.15;
-    let ageScore = 0;
+    let ageScore = 0.7; // Default reasonable score
     
     if (userProfile.age && otherProfile.age) {
       const ageDiff = Math.abs(userProfile.age - otherProfile.age);
-      // Perfect score for 0-2 years difference, decreasing linearly
       if (ageDiff <= 2) {
         ageScore = 1.0;
       } else if (ageDiff <= 5) {
@@ -98,8 +97,6 @@ export const useEnhancedMatching = (user: User | null) => {
       } else {
         ageScore = 0.2;
       }
-    } else {
-      ageScore = 0.5; // Neutral if age not provided
     }
     
     breakdown.ageCompatibility = ageScore;
@@ -107,23 +104,21 @@ export const useEnhancedMatching = (user: User | null) => {
 
     // 3. Location Score (10% weight)
     const locationWeight = 0.10;
-    let locationScore = 0;
+    let locationScore = 0.5; // Default neutral score
     
     if (userProfile.location && otherProfile.location) {
       const userLoc = userProfile.location.toLowerCase();
       const otherLoc = otherProfile.location.toLowerCase();
       
       if (userLoc === otherLoc) {
-        locationScore = 1.0; // Same city/location
+        locationScore = 1.0;
       } else if (userLoc.includes(otherLoc.split(',')[0]) || otherLoc.includes(userLoc.split(',')[0])) {
-        locationScore = 0.8; // Same city, different area
+        locationScore = 0.8;
       } else if (userLoc.split(',').pop()?.trim() === otherLoc.split(',').pop()?.trim()) {
-        locationScore = 0.6; // Same country/state
+        locationScore = 0.6;
       } else {
-        locationScore = 0.3; // Different locations
+        locationScore = 0.3;
       }
-    } else {
-      locationScore = 0.5; // Neutral if location not provided
     }
     
     breakdown.locationScore = locationScore;
@@ -131,7 +126,7 @@ export const useEnhancedMatching = (user: User | null) => {
 
     // 4. Interest Matching (20% weight)
     const interestWeight = 0.20;
-    let interestScore = 0;
+    let interestScore = 0.5; // Default neutral score
     
     if (userProfile.interests && otherProfile.interests && 
         userProfile.interests.length > 0 && otherProfile.interests.length > 0) {
@@ -146,8 +141,6 @@ export const useEnhancedMatching = (user: User | null) => {
       
       const totalInterests = Math.max(userInterests.length, otherInterests.length);
       interestScore = commonInterests.length / totalInterests;
-    } else {
-      interestScore = 0.5; // Neutral if interests not provided
     }
     
     breakdown.interestMatch = interestScore;
@@ -155,10 +148,9 @@ export const useEnhancedMatching = (user: User | null) => {
 
     // 5. Crypto Compatibility (20% weight)
     const cryptoWeight = 0.20;
-    let cryptoScore = 0;
+    let cryptoScore = 0.5; // Default neutral score
     let cryptoFactors = 0;
     
-    // Favorite crypto match
     if (userProfile.favorite_crypto && otherProfile.favorite_crypto) {
       if (userProfile.favorite_crypto.toLowerCase() === otherProfile.favorite_crypto.toLowerCase()) {
         cryptoScore += 0.3;
@@ -166,7 +158,6 @@ export const useEnhancedMatching = (user: User | null) => {
       cryptoFactors++;
     }
     
-    // Experience level compatibility
     if (userProfile.crypto_experience && otherProfile.crypto_experience) {
       const experienceLevels = ['beginner', 'intermediate', 'advanced', 'expert'];
       const userLevel = experienceLevels.indexOf(userProfile.crypto_experience.toLowerCase());
@@ -179,7 +170,6 @@ export const useEnhancedMatching = (user: User | null) => {
       cryptoFactors++;
     }
     
-    // Portfolio size compatibility
     if (userProfile.portfolio_size && otherProfile.portfolio_size) {
       if (userProfile.portfolio_size === otherProfile.portfolio_size) {
         cryptoScore += 0.2;
@@ -187,7 +177,6 @@ export const useEnhancedMatching = (user: User | null) => {
       cryptoFactors++;
     }
     
-    // Trading style match
     if (userProfile.trading_style && otherProfile.trading_style) {
       if (userProfile.trading_style.toLowerCase() === otherProfile.trading_style.toLowerCase()) {
         cryptoScore += 0.2;
@@ -195,22 +184,8 @@ export const useEnhancedMatching = (user: User | null) => {
       cryptoFactors++;
     }
     
-    // DeFi protocols overlap
-    if (userProfile.defi_protocols && otherProfile.defi_protocols) {
-      const userProtocols = userProfile.defi_protocols.map(p => p.toLowerCase());
-      const otherProtocols = otherProfile.defi_protocols.map(p => p.toLowerCase());
-      const commonProtocols = userProtocols.filter(p => otherProtocols.includes(p));
-      
-      if (commonProtocols.length > 0) {
-        cryptoScore += Math.min(commonProtocols.length / Math.max(userProtocols.length, otherProtocols.length), 0.3);
-      }
-      cryptoFactors++;
-    }
-    
     if (cryptoFactors > 0) {
       cryptoScore = cryptoScore / cryptoFactors;
-    } else {
-      cryptoScore = 0.5; // Neutral if no crypto info
     }
     
     breakdown.cryptoCompatibility = cryptoScore;
@@ -218,13 +193,12 @@ export const useEnhancedMatching = (user: User | null) => {
 
     // 6. Relationship Type Match (10% weight)
     const relationshipWeight = 0.10;
-    let relationshipScore = 0;
+    let relationshipScore = 0.7; // Default good compatibility
     
     if (userProfile.relationship_type && otherProfile.relationship_type) {
       if (userProfile.relationship_type === otherProfile.relationship_type) {
         relationshipScore = 1.0;
       } else {
-        // Some compatibility between different relationship types
         const compatibleTypes: Record<string, string[]> = {
           'serious relationship': ['serious relationship', 'open to anything'],
           'casual dating': ['casual dating', 'open to anything', 'friends first'],
@@ -239,11 +213,9 @@ export const useEnhancedMatching = (user: User | null) => {
         if (compatibleTypes[userType]?.includes(otherType)) {
           relationshipScore = 0.7;
         } else {
-          relationshipScore = 0.3;
+          relationshipScore = 0.4;
         }
       }
-    } else {
-      relationshipScore = 0.5; // Neutral if not specified
     }
     
     breakdown.relationshipMatch = relationshipScore;
@@ -251,19 +223,37 @@ export const useEnhancedMatching = (user: User | null) => {
 
     return {
       profile: otherProfile,
-      score: Math.round(totalScore * 100) / 100, // Round to 2 decimal places
+      score: Math.round(totalScore * 100) / 100,
       breakdown
+    };
+  };
+
+  // Convert database profile to ProfileCard format
+  const convertToProfileCard = (profile: Profile): ProfileCard => {
+    return {
+      id: profile.id,
+      full_name: profile.full_name,
+      age: profile.age,
+      bio: profile.bio,
+      location: profile.location,
+      interests: profile.interests || [],
+      looking_for: profile.looking_for,
+      avatar_url: profile.avatar_url,
+      isDemo: false
     };
   };
 
   useEffect(() => {
     const initializeProfiles = async () => {
-      if (!user) return;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
 
       console.log('Initializing enhanced matching profiles...');
 
       try {
-        // Get the current user's profile and preferences
+        // Get the current user's profile
         const { data: currentUserProfile, error: userError } = await supabase
           .from('profiles')
           .select('*')
@@ -273,15 +263,15 @@ export const useEnhancedMatching = (user: User | null) => {
         if (userError) {
           console.error('Error fetching user profile:', userError);
         } else {
+          console.log('User profile loaded:', currentUserProfile);
           setUserProfile(currentUserProfile);
         }
 
         // Always start with demo profiles for immediate content
         setProfiles([...demoProfiles]);
-        setLoading(false);
 
         // Fetch real profiles
-        const { data, error } = await supabase
+        const { data: realProfiles, error } = await supabase
           .from('profiles')
           .select(`
             id, full_name, age, bio, location, interests, looking_for, avatar_url, 
@@ -290,41 +280,53 @@ export const useEnhancedMatching = (user: User | null) => {
             defi_protocols, nft_collections, meme_coin_holdings
           `)
           .neq('id', user.id)
-          .eq('profile_completed', true)
-          .limit(50); // Get more profiles for better matching
+          .eq('profile_completed', true);
 
         if (error) {
           console.error('Supabase query error:', error);
-        } else if (data && data.length > 0 && currentUserProfile) {
-          console.log('Real profiles fetched:', data.length);
+        } else if (realProfiles && realProfiles.length > 0) {
+          console.log('Real profiles fetched:', realProfiles.length);
+          console.log('Sample profile:', realProfiles[0]);
           
-          // Calculate compatibility scores for all profiles
-          const scoredProfiles: MatchScore[] = data.map(profile => 
-            calculateCompatibilityScore(currentUserProfile, profile)
-          );
-
-          // Sort by compatibility score (highest first)
-          scoredProfiles.sort((a, b) => b.score - a.score);
-
-          // Filter for minimum compatibility (e.g., score > 0.3)
-          const compatibleProfiles = scoredProfiles.filter(match => match.score > 0.3);
-
-          console.log('Compatible matches found:', compatibleProfiles.length);
-          console.log('Top matches:', compatibleProfiles.slice(0, 5).map(m => ({
-            name: m.profile.full_name,
-            score: m.score,
-            breakdown: m.breakdown
-          })));
-
-          // Convert back to ProfileCard format and combine with demos
-          const matchedProfiles = compatibleProfiles.map(match => match.profile);
-          const allProfiles = [...demoProfiles, ...matchedProfiles];
+          // Convert real profiles to ProfileCard format
+          const convertedProfiles = realProfiles.map(convertToProfileCard);
           
-          setProfiles(allProfiles);
+          if (currentUserProfile) {
+            // Calculate compatibility scores for profiles with enough data
+            const scoredProfiles: MatchScore[] = realProfiles.map(profile => 
+              calculateCompatibilityScore(currentUserProfile, profile)
+            );
+
+            // Sort by compatibility score (highest first) but be more lenient with minimum score
+            scoredProfiles.sort((a, b) => b.score - a.score);
+            
+            // Lower the minimum compatibility threshold to show more profiles
+            const compatibleProfiles = scoredProfiles.filter(match => match.score > 0.2);
+
+            console.log('Compatible matches found:', compatibleProfiles.length);
+            console.log('Top matches:', compatibleProfiles.slice(0, 3).map(m => ({
+              name: m.profile.full_name,
+              score: m.score,
+              breakdown: m.breakdown
+            })));
+
+            // Convert back to ProfileCard format and combine with demos
+            const matchedProfiles = compatibleProfiles.map(match => convertToProfileCard(match.profile));
+            const allProfiles = [...demoProfiles, ...matchedProfiles];
+            
+            setProfiles(allProfiles);
+          } else {
+            // If no user profile for matching, just show all converted profiles
+            const allProfiles = [...demoProfiles, ...convertedProfiles];
+            setProfiles(allProfiles);
+          }
+        } else {
+          console.log('No real profiles found or they are not profile_completed');
         }
       } catch (error: any) {
         console.error('Error in enhanced matching:', error);
-        // Demo profiles are already set
+      } finally {
+        setLoading(false);
       }
     };
 
