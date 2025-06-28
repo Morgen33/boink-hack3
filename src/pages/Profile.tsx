@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -42,12 +42,16 @@ interface Profile {
 }
 
 const Profile = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, isNewUser, clearNewUserFlag } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [profileJustCompleted, setProfileJustCompleted] = useState(false);
+  
+  // Check if we're in edit mode or if this is a new user
+  const isEditing = searchParams.get('edit') === 'true' || isNewUser;
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -163,12 +167,19 @@ const Profile = () => {
 
       toast({
         title: "Success! 🎉",
-        description: "Your degen profile is now live! Time to find your crypto tribe! 🚀",
+        description: isNewUser 
+          ? "Welcome to Boink! Your degen profile is now live! Time to find your crypto tribe! 🚀"
+          : "Your profile has been updated successfully! 🚀",
       });
 
       // Update local profile data and show completion message
       setProfile(prev => prev ? { ...prev, ...updateData } : null);
       setProfileJustCompleted(true);
+      
+      // Clear new user flag if it was set
+      if (isNewUser) {
+        clearNewUserFlag();
+      }
       
       // Navigate to discover page after a brief delay
       setTimeout(() => {
@@ -189,7 +200,7 @@ const Profile = () => {
     return {
       full_name: profile.full_name || '',
       username: profile.username || '',
-      age: profile.age ? profile.age.toString() : '', // Convert number to string
+      age: profile.age ? profile.age.toString() : '',
       date_of_birth: profile.date_of_birth || '',
       location: profile.location || '',
       avatar_url: profile.avatar_url || '',
@@ -240,11 +251,13 @@ const Profile = () => {
               <CheckCircle className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent mb-4">
-              Profile Complete! 🎉
+              {isNewUser ? "Welcome to Boink! 🎉" : "Profile Updated! 🎉"}
             </h1>
             <p className="text-muted-foreground mb-6">
-              Your degen profile is now live and ready to attract fellow crypto enthusiasts!
-              Redirecting you to discover amazing people...
+              {isNewUser 
+                ? "Your degen profile is now live and ready to attract fellow crypto enthusiasts! Redirecting you to discover amazing people..."
+                : "Your profile has been updated successfully! Taking you back to discover amazing people..."
+              }
             </p>
             <div className="flex items-center justify-center">
               <Loader2 className="w-6 h-6 animate-spin mr-2" />
@@ -256,19 +269,29 @@ const Profile = () => {
     );
   }
 
-  // Show profile wizard for incomplete profiles or editing
-  return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <div className="pt-20">
-        <ProfileWizard
-          user={user}
-          initialData={profile ? convertProfileToFormData(profile) : undefined}
-          onComplete={handleProfileComplete}
-        />
+  // Show profile wizard for new users, editing, or incomplete profiles
+  if (isEditing || (profile && !profile.profile_completed)) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-20">
+          <ProfileWizard
+            user={user}
+            initialData={profile ? convertProfileToFormData(profile) : undefined}
+            onComplete={handleProfileComplete}
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  // If profile is complete and we're not editing, redirect to discover
+  if (profile?.profile_completed) {
+    navigate('/discover');
+    return null;
+  }
+
+  return null;
 };
 
 export default Profile;

@@ -1,5 +1,7 @@
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import PrototypeSlider from "@/components/PrototypeSlider";
@@ -13,6 +15,8 @@ import GMGNLink from "@/components/header/GMGNLink";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(false);
+  const { user, isNewUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if user has seen the MVP disclaimer before
@@ -21,6 +25,13 @@ const Index = () => {
       setShowOverlay(true);
     }
   }, []);
+
+  // Redirect new users to profile setup
+  useEffect(() => {
+    if (user && isNewUser) {
+      navigate('/profile');
+    }
+  }, [user, isNewUser, navigate]);
 
   const handleEnterApp = () => {
     // Mark as seen and hide overlay
