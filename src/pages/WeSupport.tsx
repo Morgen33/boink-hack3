@@ -74,7 +74,7 @@ const WeSupport = () => {
         </div>
 
         {/* Communities Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {supportedCommunities.map((community, index) => (
             <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <CardContent className="p-6">
