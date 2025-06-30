@@ -44,6 +44,14 @@ const WeSupport = () => {
       twitter: "https://x.com/Defcon7_",
       imageUrl: "/lovable-uploads/4ab6d780-12c5-4b87-8960-05c18e7caa3b.png",
       socialType: "twitter" as const
+    },
+    {
+      name: "Shiba Army",
+      description: "Shiba Army community",
+      twitter: "https://x.com/shibaarmycall",
+      website: "https://shibarmycall.site/",
+      imageUrl: "/lovable-uploads/4a6ee6fe-4d1d-4eac-89d3-5dee75336f46.png",
+      socialType: "twitter" as const
     }
   ];
 
@@ -112,26 +120,42 @@ const WeSupport = () => {
                   {community.description}
                 </p>
 
-                {/* Social Link */}
-                <a
-                  href={community.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors group-hover:scale-105 transform duration-200"
-                >
-                  {community.socialType === "twitter" ? (
-                    <>
-                      <Twitter className="w-4 h-4 mr-2" />
-                      <span className="text-sm font-medium">Follow on X</span>
-                    </>
-                  ) : (
-                    <>
-                      <Instagram className="w-4 h-4 mr-2" />
-                      <span className="text-sm font-medium">Follow on Instagram</span>
-                    </>
+                {/* Social Links */}
+                <div className="space-y-2">
+                  <a
+                    href={community.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors group-hover:scale-105 transform duration-200"
+                  >
+                    {community.socialType === "twitter" ? (
+                      <>
+                        <Twitter className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">Follow on X</span>
+                      </>
+                    ) : (
+                      <>
+                        <Instagram className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">Follow on Instagram</span>
+                      </>
+                    )}
+                    <ExternalLink className="w-3 h-3 ml-1" />
+                  </a>
+                  
+                  {community.website && (
+                    <div>
+                      <a
+                        href={community.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-green-500 hover:text-green-600 transition-colors group-hover:scale-105 transform duration-200"
+                      >
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">Visit Website</span>
+                      </a>
+                    </div>
                   )}
-                  <ExternalLink className="w-3 h-3 ml-1" />
-                </a>
+                </div>
               </CardContent>
             </Card>
           ))}
