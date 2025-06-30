@@ -29,11 +29,7 @@ export const useProfileData = () => {
         console.log('Fetching profile for user:', user.id);
         const { data, error } = await supabase
           .from('profiles')
-          .select(`
-            *,
-            photo_urls,
-            main_photo_index
-          `)
+          .select('*')
           .eq('id', user.id)
           .single();
 
@@ -55,9 +51,9 @@ export const useProfileData = () => {
           looking_for: data.looking_for,
           date_of_birth: data.date_of_birth,
           profile_completed: data.profile_completed,
-          // Photo fields
-          photo_urls: data.photo_urls,
-          main_photo_index: data.main_photo_index,
+          // Photo fields - handle case where columns might not exist yet
+          photo_urls: data.photo_urls || null,
+          main_photo_index: data.main_photo_index || null,
           // Dating preferences
           gender_identity: data.gender_identity,
           sexual_orientation: data.sexual_orientation,
