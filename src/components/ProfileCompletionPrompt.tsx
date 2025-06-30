@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { AlertCircle, Sparkles, User, Heart } from 'lucide-react';
+import { AlertTriangle, Sparkles, User, Heart, EyeOff, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ProfileCompletionPromptProps {
@@ -19,43 +19,62 @@ const ProfileCompletionPrompt = ({ onDismiss, completionPercentage = 0 }: Profil
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="max-w-md w-full border-2 border-web3-red/30 shadow-2xl">
+      <Card className="max-w-md w-full border-2 border-red-500 shadow-2xl bg-red-50 dark:bg-red-950">
         <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-r from-web3-red to-web3-magenta rounded-full flex items-center justify-center mb-4">
-            <AlertCircle className="w-8 h-8 text-white" />
+          <div className="mx-auto w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mb-4">
+            <EyeOff className="w-10 h-10 text-white" />
           </div>
-          <CardTitle className="text-2xl bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
-            Complete Your Profile
+          <CardTitle className="text-2xl text-red-800 dark:text-red-200 font-bold">
+            ⚠️ YOU'RE INVISIBLE!
           </CardTitle>
+          <div className="text-lg text-red-700 dark:text-red-300 font-semibold mt-2">
+            Complete Your Profile to Appear in Discovery
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center">
-            <p className="text-muted-foreground mb-4">
-              Your crypto dating journey is almost ready! Complete your profile to start matching with fellow degens.
-            </p>
+            <div className="bg-red-100 dark:bg-red-900 p-4 rounded-lg mb-4 border border-red-300">
+              <p className="text-red-800 dark:text-red-200 font-semibold text-lg mb-2">
+                🚫 Right now, you're completely invisible to other users!
+              </p>
+              <p className="text-red-700 dark:text-red-300 text-sm">
+                No one can see you, match with you, or find you in Boink discovery until you finish your profile.
+              </p>
+            </div>
             
             {/* Progress Bar */}
             <div className="space-y-2 mb-6">
               <div className="flex justify-between text-sm">
-                <span>Profile Completion</span>
-                <span className="font-semibold">{Math.round(completionPercentage)}%</span>
+                <span className="font-semibold">Profile Completion</span>
+                <span className="font-bold text-red-600">{Math.round(completionPercentage)}%</span>
               </div>
-              <Progress value={completionPercentage} className="h-3" />
+              <Progress value={completionPercentage} className="h-4" />
+              <div className="text-xs text-muted-foreground">
+                {completionPercentage < 100 ? "Not visible in discovery" : "Ready to go live!"}
+              </div>
             </div>
 
-            {/* Benefits */}
-            <div className="space-y-3 text-left">
-              <div className="flex items-center gap-3">
-                <User className="w-5 h-5 text-web3-cyan flex-shrink-0" />
-                <span className="text-sm">Show your crypto personality</span>
+            {/* What happens when you complete */}
+            <div className="bg-green-100 dark:bg-green-900 p-4 rounded-lg mb-4 border border-green-300">
+              <div className="flex items-center gap-2 mb-2">
+                <Eye className="w-5 h-5 text-green-600" />
+                <span className="text-green-800 dark:text-green-200 font-semibold">
+                  After completing your profile:
+                </span>
               </div>
-              <div className="flex items-center gap-3">
-                <Heart className="w-5 h-5 text-web3-red flex-shrink-0" />
-                <span className="text-sm">Get better matches</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Sparkles className="w-5 h-5 text-web3-magenta flex-shrink-0" />
-                <span className="text-sm">Access exclusive features</span>
+              <div className="space-y-2 text-left text-sm text-green-700 dark:text-green-300">
+                <div className="flex items-center gap-3">
+                  <User className="w-4 h-4 flex-shrink-0" />
+                  <span>✅ You'll appear in Boink discovery</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Heart className="w-4 h-4 flex-shrink-0" />
+                  <span>✅ Other users can see and match with you</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Sparkles className="w-4 h-4 flex-shrink-0" />
+                  <span>✅ You'll start receiving daily matches</span>
+                </div>
               </div>
             </div>
           </div>
@@ -63,20 +82,20 @@ const ProfileCompletionPrompt = ({ onDismiss, completionPercentage = 0 }: Profil
           <div className="flex flex-col gap-3">
             <Button 
               onClick={handleFinishProfile}
-              className="w-full bg-gradient-to-r from-web3-red to-web3-magenta hover:opacity-90"
+              className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:opacity-90 text-white font-bold text-lg py-6"
               size="lg"
             >
-              <Sparkles className="w-5 h-5 mr-2" />
-              Finish My Profile
+              <Eye className="w-5 h-5 mr-2" />
+              Make Me Visible - Complete Profile Now!
             </Button>
             
             {onDismiss && (
               <Button 
                 variant="outline" 
                 onClick={onDismiss}
-                className="w-full"
+                className="w-full border-red-300 text-red-700 hover:bg-red-50"
               >
-                Maybe Later
+                Stay Invisible for Now
               </Button>
             )}
           </div>

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import AboutYouStep from './steps/AboutYouStep';
 import DatingPreferencesStep from './steps/DatingPreferencesStep';
 import CryptoProfileStep from './steps/CryptoProfileStep';
 import ReviewStep from './steps/ReviewStep';
+import ProfileVisibilityAlert from './ProfileVisibilityAlert';
 import { User } from '@supabase/supabase-js';
 import { ProfileFormData } from '@/types/ProfileTypes';
 
@@ -147,6 +149,9 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
 
   return (
     <div className="max-w-2xl mx-auto p-6">
+      {/* Profile Visibility Alert - Only show if not on review step */}
+      {currentStep < 5 && <ProfileVisibilityAlert />}
+
       {/* Progress Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">

@@ -14,6 +14,7 @@ import Footer from "@/components/Footer";
 import MVPOverlay from "@/components/MVPOverlay";
 import GMGNLink from "@/components/header/GMGNLink";
 import ProfileCompletionPrompt from "@/components/ProfileCompletionPrompt";
+import IncompleteProfileWarning from "@/components/profile/IncompleteProfileWarning";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -85,6 +86,14 @@ const Index = () => {
       
       <Header />
       <GMGNLink />
+      
+      {/* Show prominent warning for authenticated users with incomplete profiles */}
+      {user && profile && !profile.profile_completed && !showOverlay && !showProfilePrompt && (
+        <div className="container mx-auto px-4 pt-24 pb-6">
+          <IncompleteProfileWarning />
+        </div>
+      )}
+      
       <main>
         <Hero />
         <PrototypeSlider />
