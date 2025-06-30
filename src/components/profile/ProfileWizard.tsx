@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Save } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import BasicInfoStep from './steps/BasicInfoStep';
 import AboutYouStep from './steps/AboutYouStep';
 import DatingPreferencesStep from './steps/DatingPreferencesStep';
@@ -57,10 +58,13 @@ interface ProfileWizardProps {
   user: User;
   initialData?: Partial<ProfileFormData>;
   onComplete: (data: ProfileFormData) => Promise<void>;
+  onSave?: (data: ProfileFormData, isPartial: boolean) => Promise<void>;
 }
 
-const ProfileWizard = ({ user, initialData, onComplete }: ProfileWizardProps) => {
+const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardProps) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSaving, setIsSaving] = useState(false);
+  const { toast } = useToast();
   const [formData, setFormData] = useState<ProfileFormData>({
     full_name: initialData?.full_name || '',
     username: initialData?.username || '',
@@ -104,6 +108,28 @@ const ProfileWizard = ({ user, initialData, onComplete }: ProfileWizardProps) =>
     }
   };
 
+  const handleSave = async () => {
+    if (!onSave) return;
+    
+    setIsSaving(true);
+    try {
+      await onSave(formData, true); // true indicates this is a partial save
+      toast({
+        title: "Profile Saved! 💾",
+        description: "Your progress has been saved. You can continue later or keep editing.",
+      });
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save profile. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleComplete = async () => {
     await onComplete(formData);
   };
@@ -135,9 +161,23 @@ const ProfileWizard = ({ user, initialData, onComplete }: ProfileWizardProps) =>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
             Complete Your Profile
           </h1>
-          <span className="text-sm text-muted-foreground">
-            Step {currentStep} of {steps.length}
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">
+              Step {currentStep} of {steps.length}
+            </span>
+            {onSave && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSave}
+                disabled={isSaving}
+                className="flex items-center gap-2"
+              >
+                <Save className="w-4 h-4" />
+                {isSaving ? 'Saving...' : 'Save Progress'}
+              </Button>
+            )}
+          </div>
         </div>
         
         <Progress value={progress} className="mb-4" />

@@ -126,11 +126,11 @@ const Profile = () => {
     fetchProfile();
   }, [user, toast]);
 
-  const handleProfileComplete = async (formData: any) => {
+  const handleProfileSave = async (formData: any, isPartial: boolean = false) => {
     if (!user) return;
 
     try {
-      console.log('Completing profile with data:', formData);
+      console.log('Saving profile with data:', formData);
       
       const updateData = {
         full_name: formData.full_name || null,
@@ -158,7 +158,7 @@ const Profile = () => {
         biggest_crypto_win: formData.biggest_crypto_win || null,
         biggest_crypto_loss: formData.biggest_crypto_loss || null,
         crypto_motto: formData.crypto_motto || null,
-        profile_completed: true,
+        profile_completed: !isPartial, // Only mark as completed if it's not a partial save
         updated_at: new Date().toISOString(),
       };
 
@@ -171,7 +171,23 @@ const Profile = () => {
 
       if (error) throw error;
 
-      console.log('Profile updated successfully, profile_completed set to true');
+      console.log('Profile saved successfully');
+
+      // Update local profile data
+      setProfile(prev => prev ? { ...prev, ...updateData } : null);
+    } catch (error: any) {
+      console.error('Error saving profile:', error);
+      throw error; // Re-throw to let the calling function handle the error
+    }
+  };
+
+  const handleProfileComplete = async (formData: any) => {
+    if (!user) return;
+
+    try {
+      await handleProfileSave(formData, false); // false means complete save
+      
+      console.log('Profile completed successfully, profile_completed set to true');
 
       toast({
         title: "Success! 🎉",
@@ -180,8 +196,7 @@ const Profile = () => {
           : "Your profile has been updated successfully! 🚀",
       });
 
-      // Update local profile data and show completion message
-      setProfile(prev => prev ? { ...prev, ...updateData } : null);
+      // Show completion message
       setProfileJustCompleted(true);
       
       // Clear new user flag if it was set
@@ -194,10 +209,10 @@ const Profile = () => {
         navigate('/discover');
       }, 2000);
     } catch (error: any) {
-      console.error('Error updating profile:', error);
+      console.error('Error completing profile:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to update profile.",
+        description: error.message || "Failed to complete profile.",
         variant: "destructive",
       });
     }
@@ -287,6 +302,7 @@ const Profile = () => {
             user={user}
             initialData={profile ? convertProfileToFormData(profile) : undefined}
             onComplete={handleProfileComplete}
+            onSave={handleProfileSave}
           />
         </div>
       </div>
