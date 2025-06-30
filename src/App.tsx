@@ -11,6 +11,7 @@ import Games from "./pages/Games";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
+import DailyMatches from "./pages/DailyMatches";
 import WeSupport from "./pages/WeSupport";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/daily-matches" element={<DailyMatches />} />
             <Route path="/events" element={<EventsPage />} />
             <Route path="/games" element={<Games />} />
             <Route path="/auth" element={<Auth />} />

@@ -3,9 +3,15 @@ import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useProfileData } from "@/hooks/useProfileData";
 
 const Hero = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const { profile, loading: profileLoading } = useProfileData();
 
   // Check for saved theme preference or default to light mode
   useEffect(() => {
@@ -32,6 +38,26 @@ const Hero = () => {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+  };
+
+  const handleMainCTA = () => {
+    if (authLoading || profileLoading) return;
+    
+    if (!user) {
+      navigate('/auth');
+    } else if (profile?.profile_completed) {
+      navigate('/daily-matches');
+    } else {
+      navigate('/profile');
+    }
+  };
+
+  const getMainCTAText = () => {
+    if (authLoading || profileLoading) return "Loading...";
+    
+    if (!user) return "Let's Go! 🚀";
+    if (profile?.profile_completed) return "Show My Matches! 💕";
+    return "Complete Profile! ✨";
   };
 
   return (
@@ -132,10 +158,20 @@ const Hero = () => {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button size="lg" className="bg-gradient-to-r from-[#F51F3B] to-[#E809CB] hover:from-[#F51F3B]/90 hover:to-[#E809CB]/90 text-white text-xl px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-              Let's Go! 🚀
+            <Button 
+              size="lg" 
+              onClick={handleMainCTA}
+              disabled={authLoading || profileLoading}
+              className="bg-gradient-to-r from-[#F51F3B] to-[#E809CB] hover:from-[#F51F3B]/90 hover:to-[#E809CB]/90 text-white text-xl px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              {getMainCTAText()}
             </Button>
-            <Button size="lg" variant="outline" className="border-2 text-xl px-12 py-6 rounded-full transition-all duration-300">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => navigate('/discover')}
+              className="border-2 text-xl px-12 py-6 rounded-full transition-all duration-300"
+            >
               Show Me the Alpha
             </Button>
           </div>

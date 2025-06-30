@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useProfileData } from '@/hooks/useProfileData';
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import PrototypeSlider from "@/components/PrototypeSlider";
@@ -12,10 +13,13 @@ import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import MVPOverlay from "@/components/MVPOverlay";
 import GMGNLink from "@/components/header/GMGNLink";
+import ProfileCompletionPrompt from "@/components/ProfileCompletionPrompt";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(false);
-  const { user, isNewUser } = useAuth();
+  const [showProfilePrompt, setShowProfilePrompt] = useState(false);
+  const { user, loading: authLoading } = useAuth();
+  const { profile, loading: profileLoading } = useProfileData();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,12 +30,24 @@ const Index = () => {
     }
   }, []);
 
-  // Redirect new users to profile setup
+  // Smart routing based on user and profile status
   useEffect(() => {
-    if (user && isNewUser) {
-      navigate('/profile');
+    if (authLoading || profileLoading) return;
+
+    if (user && profile) {
+      if (profile.profile_completed) {
+        // Completed profile → redirect to daily matches
+        navigate('/daily-matches');
+      } else {
+        // Incomplete profile → show completion prompt after a delay
+        const timer = setTimeout(() => {
+          setShowProfilePrompt(true);
+        }, 2000); // Show prompt after 2 seconds
+        
+        return () => clearTimeout(timer);
+      }
     }
-  }, [user, isNewUser, navigate]);
+  }, [user, profile, authLoading, profileLoading, navigate]);
 
   const handleEnterApp = () => {
     // Mark as seen and hide overlay
@@ -39,9 +55,33 @@ const Index = () => {
     setShowOverlay(false);
   };
 
+  const calculateCompletionPercentage = () => {
+    if (!profile) return 0;
+    
+    const requiredFields = [
+      'full_name', 'username', 'age', 'bio', 'location', 
+      'gender_identity', 'sexual_orientation', 'looking_for',
+      'wallet_address', 'favorite_crypto', 'crypto_experience'
+    ];
+    
+    const completedFields = requiredFields.filter(field => {
+      const value = profile[field as keyof typeof profile];
+      return value && value !== '' && value !== null;
+    });
+    
+    return (completedFields.length / requiredFields.length) * 100;
+  };
+
   return (
     <div className="min-h-screen">
       {showOverlay && <MVPOverlay onEnter={handleEnterApp} />}
+      
+      {showProfilePrompt && (
+        <ProfileCompletionPrompt 
+          onDismiss={() => setShowProfilePrompt(false)}
+          completionPercentage={calculateCompletionPercentage()}
+        />
+      )}
       
       <Header />
       <GMGNLink />
