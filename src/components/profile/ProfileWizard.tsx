@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,40 +10,7 @@ import DatingPreferencesStep from './steps/DatingPreferencesStep';
 import CryptoProfileStep from './steps/CryptoProfileStep';
 import ReviewStep from './steps/ReviewStep';
 import { User } from '@supabase/supabase-js';
-
-interface ProfileFormData {
-  // Basic Info
-  full_name: string;
-  username: string;
-  age: string;
-  date_of_birth: string;
-  location: string;
-  avatar_url: string;
-  
-  // About You
-  bio: string;
-  interests: string;
-  looking_for: string;
-  
-  // Dating Preferences
-  gender_identity: string;
-  sexual_orientation: string;
-  looking_for_gender: string[];
-  relationship_type: string;
-  
-  // Crypto Profile
-  wallet_address: string;
-  favorite_crypto: string;
-  crypto_experience: string;
-  portfolio_size: string;
-  trading_style: string;
-  defi_protocols: string;
-  nft_collections: string;
-  meme_coin_holdings: string;
-  biggest_crypto_win: string;
-  biggest_crypto_loss: string;
-  crypto_motto: string;
-}
+import { ProfileFormData } from '@/types/ProfileTypes';
 
 const steps = [
   { id: 1, title: 'Basic Info', description: 'Tell us about yourself' },
