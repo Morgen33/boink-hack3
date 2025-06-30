@@ -50,10 +50,22 @@ const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
     setIsUploading(true);
 
     try {
+      // Get current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      
+      if (userError || !user) {
+        throw new Error('You must be logged in to upload photos');
+      }
+
+      console.log('Current user:', user.id);
+
       const uploadPromises = newFiles.map(async (file, index) => {
         const photoId = `${Date.now()}-${index}`;
         const fileName = `${photoId}-${file.name}`;
+        const filePath = `${user.id}/${fileName}`;
         
+        console.log('Uploading file to path:', filePath);
+
         // Create temporary photo object
         const tempPhoto: Photo = {
           id: photoId,
@@ -62,48 +74,43 @@ const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
           isUploading: true
         };
 
-        return tempPhoto;
+        // Upload to Supabase Storage
+        const { data, error } = await supabase.storage
+          .from('profile-photos')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false
+          });
+
+        if (error) {
+          console.error('Upload error:', error);
+          throw error;
+        }
+
+        console.log('Upload successful:', data);
+
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('profile-photos')
+          .getPublicUrl(data.path);
+
+        console.log('Public URL:', publicUrl);
+
+        return {
+          ...tempPhoto,
+          url: publicUrl,
+          isUploading: false
+        };
       });
 
-      const tempPhotos = await Promise.all(uploadPromises);
-      setPhotos(prev => [...prev, ...tempPhotos]);
-
-      // Upload to Supabase Storage
-      const uploadedPhotos = await Promise.all(
-        tempPhotos.map(async (photo) => {
-          if (!photo.file) return photo;
-
-          const fileName = `${Date.now()}-${photo.file.name}`;
-          const { data, error } = await supabase.storage
-            .from('profile-photos')
-            .upload(`${supabase.auth.getUser().then(u => u.data.user?.id)}/${fileName}`, photo.file);
-
-          if (error) throw error;
-
-          const { data: { publicUrl } } = supabase.storage
-            .from('profile-photos')
-            .getPublicUrl(data.path);
-
-          return {
-            ...photo,
-            url: publicUrl,
-            isUploading: false
-          };
-        })
-      );
-
-      setPhotos(prev => 
-        prev.map(photo => {
-          const uploaded = uploadedPhotos.find(up => up.id === photo.id);
-          return uploaded || photo;
-        })
-      );
+      const uploadedPhotos = await Promise.all(uploadPromises);
+      setPhotos(prev => [...prev, ...uploadedPhotos]);
 
       // Update form data with photo URLs
       const photoUrls = uploadedPhotos.map(p => p.url);
       onUpdate({ 
         photo_urls: [...(data.photo_urls || []), ...photoUrls],
-        avatar_url: photoUrls[0] // Set first photo as avatar if no main photo set
+        avatar_url: data.avatar_url || photoUrls[0] // Set first photo as avatar if no main photo set
       });
 
       toast({
@@ -115,7 +122,7 @@ const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
       console.error('Error uploading photos:', error);
       toast({
         title: "Upload failed",
-        description: "Failed to upload photos. Please try again.",
+        description: error.message || "Failed to upload photos. Please try again.",
         variant: "destructive",
       });
     } finally {
