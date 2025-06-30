@@ -20,7 +20,7 @@ const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [mainPhotoIndex, setMainPhotoIndex] = useState(0);
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | boolean) => {
     onUpdate({ [field]: value });
   };
 

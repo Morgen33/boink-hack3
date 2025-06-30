@@ -1,14 +1,37 @@
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { User, Calendar, MapPin, AtSign } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { User, Calendar, MapPin, AtSign, Eye, EyeOff } from 'lucide-react';
 
 interface BasicInfoFormProps {
   data: any;
-  onUpdate: (field: string, value: string) => void;
+  onUpdate: (field: string, value: string | boolean) => void;
 }
 
+const calculateAge = (birthDate: string): string => {
+  if (!birthDate) return '';
+  
+  const today = new Date();
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  
+  return age > 0 ? age.toString() : '';
+};
+
 const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
+  const handleDateChange = (value: string) => {
+    onUpdate('date_of_birth', value);
+    // Auto-calculate and update age
+    const calculatedAge = calculateAge(value);
+    onUpdate('age', calculatedAge);
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2">
@@ -46,20 +69,6 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="age">Age *</Label>
-          <Input
-            id="age"
-            type="number"
-            value={data.age}
-            onChange={(e) => onUpdate('age', e.target.value)}
-            placeholder="25"
-            min="18"
-            max="100"
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
           <Label htmlFor="date_of_birth" className="flex items-center gap-2">
             <Calendar className="w-4 h-4" />
             Date of Birth *
@@ -68,10 +77,42 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             id="date_of_birth"
             type="date"
             value={data.date_of_birth}
-            onChange={(e) => onUpdate('date_of_birth', e.target.value)}
+            onChange={(e) => handleDateChange(e.target.value)}
             required
           />
         </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="age">Age (Auto-calculated)</Label>
+          <Input
+            id="age"
+            type="text"
+            value={data.age}
+            placeholder="Will auto-fill from birthdate"
+            readOnly
+            className="bg-muted cursor-not-allowed"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="hide_exact_birthdate"
+            checked={data.hide_exact_birthdate || false}
+            onCheckedChange={(checked) => onUpdate('hide_exact_birthdate', !!checked)}
+          />
+          <Label 
+            htmlFor="hide_exact_birthdate"
+            className="text-sm font-normal cursor-pointer flex items-center gap-2"
+          >
+            {data.hide_exact_birthdate ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            Hide my exact birthdate (only show age to others)
+          </Label>
+        </div>
+        <p className="text-xs text-muted-foreground ml-6">
+          When checked, other users will only see your age, not your exact birthday. Your age will still be visible for matching purposes.
+        </p>
       </div>
 
       <div className="space-y-2">
