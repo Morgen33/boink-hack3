@@ -1,10 +1,12 @@
-
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Bitcoin, Wallet, TrendingUp, Coins, Zap, Trophy, Plus, ExternalLink, Trash2, User } from 'lucide-react';
 
@@ -34,9 +36,23 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
     rarity: '',
     blockchain: 'Ethereum'
   });
+  const [selectedDeFiProtocols, setSelectedDeFiProtocols] = useState<string[]>(
+    data.defi_protocols ? data.defi_protocols.split(', ').filter(Boolean) : []
+  );
 
   const handleInputChange = (field: string, value: string) => {
     onUpdate({ [field]: value });
+  };
+
+  const handleDeFiProtocolChange = (protocol: string, checked: boolean) => {
+    let updatedProtocols;
+    if (checked) {
+      updatedProtocols = [...selectedDeFiProtocols, protocol];
+    } else {
+      updatedProtocols = selectedDeFiProtocols.filter(p => p !== protocol);
+    }
+    setSelectedDeFiProtocols(updatedProtocols);
+    onUpdate({ defi_protocols: updatedProtocols.join(', ') });
   };
 
   const handleAddNFT = () => {
@@ -74,6 +90,67 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
     onUpdate({ nft_collections: collections });
   };
 
+  const cryptoExperienceOptions = [
+    'Just started',
+    'Newbie (< 1 year)', 
+    'Getting there (1-2 years)',
+    'Experienced (2-4 years)',
+    'Veteran (4+ years)',
+    'OG (since 2017 or earlier)',
+    'Degen (live on the edge)',
+    'Whale status 🐋'
+  ];
+
+  const favoriteCryptoOptions = [
+    'Bitcoin (BTC)',
+    'Ethereum (ETH)', 
+    'Solana (SOL)',
+    'Cardano (ADA)',
+    'Polygon (MATIC)',
+    'Chainlink (LINK)',
+    'Dogecoin (DOGE)',
+    'Shiba Inu (SHIB)',
+    'Avalanche (AVAX)',
+    'Polkadot (DOT)',
+    'Other'
+  ];
+
+  const portfolioSizeOptions = [
+    'Shrimp (< $1k)',
+    'Crab ($1k - $10k)', 
+    'Fish ($10k - $50k)',
+    'Dolphin ($50k - $500k)',
+    'Shark ($500k - $1M)',
+    'Whale ($1M+) 🐋',
+    'Prefer not to say'
+  ];
+
+  const tradingStyleOptions = [
+    'HODL only',
+    'DCA (Dollar Cost Average)',
+    'Swing Trading',
+    'Day Trading', 
+    'Scalping',
+    'Copy Trading',
+    'Ape into everything',
+    'Research first, then invest'
+  ];
+
+  const defiProtocolOptions = [
+    'Uniswap',
+    'Compound', 
+    'Aave',
+    'MakerDAO',
+    'Curve',
+    'SushiSwap',
+    'PancakeSwap',
+    'Balancer',
+    'Yearn Finance',
+    'Synthetix',
+    'Lido',
+    'Rocket Pool'
+  ];
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
@@ -95,34 +172,60 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="crypto_experience">Crypto Experience *</Label>
-            <Input
-              id="crypto_experience"
-              value={data.crypto_experience}
-              onChange={(e) => handleInputChange('crypto_experience', e.target.value)}
-              placeholder="Newbie, Veteran, OG, Degen, Satoshi himself"
-            />
+            <Select value={data.crypto_experience} onValueChange={(value) => handleInputChange('crypto_experience', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select your experience level" />
+              </SelectTrigger>
+              <SelectContent>
+                {cryptoExperienceOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="favorite_crypto">Favorite Crypto *</Label>
-            <Input
-              id="favorite_crypto"
-              value={data.favorite_crypto}
-              onChange={(e) => handleInputChange('favorite_crypto', e.target.value)}
-              placeholder="BTC, ETH, SOL, DOGE, ADA..."
-            />
+            <Select value={data.favorite_crypto} onValueChange={(value) => handleInputChange('favorite_crypto', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select your favorite crypto" />
+              </SelectTrigger>
+              <SelectContent>
+                {favoriteCryptoOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {data.favorite_crypto === 'Other' && (
+              <Input
+                placeholder="Specify your favorite crypto"
+                value={data.favorite_crypto_other || ''}
+                onChange={(e) => handleInputChange('favorite_crypto_other', e.target.value)}
+                className="mt-2"
+              />
+            )}
           </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="portfolio_size">Portfolio Size</Label>
-            <Input
-              id="portfolio_size"
-              value={data.portfolio_size}
-              onChange={(e) => handleInputChange('portfolio_size', e.target.value)}
-              placeholder="Shrimp, Crab, Fish, Dolphin, Whale 🐋"
-            />
+            <Select value={data.portfolio_size} onValueChange={(value) => handleInputChange('portfolio_size', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select portfolio size" />
+              </SelectTrigger>
+              <SelectContent>
+                {portfolioSizeOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="space-y-2">
@@ -130,12 +233,18 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
               <TrendingUp className="w-4 h-4" />
               Trading Style
             </Label>
-            <Input
-              id="trading_style"
-              value={data.trading_style}
-              onChange={(e) => handleInputChange('trading_style', e.target.value)}
-              placeholder="HODL, Day Trading, Swing Trading, Ape into everything"
-            />
+            <Select value={data.trading_style} onValueChange={(value) => handleInputChange('trading_style', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select trading style" />
+              </SelectTrigger>
+              <SelectContent>
+                {tradingStyleOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -163,17 +272,22 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
           DeFi & Protocols
         </h3>
         
-        <div className="space-y-2">
-          <Label htmlFor="defi_protocols">DeFi Protocols</Label>
-          <Input
-            id="defi_protocols"
-            value={data.defi_protocols}
-            onChange={(e) => handleInputChange('defi_protocols', e.target.value)}
-            placeholder="Uniswap, Compound, Aave, PancakeSwap, Curve"
-          />
-          <p className="text-xs text-muted-foreground">
-            Separate multiple protocols with commas
-          </p>
+        <div className="space-y-3">
+          <Label>DeFi Protocols (Select all that apply)</Label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {defiProtocolOptions.map((protocol) => (
+              <div key={protocol} className="flex items-center space-x-2">
+                <Checkbox
+                  id={protocol}
+                  checked={selectedDeFiProtocols.includes(protocol)}
+                  onCheckedChange={(checked) => handleDeFiProtocolChange(protocol, checked as boolean)}
+                />
+                <Label htmlFor={protocol} className="text-sm">
+                  {protocol}
+                </Label>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
@@ -399,10 +513,10 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
           Degen Tips
         </h4>
         <ul className="text-sm text-muted-foreground space-y-1">
-          <li>• Be honest about your wins AND losses - we've all been rekt</li>
-          <li>• Add your favorite NFTs to show your taste in digital art</li>
+          <li>• Multiple choice options make it easier to find your crypto tribe</li>
+          <li>• Be honest about your experience - we match based on compatibility</li>
+          <li>• Select all DeFi protocols you actively use</li>
           <li>• Your wallet address helps prove you're not a bot</li>
-          <li>• Sharing your losses shows you're battle-tested 💪</li>
         </ul>
       </div>
     </div>
