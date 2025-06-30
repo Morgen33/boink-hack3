@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Heart, Bitcoin, CheckCircle, Edit, Loader2, ChevronLeft } from 'lucide-react';
+import { User, Heart, Bitcoin, CheckCircle, Edit, Loader2, ChevronLeft, Star, Image } from 'lucide-react';
 import { useState } from 'react';
 
 interface ReviewStepProps {
@@ -67,8 +67,16 @@ const ReviewStep = ({ data, onComplete, onBack, onEditStep }: ReviewStepProps) =
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-web3-red to-web3-magenta rounded-full flex items-center justify-center">
-                <User className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 bg-gradient-to-r from-web3-red to-web3-magenta rounded-full flex items-center justify-center overflow-hidden">
+                {data.avatar_url ? (
+                  <img
+                    src={data.avatar_url}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-8 h-8 text-white" />
+                )}
               </div>
               <div>
                 <h3 className="font-semibold">{data.full_name}</h3>
@@ -80,6 +88,56 @@ const ReviewStep = ({ data, onComplete, onBack, onEditStep }: ReviewStepProps) =
             </div>
           </CardContent>
         </Card>
+
+        {/* Photos Review */}
+        {data.photo_urls && data.photo_urls.length > 0 && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Image className="w-5 h-5" />
+                  Profile Photos ({data.photo_urls.length})
+                </CardTitle>
+                {onEditStep && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEditSection(1)}
+                    className="flex items-center gap-1"
+                  >
+                    <Edit className="w-3 h-3" />
+                    Edit
+                  </Button>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {data.photo_urls.map((url: string, index: number) => (
+                  <div key={index} className="relative group">
+                    <div className="aspect-square bg-muted rounded-lg overflow-hidden relative">
+                      <img
+                        src={url}
+                        alt={`Profile photo ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      
+                      {/* Main photo indicator */}
+                      {index === (data.main_photo_index || 0) && (
+                        <div className="absolute top-2 left-2">
+                          <Badge className="bg-yellow-500 text-yellow-900 flex items-center gap-1 text-xs">
+                            <Star className="w-3 h-3" />
+                            Main
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* About You Review */}
         <Card>
