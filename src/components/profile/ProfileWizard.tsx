@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight, Save } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Save, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import BasicInfoStep from './steps/BasicInfoStep';
 import AboutYouStep from './steps/AboutYouStep';
@@ -30,6 +30,7 @@ interface ProfileWizardProps {
 const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSaving, setIsSaving] = useState(false);
+  const [isEditingFromReview, setIsEditingFromReview] = useState(false);
   const { toast } = useToast();
   const [formData, setFormData] = useState<ProfileFormData>({
     full_name: initialData?.full_name || '',
@@ -67,13 +68,21 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
   };
 
   const handleNext = () => {
-    if (currentStep < steps.length) {
+    // If we're editing from review, go back to review instead of next step
+    if (isEditingFromReview) {
+      setCurrentStep(5);
+      setIsEditingFromReview(false);
+    } else if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
     }
   };
 
   const handlePrevious = () => {
-    if (currentStep > 1) {
+    // If we're editing from review, go back to review
+    if (isEditingFromReview) {
+      setCurrentStep(5);
+      setIsEditingFromReview(false);
+    } else if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
   };
@@ -104,6 +113,11 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
     await onComplete(formData);
   };
 
+  const handleEditFromReview = (stepNumber: number) => {
+    setIsEditingFromReview(true);
+    setCurrentStep(stepNumber);
+  };
+
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
@@ -121,7 +135,7 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
             onUpdate={updateFormData} 
             onComplete={handleComplete}
             onBack={handlePrevious}
-            onEditStep={setCurrentStep}
+            onEditStep={handleEditFromReview}
           />
         );
       default:
@@ -142,6 +156,7 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
           <div className="flex items-center gap-3">
             <span className="text-sm text-muted-foreground">
               Step {currentStep} of {steps.length}
+              {isEditingFromReview && " (Editing)"}
             </span>
             {onSave && (
               <Button
@@ -161,8 +176,16 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
         <Progress value={progress} className="mb-4" />
         
         <div className="text-center">
-          <h2 className="text-xl font-semibold">{steps[currentStep - 1].title}</h2>
-          <p className="text-muted-foreground">{steps[currentStep - 1].description}</p>
+          <h2 className="text-xl font-semibold">
+            {steps[currentStep - 1].title}
+            {isEditingFromReview && " - Edit Mode"}
+          </h2>
+          <p className="text-muted-foreground">
+            {isEditingFromReview 
+              ? "Make your changes and click 'Return to Review' when done"
+              : steps[currentStep - 1].description
+            }
+          </p>
         </div>
       </div>
 
@@ -179,15 +202,33 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
           <Button
             variant="outline"
             onClick={handlePrevious}
-            disabled={currentStep === 1}
+            disabled={currentStep === 1 && !isEditingFromReview}
           >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            Previous
+            {isEditingFromReview ? (
+              <>
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Return to Review
+              </>
+            ) : (
+              <>
+                <ChevronLeft className="w-4 h-4 mr-2" />
+                Previous
+              </>
+            )}
           </Button>
           
           <Button onClick={handleNext}>
-            Next
-            <ChevronRight className="w-4 h-4 ml-2" />
+            {isEditingFromReview ? (
+              <>
+                Return to Review
+                <ArrowLeft className="w-4 h-4 ml-2" />
+              </>
+            ) : (
+              <>
+                Next
+                <ChevronRight className="w-4 h-4 ml-2" />
+              </>
+            )}
           </Button>
         </div>
       )}
