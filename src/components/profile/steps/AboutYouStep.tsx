@@ -2,6 +2,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Heart, Sparkles, Target } from 'lucide-react';
 
 interface AboutYouStepProps {
@@ -9,10 +10,39 @@ interface AboutYouStepProps {
   onUpdate: (updates: any) => void;
 }
 
+const lookingForOptions = [
+  'Serious relationship',
+  'Casual dating', 
+  'Friends first',
+  'Crypto friends',
+  'Trading buddies',
+  'Business partners',
+  'NFT collectors',
+  'DeFi enthusiasts',
+  'Meme lords',
+  'Gaming partners',
+  'Travel companions',
+  'Open to anything'
+];
+
 const AboutYouStep = ({ data, onUpdate }: AboutYouStepProps) => {
   const handleInputChange = (field: string, value: string) => {
     onUpdate({ [field]: value });
   };
+
+  const handleLookingForChange = (option: string, checked: boolean) => {
+    const currentSelections = data.looking_for ? data.looking_for.split(', ').filter(Boolean) : [];
+    
+    if (checked) {
+      const newSelections = [...currentSelections, option];
+      onUpdate({ looking_for: newSelections.join(', ') });
+    } else {
+      const newSelections = currentSelections.filter((item: string) => item !== option);
+      onUpdate({ looking_for: newSelections.join(', ') });
+    }
+  };
+
+  const selectedOptions = data.looking_for ? data.looking_for.split(', ').filter(Boolean) : [];
 
   return (
     <div className="space-y-6">
@@ -56,19 +86,30 @@ const AboutYouStep = ({ data, onUpdate }: AboutYouStepProps) => {
         </p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="looking_for" className="flex items-center gap-2">
+      <div className="space-y-3">
+        <Label className="flex items-center gap-2">
           <Target className="w-4 h-4" />
-          What are you looking for? *
+          What are you looking for? * (select all that apply)
         </Label>
-        <Input
-          id="looking_for"
-          value={data.looking_for}
-          onChange={(e) => handleInputChange('looking_for', e.target.value)}
-          placeholder="Crypto friends, Trading buddies, Life partner who understands DeFi, NFT collectors, Meme lords"
-        />
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {lookingForOptions.map((option) => (
+            <div key={option} className="flex items-center space-x-2">
+              <Checkbox
+                id={`looking-${option}`}
+                checked={selectedOptions.includes(option)}
+                onCheckedChange={(checked) => handleLookingForChange(option, !!checked)}
+              />
+              <Label 
+                htmlFor={`looking-${option}`}
+                className="text-sm font-normal cursor-pointer"
+              >
+                {option}
+              </Label>
+            </div>
+          ))}
+        </div>
         <p className="text-xs text-muted-foreground">
-          Be specific! Are you looking for friends, dating, business partners, or all of the above?
+          Select all that apply. This helps our algorithm find better matches for you!
         </p>
       </div>
 
