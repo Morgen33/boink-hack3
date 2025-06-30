@@ -29,7 +29,11 @@ export const useProfileData = () => {
         console.log('Fetching profile for user:', user.id);
         const { data, error } = await supabase
           .from('profiles')
-          .select('*')
+          .select(`
+            *,
+            photo_urls,
+            main_photo_index
+          `)
           .eq('id', user.id)
           .single();
 
