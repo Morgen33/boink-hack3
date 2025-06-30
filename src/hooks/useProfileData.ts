@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -52,6 +51,9 @@ export const useProfileData = () => {
           looking_for: data.looking_for,
           date_of_birth: data.date_of_birth,
           profile_completed: data.profile_completed,
+          // Photo fields
+          photo_urls: data.photo_urls,
+          main_photo_index: data.main_photo_index,
           // Dating preferences
           gender_identity: data.gender_identity,
           sexual_orientation: data.sexual_orientation,
@@ -103,6 +105,10 @@ export const useProfileData = () => {
         interests: formData.interests ? formData.interests.split(',').map((i: string) => i.trim()).filter(Boolean) : null,
         looking_for: formData.looking_for || null,
         date_of_birth: formData.date_of_birth || null,
+        // Photo fields
+        photo_urls: formData.photo_urls.length > 0 ? formData.photo_urls : null,
+        main_photo_index: formData.main_photo_index || 0,
+        avatar_url: formData.photo_urls[formData.main_photo_index] || formData.avatar_url || null,
         // Dating preferences
         gender_identity: formData.gender_identity || null,
         sexual_orientation: formData.sexual_orientation || null,
@@ -196,6 +202,10 @@ export const useProfileData = () => {
       sexual_orientation: profile.sexual_orientation || '',
       looking_for_gender: profile.looking_for_gender || [],
       relationship_type: profile.relationship_type || '',
+      // Photo fields
+      photo_urls: profile.photo_urls || [],
+      main_photo_index: profile.main_photo_index || 0,
+      // Crypto fields
       wallet_address: profile.wallet_address || '',
       favorite_crypto: profile.favorite_crypto || '',
       crypto_experience: profile.crypto_experience || '',

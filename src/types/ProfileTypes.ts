@@ -17,6 +17,9 @@ export interface Profile {
   sexual_orientation: string | null;
   looking_for_gender: string[] | null;
   relationship_type: string | null;
+  // Photo fields
+  photo_urls: string[] | null;
+  main_photo_index: number | null;
   // Crypto fields
   wallet_address: string | null;
   favorite_crypto: string | null;
@@ -46,6 +49,10 @@ export interface ProfileFormData {
   sexual_orientation: string;
   looking_for_gender: string[];
   relationship_type: string;
+  // Photo fields
+  photo_urls: string[];
+  main_photo_index: number;
+  // Crypto fields
   wallet_address: string;
   favorite_crypto: string;
   crypto_experience: string;

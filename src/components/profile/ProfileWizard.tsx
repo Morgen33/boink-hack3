@@ -45,6 +45,10 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
     sexual_orientation: initialData?.sexual_orientation || '',
     looking_for_gender: initialData?.looking_for_gender || [],
     relationship_type: initialData?.relationship_type || '',
+    // Photo fields
+    photo_urls: initialData?.photo_urls || [],
+    main_photo_index: initialData?.main_photo_index || 0,
+    // Crypto fields
     wallet_address: initialData?.wallet_address || '',
     favorite_crypto: initialData?.favorite_crypto || '',
     crypto_experience: initialData?.crypto_experience || '',
