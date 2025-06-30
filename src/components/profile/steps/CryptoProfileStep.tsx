@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -91,14 +92,13 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
   };
 
   const cryptoExperienceOptions = [
-    'Just started',
-    'Newbie (< 1 year)', 
-    'Getting there (1-2 years)',
-    'Experienced (2-4 years)',
-    'Veteran (4+ years)',
-    'OG (since 2017 or earlier)',
-    'Degen (live on the edge)',
-    'Whale status 🐋'
+    { value: 'newbie', label: 'Crypto Newbie (< 6 months)' },
+    { value: 'beginner', label: 'Beginner (6 months - 1 year)' },
+    { value: 'intermediate', label: 'Intermediate (1-3 years)' },
+    { value: 'experienced', label: 'Experienced (3-5 years)' },
+    { value: 'veteran', label: 'Veteran (5+ years)' },
+    { value: 'og', label: 'OG (Since 2017 or earlier)' },
+    { value: 'degen', label: 'Full Degen (YOLO everything)' }
   ];
 
   const favoriteCryptoOptions = [
@@ -178,8 +178,8 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
               </SelectTrigger>
               <SelectContent>
                 {cryptoExperienceOptions.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option}
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
                   </SelectItem>
                 ))}
               </SelectContent>
