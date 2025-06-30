@@ -14,7 +14,8 @@ import Footer from "@/components/Footer";
 import MVPOverlay from "@/components/MVPOverlay";
 import GMGNLink from "@/components/header/GMGNLink";
 import ProfileCompletionPrompt from "@/components/ProfileCompletionPrompt";
-import IncompleteProfileWarning from "@/components/profile/IncompleteProfileWarning";
+import TieredProfileWarning from "@/components/profile/TieredProfileWarning";
+import { assessProfileQuality } from '@/utils/profileQualityUtils';
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -36,14 +37,16 @@ const Index = () => {
     if (authLoading || profileLoading) return;
 
     if (user && profile) {
-      if (profile.profile_completed) {
-        // Completed profile → redirect to daily matches
+      const profileQuality = assessProfileQuality(profile);
+      
+      // Only redirect to daily matches if profile has good or excellent visibility
+      if (profileQuality.visibilityStatus === 'good' || profileQuality.visibilityStatus === 'excellent') {
         navigate('/daily-matches');
       } else {
-        // Incomplete profile → show completion prompt after a delay
+        // Show completion prompt for profiles with limited or no visibility
         const timer = setTimeout(() => {
           setShowProfilePrompt(true);
-        }, 2000); // Show prompt after 2 seconds
+        }, 2000);
         
         return () => clearTimeout(timer);
       }
@@ -58,19 +61,7 @@ const Index = () => {
 
   const calculateCompletionPercentage = () => {
     if (!profile) return 0;
-    
-    const requiredFields = [
-      'full_name', 'username', 'age', 'bio', 'location', 
-      'gender_identity', 'sexual_orientation', 'looking_for',
-      'wallet_address', 'favorite_crypto', 'crypto_experience'
-    ];
-    
-    const completedFields = requiredFields.filter(field => {
-      const value = profile[field as keyof typeof profile];
-      return value && value !== '' && value !== null;
-    });
-    
-    return (completedFields.length / requiredFields.length) * 100;
+    return assessProfileQuality(profile).percentage;
   };
 
   return (
@@ -87,10 +78,10 @@ const Index = () => {
       <Header />
       <GMGNLink />
       
-      {/* Show prominent warning for authenticated users with incomplete profiles */}
-      {user && profile && !profile.profile_completed && !showOverlay && !showProfilePrompt && (
+      {/* Show tiered warning for authenticated users with profiles that need improvement */}
+      {user && profile && !showOverlay && !showProfilePrompt && (
         <div className="container mx-auto px-4 pt-24 pb-6">
-          <IncompleteProfileWarning />
+          <TieredProfileWarning quality={assessProfileQuality(profile)} />
         </div>
       )}
       
