@@ -2,16 +2,18 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Heart, Bitcoin, CheckCircle, Edit, Loader2 } from 'lucide-react';
+import { User, Heart, Bitcoin, CheckCircle, Edit, Loader2, ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
 
 interface ReviewStepProps {
   data: any;
   onUpdate: (updates: any) => void;
   onComplete: () => Promise<void>;
+  onBack?: () => void;
+  onEditStep?: (step: number) => void;
 }
 
-const ReviewStep = ({ data, onComplete }: ReviewStepProps) => {
+const ReviewStep = ({ data, onComplete, onBack, onEditStep }: ReviewStepProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
@@ -20,6 +22,12 @@ const ReviewStep = ({ data, onComplete }: ReviewStepProps) => {
       await onComplete();
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleEditSection = (stepNumber: number) => {
+    if (onEditStep) {
+      onEditStep(stepNumber);
     }
   };
 
@@ -39,10 +47,23 @@ const ReviewStep = ({ data, onComplete }: ReviewStepProps) => {
         {/* Basic Info Review */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="w-5 h-5" />
-              Basic Info
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <User className="w-5 h-5" />
+                Basic Info
+              </CardTitle>
+              {onEditStep && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEditSection(1)}
+                  className="flex items-center gap-1"
+                >
+                  <Edit className="w-3 h-3" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center gap-4">
@@ -63,10 +84,23 @@ const ReviewStep = ({ data, onComplete }: ReviewStepProps) => {
         {/* About You Review */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Heart className="w-5 h-5" />
-              About You
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Heart className="w-5 h-5" />
+                About You
+              </CardTitle>
+              {onEditStep && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEditSection(2)}
+                  className="flex items-center gap-1"
+                >
+                  <Edit className="w-3 h-3" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             {data.bio && (
@@ -101,7 +135,20 @@ const ReviewStep = ({ data, onComplete }: ReviewStepProps) => {
         {/* Dating Preferences Review */}
         <Card>
           <CardHeader>
-            <CardTitle>Dating Preferences</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>Dating Preferences</CardTitle>
+              {onEditStep && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEditSection(3)}
+                  className="flex items-center gap-1"
+                >
+                  <Edit className="w-3 h-3" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="grid grid-cols-2 gap-4 text-sm">
@@ -142,10 +189,23 @@ const ReviewStep = ({ data, onComplete }: ReviewStepProps) => {
         {/* Crypto Profile Review */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bitcoin className="w-5 h-5" />
-              Crypto Profile
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Bitcoin className="w-5 h-5" />
+                Crypto Profile
+              </CardTitle>
+              {onEditStep && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEditSection(4)}
+                  className="flex items-center gap-1"
+                >
+                  <Edit className="w-3 h-3" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -198,12 +258,23 @@ const ReviewStep = ({ data, onComplete }: ReviewStepProps) => {
         </Card>
       </div>
 
-      {/* Submit Button */}
-      <div className="text-center pt-6">
+      {/* Navigation and Submit Buttons */}
+      <div className="flex items-center justify-between pt-6">
+        {onBack && (
+          <Button
+            variant="outline"
+            onClick={onBack}
+            className="flex items-center gap-2"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Previous
+          </Button>
+        )}
+        
         <Button
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="w-full md:w-auto bg-gradient-to-r from-web3-red to-web3-magenta hover:opacity-90 text-lg py-6 px-12"
+          className={`${onBack ? '' : 'w-full'} md:w-auto bg-gradient-to-r from-web3-red to-web3-magenta hover:opacity-90 text-lg py-6 px-12`}
         >
           {isSubmitting ? (
             <>
@@ -217,12 +288,12 @@ const ReviewStep = ({ data, onComplete }: ReviewStepProps) => {
             </>
           )}
         </Button>
-        
-        <p className="text-xs text-muted-foreground mt-3">
-          By completing your profile, you agree to our terms and conditions.
-          You can always edit your profile later.
-        </p>
       </div>
+      
+      <p className="text-xs text-muted-foreground text-center mt-3">
+        By completing your profile, you agree to our terms and conditions.
+        You can always edit your profile later.
+      </p>
     </div>
   );
 };

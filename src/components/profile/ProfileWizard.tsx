@@ -115,7 +115,15 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
       case 4:
         return <CryptoProfileStep data={formData} onUpdate={updateFormData} />;
       case 5:
-        return <ReviewStep data={formData} onUpdate={updateFormData} onComplete={handleComplete} />;
+        return (
+          <ReviewStep 
+            data={formData} 
+            onUpdate={updateFormData} 
+            onComplete={handleComplete}
+            onBack={handlePrevious}
+            onEditStep={setCurrentStep}
+          />
+        );
       default:
         return null;
     }
@@ -165,7 +173,7 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
         </CardContent>
       </Card>
 
-      {/* Navigation */}
+      {/* Navigation - Show for all steps except when ReviewStep handles its own navigation */}
       {currentStep < 5 && (
         <div className="flex justify-between mt-6">
           <Button
