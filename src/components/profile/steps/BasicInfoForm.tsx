@@ -58,7 +58,7 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             id="username"
             value={data.username}
             onChange={(e) => onUpdate('username', e.target.value)}
-            placeholder="@cryptoqueen"
+            placeholder="cryptoqueen"
             required
           />
           <p className="text-xs text-muted-foreground">
