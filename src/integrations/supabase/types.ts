@@ -31,8 +31,10 @@ export type Database = {
           location: string | null
           looking_for: string | null
           looking_for_gender: string[] | null
+          main_photo_index: number | null
           meme_coin_holdings: string[] | null
           nft_collections: string[] | null
+          photo_urls: string[] | null
           portfolio_size: string | null
           profile_completed: boolean | null
           relationship_type: string | null
@@ -63,8 +65,10 @@ export type Database = {
           location?: string | null
           looking_for?: string | null
           looking_for_gender?: string[] | null
+          main_photo_index?: number | null
           meme_coin_holdings?: string[] | null
           nft_collections?: string[] | null
+          photo_urls?: string[] | null
           portfolio_size?: string | null
           profile_completed?: boolean | null
           relationship_type?: string | null
@@ -95,8 +99,10 @@ export type Database = {
           location?: string | null
           looking_for?: string | null
           looking_for_gender?: string[] | null
+          main_photo_index?: number | null
           meme_coin_holdings?: string[] | null
           nft_collections?: string[] | null
+          photo_urls?: string[] | null
           portfolio_size?: string | null
           profile_completed?: boolean | null
           relationship_type?: string | null

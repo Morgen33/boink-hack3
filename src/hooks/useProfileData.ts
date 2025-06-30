@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -51,9 +52,9 @@ export const useProfileData = () => {
           looking_for: data.looking_for,
           date_of_birth: data.date_of_birth,
           profile_completed: data.profile_completed,
-          // Photo fields - handle case where columns might not exist yet
-          photo_urls: data.photo_urls || null,
-          main_photo_index: data.main_photo_index || null,
+          // Photo fields - using type assertion since we know these columns exist
+          photo_urls: (data as any).photo_urls || null,
+          main_photo_index: (data as any).main_photo_index || null,
           // Dating preferences
           gender_identity: data.gender_identity,
           sexual_orientation: data.sexual_orientation,
