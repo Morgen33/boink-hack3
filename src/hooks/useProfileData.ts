@@ -71,5 +71,6 @@ export const useProfileData = () => {
     handleProfileComplete,
     convertProfileToFormData,
     refreshProfile,
+    clearNewUserFlag,
   };
 };

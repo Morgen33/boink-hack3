@@ -7,12 +7,10 @@ import ProfileWizard from '@/components/profile/ProfileWizard';
 import ProfileCompletion from '@/components/profile/ProfileCompletion';
 import IncompleteProfileWarning from '@/components/profile/IncompleteProfileWarning';
 import { useProfileData } from '@/hooks/useProfileData';
-import { useAuth } from '@/contexts/AuthContext';
 
 const Profile = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { clearNewUserFlag } = useAuth();
   const {
     user,
     profile,
@@ -23,9 +21,9 @@ const Profile = () => {
     handleProfileComplete,
     convertProfileToFormData,
     refreshProfile,
+    clearNewUserFlag,
   } = useProfileData();
 
-  // Redirect to auth if not authenticated
   useEffect(() => {
     if (!loading && !user) {
       console.log('🔄 No user found, redirecting to auth...');
@@ -33,7 +31,6 @@ const Profile = () => {
     }
   }, [user, loading, navigate]);
 
-  // Refresh profile data when component mounts or when returning from other pages
   useEffect(() => {
     if (user && !loading) {
       console.log('🔄 Profile page mounted, refreshing profile data...');
@@ -44,18 +41,16 @@ const Profile = () => {
           has_age: refreshedProfile?.age ? 'yes' : 'no'
         });
 
-        // Clear new user flag if profile is completed
         if (refreshedProfile?.profile_completed) {
-          console.log('✅ Profile is completed - clearing new user flag from Profile page mount');
+          console.log('✅ Profile is completed - clearing new user flag');
           clearNewUserFlag();
         }
       }).catch(error => {
         console.error('❌ Error refreshing profile on mount:', error);
       });
     }
-  }, [user, loading, refreshProfile, clearNewUserFlag]);
+  }, [user, loading, refreshProfile]);
 
-  // Check if we're in edit mode
   const isEditMode = searchParams.get('edit') === 'true';
 
   if (loading) {
@@ -73,13 +68,11 @@ const Profile = () => {
     return null;
   }
 
-  // Show completion message
   if (profileJustCompleted) {
     console.log('🎉 Showing profile completion message');
     return <ProfileCompletion isNewUser={isNewUser} />;
   }
 
-  // Log current profile state for debugging
   console.log('📊 Current profile state:', {
     profile_exists: !!profile,
     profile_completed_db: profile?.profile_completed,
@@ -88,18 +81,8 @@ const Profile = () => {
     searchParams: searchParams.get('edit')
   });
 
-  // PRIORITY 1: Trust the database - if profile is marked as completed, show completed state
   const isProfileCompletedInDB = profile?.profile_completed === true;
 
-  // Additional check: if profile is completed but isNewUser is still true, clear it
-  if (isProfileCompletedInDB && isNewUser) {
-    console.log('🔧 Profile is completed in DB but isNewUser is still true - clearing flag');
-    clearNewUserFlag();
-  }
-
-  // PRIORITY 2: Show profile wizard ONLY for these specific cases:
-  // 1. Edit mode (user explicitly wants to edit)  
-  // 2. Profile not completed in database (regardless of isNewUser flag)
   const shouldShowWizard = isEditMode || !isProfileCompletedInDB;
 
   if (shouldShowWizard) {
@@ -125,7 +108,6 @@ const Profile = () => {
     );
   }
 
-  // If profile is complete in database, show completion status
   console.log('✅ Profile is completed in database, showing completion status');
   return (
     <div className="min-h-screen bg-background">
@@ -167,14 +149,11 @@ const Profile = () => {
             </div>
           </div>
           
-          {/* Enhanced Debug info */}
           <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm">
             <h3 className="font-semibold mb-2">Debug Info:</h3>
             <p>Profile ID: {profile?.id}</p>
             <p>Profile Completed (DB): {profile?.profile_completed ? 'Yes ✅' : 'No ❌'}</p>
-            <p>Is New User Flag: {isNewUser ? 'Yes ⚠️' : 'No ✅'}</p>
-            <p>Should Show Wizard: {shouldShowWizard ? 'Yes' : 'No'}</p>
-            <p>Is Edit Mode: {isEditMode ? 'Yes' : 'No'}</p>
+            <p>Is New User Flag: {isNewUser ? 'Yes' : 'No'}</p>
             <p>Full Name: {profile?.full_name || 'Not set'}</p>
             <p>Bio: {profile?.bio ? 'Set ✅' : 'Not set ❌'}</p>
             <p>Age: {profile?.age || 'Not set'}</p>
