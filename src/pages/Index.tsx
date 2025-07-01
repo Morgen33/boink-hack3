@@ -32,18 +32,15 @@ const Index = () => {
     }
   }, []);
 
-  // Smart routing based on user and profile status
+  // Show profile completion prompt for users with poor profile quality
   useEffect(() => {
     if (authLoading || profileLoading) return;
 
     if (user && profile) {
       const profileQuality = assessProfileQuality(profile);
       
-      // Only redirect to daily matches if profile has good or excellent visibility
-      if (profileQuality.visibilityStatus === 'good' || profileQuality.visibilityStatus === 'excellent') {
-        navigate('/daily-matches');
-      } else {
-        // Show completion prompt for profiles with limited or no visibility
+      // Show completion prompt for profiles with invisible or limited visibility
+      if (profileQuality.visibilityStatus === 'invisible' || profileQuality.visibilityStatus === 'limited') {
         const timer = setTimeout(() => {
           setShowProfilePrompt(true);
         }, 2000);
@@ -51,7 +48,7 @@ const Index = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [user, profile, authLoading, profileLoading, navigate]);
+  }, [user, profile, authLoading, profileLoading]);
 
   const handleEnterApp = () => {
     // Mark as seen and hide overlay
