@@ -14,8 +14,7 @@ import Footer from "@/components/Footer";
 import MVPOverlay from "@/components/MVPOverlay";
 import GMGNLink from "@/components/header/GMGNLink";
 import ProfileCompletionPrompt from "@/components/ProfileCompletionPrompt";
-import TieredProfileWarning from "@/components/profile/TieredProfileWarning";
-import { assessProfileQuality } from '@/utils/profileQualityUtils';
+import IncompleteProfileWarning from "@/components/profile/IncompleteProfileWarning";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -32,23 +31,24 @@ const Index = () => {
     }
   }, []);
 
-  // Show profile completion prompt for users with poor profile quality
+  // Smart routing based on user and profile status
   useEffect(() => {
     if (authLoading || profileLoading) return;
 
     if (user && profile) {
-      const profileQuality = assessProfileQuality(profile);
-      
-      // Show completion prompt for profiles with invisible or limited visibility
-      if (profileQuality.visibilityStatus === 'invisible' || profileQuality.visibilityStatus === 'limited') {
+      if (profile.profile_completed) {
+        // Completed profile → redirect to daily matches
+        navigate('/daily-matches');
+      } else {
+        // Incomplete profile → show completion prompt after a delay
         const timer = setTimeout(() => {
           setShowProfilePrompt(true);
-        }, 2000);
+        }, 2000); // Show prompt after 2 seconds
         
         return () => clearTimeout(timer);
       }
     }
-  }, [user, profile, authLoading, profileLoading]);
+  }, [user, profile, authLoading, profileLoading, navigate]);
 
   const handleEnterApp = () => {
     // Mark as seen and hide overlay
@@ -58,7 +58,19 @@ const Index = () => {
 
   const calculateCompletionPercentage = () => {
     if (!profile) return 0;
-    return assessProfileQuality(profile).percentage;
+    
+    const requiredFields = [
+      'full_name', 'username', 'age', 'bio', 'location', 
+      'gender_identity', 'sexual_orientation', 'looking_for',
+      'wallet_address', 'favorite_crypto', 'crypto_experience'
+    ];
+    
+    const completedFields = requiredFields.filter(field => {
+      const value = profile[field as keyof typeof profile];
+      return value && value !== '' && value !== null;
+    });
+    
+    return (completedFields.length / requiredFields.length) * 100;
   };
 
   return (
@@ -75,10 +87,10 @@ const Index = () => {
       <Header />
       <GMGNLink />
       
-      {/* Show tiered warning for authenticated users with profiles that need improvement */}
-      {user && profile && !showOverlay && !showProfilePrompt && (
+      {/* Show prominent warning for authenticated users with incomplete profiles */}
+      {user && profile && !profile.profile_completed && !showOverlay && !showProfilePrompt && (
         <div className="container mx-auto px-4 pt-24 pb-6">
-          <TieredProfileWarning quality={assessProfileQuality(profile)} />
+          <IncompleteProfileWarning />
         </div>
       )}
       

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,10 +10,9 @@ import AboutYouStep from './steps/AboutYouStep';
 import DatingPreferencesStep from './steps/DatingPreferencesStep';
 import CryptoProfileStep from './steps/CryptoProfileStep';
 import ReviewStep from './steps/ReviewStep';
-import TieredProfileWarning from './TieredProfileWarning';
+import ProfileVisibilityAlert from './ProfileVisibilityAlert';
 import { User } from '@supabase/supabase-js';
 import { ProfileFormData } from '@/types/ProfileTypes';
-import { assessProfileQuality } from '@/utils/profileQualityUtils';
 
 const steps = [
   { id: 1, title: 'Basic Info', description: 'Tell us about yourself' },
@@ -34,7 +34,6 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
   const [isSaving, setIsSaving] = useState(false);
   const [isEditingFromReview, setIsEditingFromReview] = useState(false);
   const { toast } = useToast();
-  
   const [formData, setFormData] = useState<ProfileFormData>({
     full_name: initialData?.full_name || '',
     username: initialData?.username || '',
@@ -69,9 +68,6 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
   const updateFormData = (updates: Partial<ProfileFormData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
   };
-
-  // Assess current profile quality
-  const profileQuality = assessProfileQuality(formData);
 
   const handleNext = () => {
     // If we're editing from review, go back to review instead of next step
@@ -153,14 +149,8 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      {/* Tiered Profile Warning - Only show if not on review step */}
-      {currentStep < 5 && (
-        <TieredProfileWarning 
-          quality={profileQuality}
-          showButton={false}
-          className="mb-6"
-        />
-      )}
+      {/* Profile Visibility Alert - Only show if not on review step */}
+      {currentStep < 5 && <ProfileVisibilityAlert />}
 
       {/* Progress Header */}
       <div className="mb-8">
