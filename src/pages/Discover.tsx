@@ -18,7 +18,8 @@ const Discover = () => {
     hasMoreProfiles, 
     nextProfile, 
     loading,
-    userProfile 
+    userProfile,
+    profiles
   } = useEnhancedMatching(user);
 
   const handleLike = () => {
@@ -30,6 +31,12 @@ const Discover = () => {
     console.log('Passed on profile:', currentProfile?.id);
     nextProfile();
   };
+
+  // Debug info
+  console.log('Discover page - Total profiles:', profiles.length);
+  console.log('Current profile index:', profiles.findIndex(p => p.id === currentProfile?.id));
+  console.log('Real profiles (non-demo):', profiles.filter(p => !p.isDemo).length);
+  console.log('Demo profiles:', profiles.filter(p => p.isDemo).length);
 
   if (authLoading) {
     return (
@@ -85,6 +92,12 @@ const Discover = () => {
                 Showing matches based on age, location, interests, and crypto preferences
               </p>
             )}
+            {/* Debug info for development */}
+            <div className="text-xs text-muted-foreground mt-2 space-y-1">
+              <p>Total profiles: {profiles.length}</p>
+              <p>Real profiles: {profiles.filter(p => !p.isDemo).length}</p>
+              <p>Demo profiles: {profiles.filter(p => p.isDemo).length}</p>
+            </div>
           </div>
 
           {loading ? (
@@ -103,9 +116,9 @@ const Discover = () => {
                 <Card>
                   <CardContent className="p-6 text-center">
                     <User className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="font-semibold mb-2">No more compatible matches</h3>
+                    <h3 className="font-semibold mb-2">You've seen all available profiles!</h3>
                     <p className="text-sm text-muted-foreground">
-                      Our AI has shown you the most compatible crypto enthusiasts. Check back later for more!
+                      Check back later for more matches or encourage friends to join Boink!
                     </p>
                   </CardContent>
                 </Card>

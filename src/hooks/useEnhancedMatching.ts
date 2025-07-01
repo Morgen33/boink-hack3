@@ -246,11 +246,13 @@ export const useEnhancedMatching = (user: User | null) => {
   useEffect(() => {
     const initializeProfiles = async () => {
       if (!user) {
+        console.log('No user, showing demo profiles only');
+        setProfiles([...demoProfiles]);
         setLoading(false);
         return;
       }
 
-      console.log('Initializing enhanced matching profiles...');
+      console.log('Initializing enhanced matching profiles for user:', user.id);
 
       try {
         // Get the current user's profile
@@ -267,61 +269,69 @@ export const useEnhancedMatching = (user: User | null) => {
           setUserProfile(currentUserProfile);
         }
 
-        // Fetch real profiles with more lenient criteria
+        // Fetch ALL real profiles with completed profiles (much more aggressive approach)
+        console.log('Fetching real profiles...');
         const { data: realProfiles, error } = await supabase
           .from('profiles')
           .select(`
             id, full_name, age, bio, location, interests, looking_for, avatar_url, 
             gender_identity, sexual_orientation, looking_for_gender, relationship_type,
             favorite_crypto, crypto_experience, portfolio_size, trading_style,
-            defi_protocols, nft_collections, meme_coin_holdings
+            defi_protocols, nft_collections, meme_coin_holdings, profile_completed
           `)
           .neq('id', user.id)
-          .not('full_name', 'is', null); // Only require full_name to be set
+          .eq('profile_completed', true)
+          .not('full_name', 'is', null)
+          .limit(50); // Increase the limit
 
         if (error) {
           console.error('Supabase query error:', error);
-        } else if (realProfiles && realProfiles.length > 0) {
-          console.log('Real profiles fetched:', realProfiles.length);
-          console.log('Sample profile:', realProfiles[0]);
-          
-          // Convert real profiles to ProfileCard format
-          const convertedProfiles = realProfiles.map(convertToProfileCard);
-          
-          if (currentUserProfile) {
-            // Calculate compatibility scores for profiles with enough data
-            const scoredProfiles: MatchScore[] = realProfiles.map(profile => 
-              calculateCompatibilityScore(currentUserProfile, profile)
-            );
-
-            // Sort by compatibility score (highest first) but be more lenient with minimum score
-            scoredProfiles.sort((a, b) => b.score - a.score);
-            
-            // Much lower minimum compatibility threshold to show more profiles
-            const compatibleProfiles = scoredProfiles.filter(match => match.score > 0.1);
-
-            console.log('Compatible matches found:', compatibleProfiles.length);
-            console.log('Top matches:', compatibleProfiles.slice(0, 3).map(m => ({
-              name: m.profile.full_name,
-              score: m.score,
-              breakdown: m.breakdown
-            })));
-
-            // Convert back to ProfileCard format and prioritize real profiles
-            const matchedProfiles = compatibleProfiles.map(match => convertToProfileCard(match.profile));
-            
-            // Put real profiles first, then demo profiles
-            const allProfiles = [...matchedProfiles, ...demoProfiles];
-            
-            setProfiles(allProfiles);
-          } else {
-            // If no user profile for matching, show all real profiles first
-            const allProfiles = [...convertedProfiles, ...demoProfiles];
-            setProfiles(allProfiles);
-          }
-        } else {
-          console.log('No real profiles found - showing only demo profiles');
+          console.log('Falling back to demo profiles only');
           setProfiles([...demoProfiles]);
+        } else {
+          console.log('Raw real profiles fetched:', realProfiles?.length || 0);
+          console.log('Sample real profile data:', realProfiles?.[0]);
+          
+          if (realProfiles && realProfiles.length > 0) {
+            // Convert real profiles to ProfileCard format
+            const convertedProfiles = realProfiles.map(convertToProfileCard);
+            console.log('Converted real profiles:', convertedProfiles.length);
+
+            if (currentUserProfile) {
+              // Calculate compatibility scores
+              const scoredProfiles: MatchScore[] = realProfiles.map(profile => 
+                calculateCompatibilityScore(currentUserProfile, profile)
+              );
+
+              // Sort by compatibility score
+              scoredProfiles.sort((a, b) => b.score - a.score);
+              
+              console.log('Top scored profiles:', scoredProfiles.slice(0, 3).map(m => ({
+                name: m.profile.full_name,
+                score: m.score,
+                id: m.profile.id
+              })));
+
+              // Convert back to ProfileCard format
+              const matchedProfiles = scoredProfiles.map(match => convertToProfileCard(match.profile));
+              
+              // PRIORITIZE REAL PROFILES: Put real profiles first, then add demo profiles
+              const finalProfiles = [...matchedProfiles, ...demoProfiles];
+              console.log('Final profile order - Real profiles first:', finalProfiles.length, 'total');
+              console.log('Real profiles count:', matchedProfiles.length);
+              console.log('Demo profiles count:', demoProfiles.length);
+              
+              setProfiles(finalProfiles);
+            } else {
+              // If no user profile for matching, still show real profiles first
+              const finalProfiles = [...convertedProfiles, ...demoProfiles];
+              console.log('No user profile for matching, showing real profiles first:', finalProfiles.length);
+              setProfiles(finalProfiles);
+            }
+          } else {
+            console.log('No real profiles found - showing demo profiles only');
+            setProfiles([...demoProfiles]);
+          }
         }
       } catch (error: any) {
         console.error('Error in enhanced matching:', error);
