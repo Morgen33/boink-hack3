@@ -42,14 +42,23 @@ export const useProfileFetch = () => {
         full_name: data.full_name,
         profile_completed: data.profile_completed,
         updated_at: data.updated_at,
-        bio: data.bio ? 'has bio' : 'no bio',
-        age: data.age || 'no age'
+        bio: data.bio ? `${data.bio.length} chars` : 'no bio',
+        age: data.age || 'no age',
+        photo_count: data.photo_urls?.length || 0
       });
       
       const profileData = createProfileFromData(data);
+      
+      // IMPORTANT: Always update state with fresh data from database
       setProfile(profileData);
       
       console.log('🎯 Profile state updated - profile_completed:', profileData.profile_completed);
+      console.log('📊 Profile completion status in state:', {
+        database_says_completed: data.profile_completed,
+        profile_object_says_completed: profileData.profile_completed,
+        match: data.profile_completed === profileData.profile_completed
+      });
+      
       return profileData;
     } catch (error: any) {
       console.error('💥 Error refreshing profile:', error);

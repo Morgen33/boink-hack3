@@ -47,8 +47,8 @@ const Profile = () => {
     }
   }, [user, loading, refreshProfile]);
 
-  // Check if we're in edit mode or if this is a new user
-  const isEditing = searchParams.get('edit') === 'true' || isNewUser;
+  // Check if we're in edit mode
+  const isEditMode = searchParams.get('edit') === 'true';
 
   if (loading) {
     return (
@@ -74,18 +74,25 @@ const Profile = () => {
   // Log current profile state for debugging
   console.log('📊 Current profile state:', {
     profile_exists: !!profile,
-    profile_completed: profile?.profile_completed,
-    isEditing,
+    profile_completed_db: profile?.profile_completed,
+    isEditMode,
     isNewUser,
     searchParams: searchParams.get('edit')
   });
 
-  // Show profile wizard for new users, editing, or incomplete profiles
-  if (isEditing || !profile?.profile_completed) {
+  // TRUST THE DATABASE: If profile is marked as completed in DB, show completed state
+  const isProfileCompletedInDB = profile?.profile_completed === true;
+
+  // Show profile wizard for:
+  // 1. New users (must complete profile)
+  // 2. Edit mode (user explicitly wants to edit)
+  // 3. Profile not completed in database
+  if (isNewUser || isEditMode || !isProfileCompletedInDB) {
     console.log('📝 Showing profile wizard - reason:', {
-      isEditing,
-      profile_completed: profile?.profile_completed,
-      isNewUser
+      isNewUser,
+      isEditMode,
+      profile_completed_db: isProfileCompletedInDB,
+      reason: isNewUser ? 'new user' : isEditMode ? 'edit mode' : 'not completed in DB'
     });
     
     return (
@@ -103,9 +110,9 @@ const Profile = () => {
     );
   }
 
-  // If profile is complete and we're not editing, show completion status
-  if (profile?.profile_completed) {
-    console.log('✅ Profile is completed, showing completion status');
+  // If profile is complete in database, show completion status
+  if (isProfileCompletedInDB) {
+    console.log('✅ Profile is completed in database, showing completion status');
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -150,10 +157,12 @@ const Profile = () => {
             <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm">
               <h3 className="font-semibold mb-2">Debug Info:</h3>
               <p>Profile ID: {profile.id}</p>
-              <p>Profile Completed: {profile.profile_completed ? 'Yes' : 'No'}</p>
+              <p>Profile Completed (DB): {profile.profile_completed ? 'Yes ✅' : 'No ❌'}</p>
               <p>Full Name: {profile.full_name || 'Not set'}</p>
-              <p>Bio: {profile.bio ? 'Set' : 'Not set'}</p>
+              <p>Bio: {profile.bio ? 'Set ✅' : 'Not set ❌'}</p>
               <p>Age: {profile.age || 'Not set'}</p>
+              <p>Photos: {profile.photo_urls?.length || 0} uploaded</p>
+              <p>Last Updated: {new Date().toLocaleString()}</p>
             </div>
           </div>
         </div>
@@ -161,7 +170,7 @@ const Profile = () => {
     );
   }
 
-  // Show incomplete profile warning as fallback
+  // Fallback - should rarely reach here
   console.log('⚠️ Showing incomplete profile warning as fallback');
   return (
     <div className="min-h-screen bg-background">

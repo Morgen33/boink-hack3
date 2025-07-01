@@ -17,10 +17,10 @@ export const useProfileComplete = () => {
     try {
       console.log('🚀 Starting profile completion process...');
       
-      // Save the profile with completion flag
-      const updateData = await handleProfileSave(formData, false); // false means complete save
+      // Save the profile with completion flag - this will mark profile_completed = true in DB
+      await handleProfileSave(formData, false); // false means complete save
       
-      console.log('✅ Profile completed successfully, updateData:', updateData);
+      console.log('✅ Profile completed and saved to database');
 
       // Clear new user flag if it was set
       if (isNewUser) {
@@ -31,11 +31,11 @@ export const useProfileComplete = () => {
       toast({
         title: "Success! 🎉",
         description: isNewUser 
-          ? "Welcome to Boink! Your degen profile is now live! Time to find your crypto tribe! 🚀"
-          : "Your profile has been updated successfully! You're now visible in discovery! 🚀",
+          ? "Welcome to Boink! Your profile is now live and visible in discovery! 🚀"
+          : "Your profile has been updated and is visible in discovery! 🚀",
       });
 
-      // Show completion message
+      // Show completion message briefly
       setProfileJustCompleted(true);
       
       // Navigate to discover after showing completion message
@@ -43,13 +43,13 @@ export const useProfileComplete = () => {
         console.log('🔄 Navigating to discover page...');
         setProfileJustCompleted(false);
         navigate('/discover');
-      }, 3000);
+      }, 2000); // Reduced from 3000ms to 2000ms for faster transition
       
     } catch (error: any) {
       console.error('❌ Error completing profile:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to complete profile.",
+        description: error.message || "Failed to complete profile. Please try again.",
         variant: "destructive",
       });
     }

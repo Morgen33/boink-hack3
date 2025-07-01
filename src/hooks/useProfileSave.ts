@@ -19,19 +19,23 @@ export const useProfileSave = () => {
         isPartial,
         has_full_name: !!formData.full_name,
         has_bio: !!formData.bio,
-        has_age: !!formData.age
+        has_age: !!formData.age,
+        photo_count: formData.photo_urls?.length || 0
       });
       
       const updateData = {
         ...prepareUpdateData(formData),
-        profile_completed: !isPartial, // Only mark as completed if it's not a partial save
+        profile_completed: !isPartial, // Mark as completed ONLY if it's not a partial save
+        updated_at: new Date().toISOString(), // Ensure we track when this was updated
       };
 
-      console.log('💾 Updating profile with:', {
+      console.log('💾 Updating profile in database with:', {
         profile_completed: updateData.profile_completed,
         full_name: updateData.full_name,
-        bio: updateData.bio ? 'has bio' : 'no bio',
-        age: updateData.age
+        bio: updateData.bio ? `${updateData.bio.length} chars` : 'no bio',
+        age: updateData.age,
+        photo_count: updateData.photo_urls?.length || 0,
+        is_partial_save: isPartial
       });
 
       const { data, error } = await supabase
@@ -46,11 +50,20 @@ export const useProfileSave = () => {
         throw error;
       }
 
-      console.log('✅ Profile saved successfully, returned data:', {
+      console.log('✅ Profile saved successfully to database:', {
         id: data?.id,
         profile_completed: data?.profile_completed,
-        updated_at: data?.updated_at
+        updated_at: data?.updated_at,
+        full_name: data?.full_name
       });
+      
+      // Verify the save was successful
+      if (data?.profile_completed !== updateData.profile_completed) {
+        console.warn('⚠️ Profile completion status mismatch after save:', {
+          expected: updateData.profile_completed,
+          actual: data?.profile_completed
+        });
+      }
       
       return updateData;
     } catch (error: any) {
