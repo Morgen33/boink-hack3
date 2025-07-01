@@ -47,11 +47,6 @@ export const validateAboutYouStep = (data: ProfileFormData): ValidationResult =>
     errors.bio = 'Bio is required and must be at least 50 characters';
   }
 
-  if (!data.looking_for?.trim()) {
-    missingFields.push('What You\'re Looking For');
-    errors.looking_for = 'Please select what you\'re looking for';
-  }
-
   return {
     isValid: missingFields.length === 0,
     missingFields,
