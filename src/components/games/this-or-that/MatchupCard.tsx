@@ -25,7 +25,7 @@ export const MatchupCard = ({ matchup, onChoice }: MatchupCardProps) => {
         
         <div className="order-3 lg:order-none text-center flex justify-center items-center">
           <div className="bg-gradient-to-r from-pink-500 to-orange-500 text-white text-xl font-bold py-2 px-4 rounded-full shadow-lg">
-            VS
+            OR
           </div>
         </div>
         

@@ -27,32 +27,8 @@ export const MemeCard = ({ meme, onSelect, isSelected }: MemeCardProps) => {
         />
       </div>
       
-      <div className="flex-1 flex flex-col justify-between">
-        <h3 className="text-xl font-bold text-white mb-4 leading-tight">{meme.title}</h3>
-        
-        <div className="space-y-3">
-          {meme.category && (
-            <span className="inline-block px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-medium rounded-full">
-              {meme.category}
-            </span>
-          )}
-          
-          {meme.tags && meme.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 justify-center">
-              {meme.tags.slice(0, 3).map((tag, index) => (
-                <span key={index} className="text-xs text-gray-400 bg-gray-700/50 px-2 py-1 rounded-full">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-      
-      <div className="mt-4 pt-4 border-t border-gray-600/30">
-        <div className="text-sm text-gray-400 font-medium">
-          Tap to choose
-        </div>
+      <div className="flex-1 flex flex-col justify-center">
+        <h3 className="text-xl font-bold text-white leading-tight">{meme.title}</h3>
       </div>
     </Card>
   );
