@@ -1,8 +1,5 @@
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight, Save, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import BasicInfoStep from './steps/BasicInfoStep';
 import AboutYouStep from './steps/AboutYouStep';
@@ -10,7 +7,9 @@ import DatingPreferencesStep from './steps/DatingPreferencesStep';
 import CryptoProfileStep from './steps/CryptoProfileStep';
 import ReviewStep from './steps/ReviewStep';
 import ProfileVisibilityAlert from './ProfileVisibilityAlert';
-import ValidationStatus from './ValidationStatus';
+import ProfileWizardHeader from './ProfileWizardHeader';
+import ProfileWizardNavigation from './ProfileWizardNavigation';
+import ProfileWizardValidation from './ProfileWizardValidation';
 import { User } from '@supabase/supabase-js';
 import { ProfileFormData } from '@/types/ProfileTypes';
 import { validateStepByNumber } from '@/utils/profileValidation';
@@ -70,7 +69,6 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
     setFormData(prev => ({ ...prev, ...updates }));
   };
 
-  // Get validation for current step
   const currentValidation = validateStepByNumber(currentStep, formData);
 
   const handleNext = () => {
@@ -159,64 +157,26 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
     }
   };
 
-  const progress = (currentStep / steps.length) * 100;
-
   return (
     <div className="max-w-2xl mx-auto p-6">
       {/* Profile Visibility Alert - Only show if not on review step */}
       {currentStep < 5 && <ProfileVisibilityAlert />}
 
       {/* Progress Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
-            Complete Your Profile
-          </h1>
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">
-              Step {currentStep} of {steps.length}
-              {isEditingFromReview && " (Editing)"}
-            </span>
-            {onSave && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleSave}
-                disabled={isSaving}
-                className="flex items-center gap-2"
-              >
-                <Save className="w-4 h-4" />
-                {isSaving ? 'Saving...' : 'Save Progress'}
-              </Button>
-            )}
-          </div>
-        </div>
-        
-        <Progress value={progress} className="mb-4" />
-        
-        <div className="text-center">
-          <h2 className="text-xl font-semibold">
-            {steps[currentStep - 1].title}
-            {isEditingFromReview && " - Edit Mode"}
-          </h2>
-          <p className="text-muted-foreground">
-            {isEditingFromReview 
-              ? "Make your changes and click 'Return to Review' when done"
-              : steps[currentStep - 1].description
-            }
-          </p>
-        </div>
-      </div>
+      <ProfileWizardHeader
+        currentStep={currentStep}
+        steps={steps}
+        isEditingFromReview={isEditingFromReview}
+        onSave={onSave ? handleSave : undefined}
+        isSaving={isSaving}
+      />
 
-      {/* Validation Status - Show for steps 1-4 */}
-      {currentStep < 5 && (
-        <div className="mb-6">
-          <ValidationStatus 
-            validation={currentValidation} 
-            stepTitle={steps[currentStep - 1].title}
-          />
-        </div>
-      )}
+      {/* Validation Status */}
+      <ProfileWizardValidation
+        currentStep={currentStep}
+        steps={steps}
+        validation={currentValidation}
+      />
 
       {/* Step Content */}
       <Card>
@@ -227,42 +187,13 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
 
       {/* Navigation - Show for all steps except when ReviewStep handles its own navigation */}
       {currentStep < 5 && (
-        <div className="flex justify-between mt-6">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={currentStep === 1 && !isEditingFromReview}
-          >
-            {isEditingFromReview ? (
-              <>
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Return to Review
-              </>
-            ) : (
-              <>
-                <ChevronLeft className="w-4 h-4 mr-2" />
-                Previous
-              </>
-            )}
-          </Button>
-          
-          <Button 
-            onClick={handleNext}
-            disabled={!currentValidation.isValid && currentStep < 5}
-          >
-            {isEditingFromReview ? (
-              <>
-                Return to Review
-                <ArrowLeft className="w-4 h-4 ml-2" />
-              </>
-            ) : (
-              <>
-                Next
-                <ChevronRight className="w-4 h-4 ml-2" />
-              </>
-            )}
-          </Button>
-        </div>
+        <ProfileWizardNavigation
+          currentStep={currentStep}
+          isEditingFromReview={isEditingFromReview}
+          validation={currentValidation}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+        />
       )}
     </div>
   );
