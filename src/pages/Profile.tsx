@@ -19,6 +19,7 @@ const Profile = () => {
     handleProfileSave,
     handleProfileComplete,
     convertProfileToFormData,
+    refreshProfile,
   } = useProfileData();
 
   // Redirect to auth if not authenticated (only for this protected page)
@@ -27,6 +28,13 @@ const Profile = () => {
       navigate('/auth');
     }
   }, [user, loading, navigate]);
+
+  // Refresh profile data when component mounts to ensure we have latest data
+  useEffect(() => {
+    if (user && !loading) {
+      refreshProfile().catch(console.error);
+    }
+  }, [user, loading]);
 
   // Check if we're in edit mode or if this is a new user
   const isEditing = searchParams.get('edit') === 'true' || isNewUser;
@@ -70,6 +78,7 @@ const Profile = () => {
 
   // If profile is complete and we're not editing, redirect to discover
   if (profile?.profile_completed) {
+    console.log('Profile is completed, redirecting to discover');
     navigate('/discover');
     return null;
   }
