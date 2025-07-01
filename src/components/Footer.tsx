@@ -143,7 +143,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
           <div className="mb-4 md:mb-0">
-            <p>&copy; 2024 Boink. All rights reserved.</p>
+            <p>&copy; 2025 Boink. All rights reserved.</p>
           </div>
           <div className="flex space-x-6">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>

@@ -147,7 +147,7 @@ const Hero = () => {
           {/* Hackathon Badge */}
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#FBE24F]/20 to-[#FFA70F]/20 rounded-full border border-[#FFA70F]/30 mb-6">
             <span className="text-sm font-medium text-[#FFA70F] dark:text-yellow-300">
-              Built for Bonk Hackathon 2024 🚀
+              Built for Bonk Hackathon 2025 🚀
             </span>
           </div>
           

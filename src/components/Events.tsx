@@ -8,7 +8,7 @@ const Events = () => {
     {
       id: 1,
       title: "Web3 Coffee & Connect",
-      date: "Dec 28, 2024",
+      date: "Dec 28, 2025",
       time: "2:00 PM - 4:00 PM",
       location: "Crypto Café, San Francisco",
       attendees: 24,
@@ -20,7 +20,7 @@ const Events = () => {
     {
       id: 2,
       title: "Bonk Community Speed Dating",
-      date: "Dec 30, 2024",
+      date: "Dec 30, 2025",
       time: "7:00 PM - 10:00 PM",
       location: "Tech Hub, Austin",
       attendees: 18,

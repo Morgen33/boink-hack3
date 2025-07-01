@@ -41,9 +41,26 @@ export const useProfileComplete = () => {
       // Navigate to discover after showing completion message
       setTimeout(() => {
         console.log('🔄 Navigating to discover page...');
+        console.log('🔍 Current window location before navigation:', window.location.href);
         setProfileJustCompleted(false);
-        navigate('/discover');
-      }, 2000); // Reduced from 3000ms to 2000ms for faster transition
+        
+        // Force navigation by using window.location if React Router navigation fails
+        try {
+          navigate('/discover');
+          console.log('✅ React Router navigation attempted');
+          
+          // Backup navigation method
+          setTimeout(() => {
+            if (window.location.pathname !== '/discover') {
+              console.log('⚠️ React Router navigation may have failed, using window.location');
+              window.location.href = '/discover';
+            }
+          }, 100);
+        } catch (error) {
+          console.error('❌ Navigation error:', error);
+          window.location.href = '/discover';
+        }
+      }, 2000);
       
     } catch (error: any) {
       console.error('❌ Error completing profile:', error);
