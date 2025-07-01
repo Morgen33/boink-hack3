@@ -15,6 +15,8 @@ export const useProfileComplete = () => {
 
   const handleProfileComplete = async (formData: ProfileFormData) => {
     try {
+      console.log('Starting profile completion process...');
+      
       // Save the profile with completion flag
       const updateData = await handleProfileSave(formData, false); // false means complete save
       
@@ -36,11 +38,11 @@ export const useProfileComplete = () => {
         clearNewUserFlag();
       }
       
-      // Navigate to discover page after a brief delay
+      // Force a page refresh to ensure clean state after completion
       setTimeout(() => {
-        setProfileJustCompleted(false); // Reset the completion state
-        navigate('/discover');
-      }, 3000); // Increased delay to show success message longer
+        console.log('Redirecting to discover page...');
+        window.location.href = '/discover';
+      }, 3000);
     } catch (error: any) {
       console.error('Error completing profile:', error);
       toast({

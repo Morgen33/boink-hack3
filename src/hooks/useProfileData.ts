@@ -14,19 +14,17 @@ export const useProfileData = () => {
 
   const handleProfileSave = async (formData: any, isPartial: boolean = false) => {
     const updateData = await saveProfile(formData, isPartial);
-    // Update local profile data and refresh from database
-    setProfile(prev => prev ? { ...prev, ...updateData } : null);
     
-    // If this was a completion (not partial), refresh from database to ensure we have latest data
-    if (!isPartial) {
-      setTimeout(async () => {
-        try {
-          await refreshProfile();
-        } catch (error) {
-          console.error('Error refreshing profile after completion:', error);
-        }
-      }, 500);
-    }
+    // Force a complete refresh from database after any save
+    setTimeout(async () => {
+      try {
+        console.log('Refreshing profile after save - isPartial:', isPartial);
+        const refreshedProfile = await refreshProfile();
+        console.log('Profile refreshed, profile_completed:', refreshedProfile?.profile_completed);
+      } catch (error) {
+        console.error('Error refreshing profile after save:', error);
+      }
+    }, 500);
   };
 
   return {
