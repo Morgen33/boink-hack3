@@ -267,10 +267,7 @@ export const useEnhancedMatching = (user: User | null) => {
           setUserProfile(currentUserProfile);
         }
 
-        // Always start with demo profiles for immediate content
-        setProfiles([...demoProfiles]);
-
-        // Fetch real profiles
+        // Fetch real profiles with more lenient criteria
         const { data: realProfiles, error } = await supabase
           .from('profiles')
           .select(`
@@ -280,7 +277,7 @@ export const useEnhancedMatching = (user: User | null) => {
             defi_protocols, nft_collections, meme_coin_holdings
           `)
           .neq('id', user.id)
-          .eq('profile_completed', true);
+          .not('full_name', 'is', null); // Only require full_name to be set
 
         if (error) {
           console.error('Supabase query error:', error);
@@ -300,8 +297,8 @@ export const useEnhancedMatching = (user: User | null) => {
             // Sort by compatibility score (highest first) but be more lenient with minimum score
             scoredProfiles.sort((a, b) => b.score - a.score);
             
-            // Lower the minimum compatibility threshold to show more profiles
-            const compatibleProfiles = scoredProfiles.filter(match => match.score > 0.2);
+            // Much lower minimum compatibility threshold to show more profiles
+            const compatibleProfiles = scoredProfiles.filter(match => match.score > 0.1);
 
             console.log('Compatible matches found:', compatibleProfiles.length);
             console.log('Top matches:', compatibleProfiles.slice(0, 3).map(m => ({
@@ -310,21 +307,26 @@ export const useEnhancedMatching = (user: User | null) => {
               breakdown: m.breakdown
             })));
 
-            // Convert back to ProfileCard format and combine with demos
+            // Convert back to ProfileCard format and prioritize real profiles
             const matchedProfiles = compatibleProfiles.map(match => convertToProfileCard(match.profile));
-            const allProfiles = [...demoProfiles, ...matchedProfiles];
+            
+            // Put real profiles first, then demo profiles
+            const allProfiles = [...matchedProfiles, ...demoProfiles];
             
             setProfiles(allProfiles);
           } else {
-            // If no user profile for matching, just show all converted profiles
-            const allProfiles = [...demoProfiles, ...convertedProfiles];
+            // If no user profile for matching, show all real profiles first
+            const allProfiles = [...convertedProfiles, ...demoProfiles];
             setProfiles(allProfiles);
           }
         } else {
-          console.log('No real profiles found or they are not profile_completed');
+          console.log('No real profiles found - showing only demo profiles');
+          setProfiles([...demoProfiles]);
         }
       } catch (error: any) {
         console.error('Error in enhanced matching:', error);
+        // Fallback to demo profiles
+        setProfiles([...demoProfiles]);
       } finally {
         setLoading(false);
       }
