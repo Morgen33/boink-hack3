@@ -52,7 +52,7 @@ export const GameResults = ({ choices, stats, onPlayAgain, onBack }: GameResults
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <Card>
+        <Card className="bg-black/50 backdrop-blur-sm border-2 border-gray-600/50">
           <CardHeader>
             <CardTitle className="text-pink-400">Your Meme Vibe</CardTitle>
           </CardHeader>
@@ -65,33 +65,33 @@ export const GameResults = ({ choices, stats, onPlayAgain, onBack }: GameResults
               {topCategory === 'Bearish' && '📉'}
               {topCategory === 'Lifestyle' && '🏎️'}
             </div>
-            <h3 className="text-xl font-bold mb-2">{topCategory} Enthusiast</h3>
-            <p className="text-gray-400 text-sm">
+            <h3 className="text-xl font-bold mb-2 text-white">{topCategory} Enthusiast</h3>
+            <p className="text-gray-300 text-sm">
               You're drawn to {topCategory.toLowerCase()} memes - this says a lot about your crypto personality!
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-black/50 backdrop-blur-sm border-2 border-gray-600/50">
           <CardHeader>
             <CardTitle className="text-orange-400">Your Tags</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
               {topTags.map((tag, index) => (
-                <Badge key={index} variant="secondary" className="mr-2 mb-2">
+                <Badge key={index} variant="secondary" className="mr-2 mb-2 bg-purple-600/50 text-white border-purple-500/30">
                   #{tag}
                 </Badge>
               ))}
             </div>
-            <p className="text-gray-400 text-sm mt-4">
+            <p className="text-gray-300 text-sm mt-4">
               These are your most chosen meme themes
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="mb-8">
+      <Card className="mb-8 bg-black/50 backdrop-blur-sm border-2 border-gray-600/50">
         <CardHeader>
           <CardTitle className="text-cyan-400">🎮 Ready to Find Your Meme Match?</CardTitle>
         </CardHeader>
@@ -99,7 +99,7 @@ export const GameResults = ({ choices, stats, onPlayAgain, onBack }: GameResults
           <p className="text-gray-300 mb-4">
             Your choices have been saved! Soon you'll be able to find other degens who share your meme taste.
           </p>
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-gray-300">
             <p>• Compatibility matching coming soon</p>
             <p>• Compare your taste with friends</p>
             <p>• Discover new meme communities</p>
