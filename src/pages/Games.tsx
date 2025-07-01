@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import DrunkOnAlpha from "@/components/games/DrunkOnAlpha";
 import MemePersonalityGame from "@/components/games/MemePersonalityGame";
+import ThisOrThatGame from "@/components/games/ThisOrThatGame";
 import GameCard from "@/components/games/GameCard";
 
 const Games = () => {
@@ -26,6 +26,15 @@ const Games = () => {
       status: "Available",
       difficulty: "Easy",
       players: "2,420 personalities discovered"
+    },
+    {
+      id: "this-or-that",
+      title: "🔥 This or That Memes",
+      tagline: "Choose your meme destiny!",
+      description: "Pick your favorite memes and discover your compatibility with other degens. Find your meme soulmate!",
+      status: "Available",
+      difficulty: "Easy",
+      players: "1,689 choices made"
     },
     {
       id: "rug-runner",
@@ -61,6 +70,15 @@ const Games = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black">
         <Header />
         <MemePersonalityGame onBack={() => setSelectedGame(null)} />
+      </div>
+    );
+  }
+
+  if (selectedGame === "this-or-that") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black">
+        <Header />
+        <ThisOrThatGame onBack={() => setSelectedGame(null)} />
       </div>
     );
   }
