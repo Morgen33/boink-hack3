@@ -7,7 +7,7 @@ import { useProfileComplete } from './useProfileComplete';
 import { convertProfileToFormData } from '@/utils/profileDataUtils';
 
 export const useProfileData = () => {
-  const { user, loading: authLoading, isNewUser } = useAuth();
+  const { user, loading: authLoading, isNewUser, clearNewUserFlag } = useAuth();
   const { profile, loading, setProfile, refreshProfile } = useProfileFetch();
   const { handleProfileSave: saveProfile } = useProfileSave();
   const { handleProfileComplete, profileJustCompleted } = useProfileComplete();
@@ -28,7 +28,12 @@ export const useProfileData = () => {
         updated_at: refreshedProfile ? new Date().toISOString() : 'null'
       });
       
-      // Don't return the updateData, just return void
+      // Update isNewUser based on refreshed profile completion status
+      if (refreshedProfile?.profile_completed) {
+        console.log('✅ Profile is completed - clearing new user flag from handleProfileSave');
+        clearNewUserFlag();
+      }
+      
     } catch (error) {
       console.error('❌ Error in handleProfileSave:', error);
       throw error;
@@ -44,11 +49,17 @@ export const useProfileData = () => {
           profile_completed: refreshedProfile?.profile_completed,
           user_id: user.id
         });
+
+        // Update isNewUser based on refreshed profile completion status
+        if (refreshedProfile?.profile_completed) {
+          console.log('✅ Profile is completed - clearing new user flag from useEffect');
+          clearNewUserFlag();
+        }
       }).catch(error => {
         console.error('❌ Error refreshing profile on user change:', error);
       });
     }
-  }, [user?.id, refreshProfile]);
+  }, [user?.id, refreshProfile, clearNewUserFlag]);
 
   return {
     user,
