@@ -55,22 +55,24 @@ const ThisOrThatGame = ({ onBack }: ThisOrThatGameProps) => {
     };
 
     return (
-      <div className="max-w-6xl mx-auto p-6">
-        <Button
-          variant="ghost"
-          onClick={onBack}
-          className="absolute left-4 top-4 md:left-8 md:top-8"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Games
-        </Button>
-        
-        <GameResults 
-          choices={choices}
-          stats={stats}
-          onPlayAgain={resetGame}
-          onBack={onBack}
-        />
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black py-8">
+        <div className="max-w-6xl mx-auto p-6">
+          <Button
+            variant="ghost"
+            onClick={onBack}
+            className="absolute left-4 top-4 md:left-8 md:top-8 text-white hover:bg-white/10"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Games
+          </Button>
+          
+          <GameResults 
+            choices={choices}
+            stats={stats}
+            onPlayAgain={resetGame}
+            onBack={onBack}
+          />
+        </div>
       </div>
     );
   }
@@ -78,26 +80,28 @@ const ThisOrThatGame = ({ onBack }: ThisOrThatGameProps) => {
   const currentMatchup = memeMatchups[currentMatchupIndex];
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <Button
-        variant="ghost"
-        onClick={onBack}
-        className="absolute left-4 top-4 md:left-8 md:top-8"
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Games
-      </Button>
-      
-      <GameHeader 
-        currentRound={currentMatchupIndex + 1}
-        totalRounds={totalRounds}
-        score={choices.length}
-      />
-      
-      <MatchupCard 
-        matchup={currentMatchup}
-        onChoice={handleChoice}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black py-8">
+      <div className="max-w-6xl mx-auto p-6">
+        <Button
+          variant="ghost"
+          onClick={onBack}
+          className="absolute left-4 top-4 md:left-8 md:top-8 text-white hover:bg-white/10"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Games
+        </Button>
+        
+        <GameHeader 
+          currentRound={currentMatchupIndex + 1}
+          totalRounds={totalRounds}
+          score={choices.length}
+        />
+        
+        <MatchupCard 
+          matchup={currentMatchup}
+          onChoice={handleChoice}
+        />
+      </div>
     </div>
   );
 };

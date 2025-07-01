@@ -9,30 +9,38 @@ interface MatchupCardProps {
 
 export const MatchupCard = ({ matchup, onChoice }: MatchupCardProps) => {
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-white mb-2">Choose Your Favorite!</h2>
-        <p className="text-gray-400">Click on the meme that speaks to your soul 🚀</p>
+    <div className="max-w-5xl mx-auto">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-white mb-3">Choose Your Favorite!</h2>
+        <p className="text-gray-400 text-lg">Click on the meme that speaks to your soul 🚀</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <MemeCard 
-          meme={matchup.memeA}
-          onSelect={() => onChoice(matchup.memeA.id)}
-        />
-        
-        <div className="text-center text-2xl font-bold text-gray-500">
-          VS
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+        <div className="order-1 lg:order-none">
+          <MemeCard 
+            meme={matchup.memeA}
+            onSelect={() => onChoice(matchup.memeA.id)}
+          />
         </div>
         
-        <MemeCard 
-          meme={matchup.memeB}
-          onSelect={() => onChoice(matchup.memeB.id)}
-        />
+        <div className="order-3 lg:order-none text-center">
+          <div className="bg-gradient-to-r from-pink-500 to-orange-500 text-white text-4xl font-bold py-4 px-8 rounded-full shadow-lg">
+            VS
+          </div>
+        </div>
+        
+        <div className="order-2 lg:order-none">
+          <MemeCard 
+            meme={matchup.memeB}
+            onSelect={() => onChoice(matchup.memeB.id)}
+          />
+        </div>
       </div>
       
-      <div className="text-center mt-6 text-sm text-gray-500">
-        Category: {matchup.category}
+      <div className="text-center mt-8">
+        <div className="inline-block bg-purple-600/20 border border-purple-500/30 rounded-full px-6 py-2">
+          <span className="text-purple-400 font-medium">Category: {matchup.category}</span>
+        </div>
       </div>
     </div>
   );
