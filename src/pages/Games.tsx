@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import DrunkOnAlpha from "@/components/games/DrunkOnAlpha";
+import MemePersonalityGame from "@/components/games/MemePersonalityGame";
 import GameCard from "@/components/games/GameCard";
 
 const Games = () => {
@@ -16,6 +17,15 @@ const Games = () => {
       status: "Available",
       difficulty: "Medium",
       players: "1,337 degens playing"
+    },
+    {
+      id: "meme-personality",
+      title: "🎭 What's Your Meme Energy?",
+      tagline: "Discover your crypto meme personality!",
+      description: "Take our totally scientific quiz to find out if you're an Apex Degen, Meme Lord, or Diamond Sage. Perfect for dating profiles!",
+      status: "Available",
+      difficulty: "Easy",
+      players: "2,420 personalities discovered"
     },
     {
       id: "rug-runner",
@@ -42,6 +52,15 @@ const Games = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black">
         <Header />
         <DrunkOnAlpha onBack={() => setSelectedGame(null)} />
+      </div>
+    );
+  }
+
+  if (selectedGame === "meme-personality") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black">
+        <Header />
+        <MemePersonalityGame onBack={() => setSelectedGame(null)} />
       </div>
     );
   }
