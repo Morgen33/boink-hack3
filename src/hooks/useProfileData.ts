@@ -12,7 +12,7 @@ export const useProfileData = () => {
   const { handleProfileSave: saveProfile } = useProfileSave();
   const { handleProfileComplete, profileJustCompleted } = useProfileComplete();
 
-  const handleProfileSave = async (formData: any, isPartial: boolean = false) => {
+  const handleProfileSave = async (formData: any, isPartial: boolean = false): Promise<void> => {
     console.log('🔄 Starting profile save - isPartial:', isPartial);
     
     try {
@@ -28,7 +28,7 @@ export const useProfileData = () => {
         updated_at: refreshedProfile ? new Date().toISOString() : 'null'
       });
       
-      return updateData;
+      // Don't return the updateData, just return void
     } catch (error) {
       console.error('❌ Error in handleProfileSave:', error);
       throw error;
