@@ -29,49 +29,99 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
 
+  const checkProfileCompletion = async (userId: string) => {
+    try {
+      console.log('🔍 Checking profile completion for user:', userId);
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('profile_completed')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('❌ Error checking profile completion:', error);
+        return false;
+      }
+
+      const isCompleted = profile?.profile_completed === true;
+      console.log('📊 Profile completion status:', {
+        userId,
+        profile_completed: isCompleted,
+        raw_value: profile?.profile_completed
+      });
+
+      return isCompleted;
+    } catch (error) {
+      console.error('❌ Error in checkProfileCompletion:', error);
+      return false;
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.email);
+        console.log('🔄 Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Check if this is a new user signup or signin
+        // Handle auth events
         if (event === 'SIGNED_IN' && session?.user) {
+          console.log('✅ User signed in, checking profile status...');
+          
+          // Use setTimeout to avoid potential deadlocks with Supabase
           setTimeout(async () => {
             try {
-              const { data: profile } = await supabase
-                .from('profiles')
-                .select('profile_completed')
-                .eq('id', session.user.id)
-                .single();
-
-              if (profile && !profile.profile_completed) {
+              const isProfileCompleted = await checkProfileCompletion(session.user.id);
+              
+              // Set isNewUser based on profile completion status
+              if (isProfileCompleted) {
+                console.log('✅ Profile is completed - clearing new user flag');
+                setIsNewUser(false);
+              } else {
+                console.log('⚠️ Profile is not completed - setting new user flag');
                 setIsNewUser(true);
               }
+
+              // Handle Twitter OAuth connection after successful authentication
+              const provider = session.user.app_metadata?.provider;
+              if (provider === 'twitter') {
+                handleTwitterConnection(session.user);
+              }
             } catch (error) {
-              console.error('Error checking profile:', error);
+              console.error('❌ Error checking profile after sign in:', error);
+              // Default to new user if we can't check profile
+              setIsNewUser(true);
             }
           }, 0);
-
-          // Handle Twitter OAuth connection after successful authentication
-          const provider = session.user.app_metadata?.provider;
-          if (provider === 'twitter') {
-            setTimeout(() => {
-              handleTwitterConnection(session.user);
-            }, 0);
-          }
+        } else if (event === 'SIGNED_OUT') {
+          console.log('👋 User signed out - clearing new user flag');
+          setIsNewUser(false);
         }
       }
     );
 
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('🚀 Initial session check:', session?.user?.email || 'No user');
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+
+      // Check profile completion for initial session
+      if (session?.user) {
+        setTimeout(async () => {
+          try {
+            const isProfileCompleted = await checkProfileCompletion(session.user.id);
+            setIsNewUser(!isProfileCompleted);
+            console.log('📊 Initial profile check - isNewUser:', !isProfileCompleted);
+          } catch (error) {
+            console.error('❌ Error in initial profile check:', error);
+            setIsNewUser(true);
+          }
+        }, 0);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -147,6 +197,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const clearNewUserFlag = () => {
+    console.log('🔄 Manually clearing new user flag');
     setIsNewUser(false);
   };
 
