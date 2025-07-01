@@ -23,22 +23,29 @@ const Profile = () => {
     refreshProfile,
   } = useProfileData();
 
-  // Redirect to auth if not authenticated (only for this protected page)
+  // Redirect to auth if not authenticated
   useEffect(() => {
     if (!loading && !user) {
+      console.log('🔄 No user found, redirecting to auth...');
       navigate('/auth');
     }
   }, [user, loading, navigate]);
 
-  // Refresh profile data when component mounts to ensure we have latest data
+  // Refresh profile data when component mounts or when returning from other pages
   useEffect(() => {
     if (user && !loading) {
-      console.log('Profile page mounted, refreshing profile data...');
+      console.log('🔄 Profile page mounted, refreshing profile data...');
       refreshProfile().then((refreshedProfile) => {
-        console.log('Profile refreshed on mount:', refreshedProfile?.profile_completed);
-      }).catch(console.error);
+        console.log('✅ Profile refreshed on mount:', {
+          profile_completed: refreshedProfile?.profile_completed,
+          has_bio: refreshedProfile?.bio ? 'yes' : 'no',
+          has_age: refreshedProfile?.age ? 'yes' : 'no'
+        });
+      }).catch(error => {
+        console.error('❌ Error refreshing profile on mount:', error);
+      });
     }
-  }, [user, loading]);
+  }, [user, loading, refreshProfile]);
 
   // Check if we're in edit mode or if this is a new user
   const isEditing = searchParams.get('edit') === 'true' || isNewUser;
@@ -60,11 +67,27 @@ const Profile = () => {
 
   // Show completion message
   if (profileJustCompleted) {
+    console.log('🎉 Showing profile completion message');
     return <ProfileCompletion isNewUser={isNewUser} />;
   }
 
+  // Log current profile state for debugging
+  console.log('📊 Current profile state:', {
+    profile_exists: !!profile,
+    profile_completed: profile?.profile_completed,
+    isEditing,
+    isNewUser,
+    searchParams: searchParams.get('edit')
+  });
+
   // Show profile wizard for new users, editing, or incomplete profiles
-  if (isEditing || (profile && !profile.profile_completed)) {
+  if (isEditing || !profile?.profile_completed) {
+    console.log('📝 Showing profile wizard - reason:', {
+      isEditing,
+      profile_completed: profile?.profile_completed,
+      isNewUser
+    });
+    
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -80,9 +103,9 @@ const Profile = () => {
     );
   }
 
-  // If profile is complete and we're not editing, show completion status and redirect option
+  // If profile is complete and we're not editing, show completion status
   if (profile?.profile_completed) {
-    console.log('Profile is completed, showing completion status');
+    console.log('✅ Profile is completed, showing completion status');
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -122,6 +145,16 @@ const Profile = () => {
                 </button>
               </div>
             </div>
+            
+            {/* Debug info */}
+            <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm">
+              <h3 className="font-semibold mb-2">Debug Info:</h3>
+              <p>Profile ID: {profile.id}</p>
+              <p>Profile Completed: {profile.profile_completed ? 'Yes' : 'No'}</p>
+              <p>Full Name: {profile.full_name || 'Not set'}</p>
+              <p>Bio: {profile.bio ? 'Set' : 'Not set'}</p>
+              <p>Age: {profile.age || 'Not set'}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -129,6 +162,7 @@ const Profile = () => {
   }
 
   // Show incomplete profile warning as fallback
+  console.log('⚠️ Showing incomplete profile warning as fallback');
   return (
     <div className="min-h-screen bg-background">
       <Header />

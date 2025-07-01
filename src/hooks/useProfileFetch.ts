@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -12,11 +12,15 @@ export const useProfileFetch = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const refreshProfile = async () => {
-    if (!user) return;
+  const refreshProfile = useCallback(async () => {
+    if (!user) {
+      console.log('⚠️ No user, skipping profile refresh');
+      return null;
+    }
 
     try {
       console.log('🔍 Refreshing profile for user:', user.id);
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -28,11 +32,18 @@ export const useProfileFetch = () => {
         throw error;
       }
 
+      if (!data) {
+        console.warn('⚠️ No profile data found for user:', user.id);
+        return null;
+      }
+
       console.log('✅ Fresh profile data from database:', {
         id: data.id,
         full_name: data.full_name,
         profile_completed: data.profile_completed,
-        updated_at: data.updated_at
+        updated_at: data.updated_at,
+        bio: data.bio ? 'has bio' : 'no bio',
+        age: data.age || 'no age'
       });
       
       const profileData = createProfileFromData(data);
@@ -44,11 +55,12 @@ export const useProfileFetch = () => {
       console.error('💥 Error refreshing profile:', error);
       throw error;
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     const fetchProfile = async () => {
       if (!user) {
+        console.log('⚠️ No user, setting loading to false');
         setLoading(false);
         return;
       }
@@ -69,7 +81,7 @@ export const useProfileFetch = () => {
     };
 
     fetchProfile();
-  }, [user, toast]);
+  }, [user, refreshProfile, toast]);
 
   return { profile, loading, setProfile, refreshProfile };
 };

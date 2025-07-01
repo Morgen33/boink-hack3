@@ -15,13 +15,18 @@ export const useProfileComplete = () => {
 
   const handleProfileComplete = async (formData: ProfileFormData) => {
     try {
-      console.log('Starting profile completion process...');
+      console.log('🚀 Starting profile completion process...');
       
       // Save the profile with completion flag
       const updateData = await handleProfileSave(formData, false); // false means complete save
       
-      console.log('Profile completed successfully, profile_completed set to true');
-      console.log('Update data returned:', updateData);
+      console.log('✅ Profile completed successfully, updateData:', updateData);
+
+      // Clear new user flag if it was set
+      if (isNewUser) {
+        console.log('🔄 Clearing new user flag...');
+        clearNewUserFlag();
+      }
 
       toast({
         title: "Success! 🎉",
@@ -33,18 +38,15 @@ export const useProfileComplete = () => {
       // Show completion message
       setProfileJustCompleted(true);
       
-      // Clear new user flag if it was set
-      if (isNewUser) {
-        clearNewUserFlag();
-      }
-      
-      // Force a page refresh to ensure clean state after completion
+      // Navigate to discover after showing completion message
       setTimeout(() => {
-        console.log('Redirecting to discover page...');
-        window.location.href = '/discover';
+        console.log('🔄 Navigating to discover page...');
+        setProfileJustCompleted(false);
+        navigate('/discover');
       }, 3000);
+      
     } catch (error: any) {
-      console.error('Error completing profile:', error);
+      console.error('❌ Error completing profile:', error);
       toast({
         title: "Error",
         description: error.message || "Failed to complete profile.",
