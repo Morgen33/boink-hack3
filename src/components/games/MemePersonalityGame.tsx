@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Share2, RefreshCw } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Twitter, Facebook, Linkedin, Link2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface MemeChoice {
@@ -274,16 +273,35 @@ const MemePersonalityGame = ({ onBack }: MemePersonalityGameProps) => {
     setResult(null);
   };
 
-  const shareResult = () => {
+  const shareToTwitter = () => {
     if (result) {
-      navigator.clipboard.writeText(
-        `I just discovered my crypto meme personality: ${result.name} ${result.emoji}! ${result.description} What's your meme energy? 🚀`
-      );
-      toast({
-        title: "Result Copied! 📋",
-        description: "Share your meme personality with the world!",
-      });
+      const text = `I just discovered my crypto meme personality: ${result.name} ${result.emoji}! ${result.description} What's your meme energy? 🚀`;
+      const url = window.location.href;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
     }
+  };
+
+  const shareToFacebook = () => {
+    if (result) {
+      const url = window.location.href;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    }
+  };
+
+  const shareToLinkedIn = () => {
+    if (result) {
+      const text = `I just discovered my crypto meme personality: ${result.name} ${result.emoji}! ${result.description}`;
+      const url = window.location.href;
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(text)}`, '_blank');
+    }
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast({
+      title: "Link Copied! 🔗",
+      description: "Share your meme personality with the world!",
+    });
   };
 
   if (gameComplete && result) {
@@ -313,10 +331,22 @@ const MemePersonalityGame = ({ onBack }: MemePersonalityGameProps) => {
           </h1>
           <p className="text-lg text-gray-300 mb-6">{result.description}</p>
           
-          <div className="flex justify-center space-x-4 mb-8">
-            <Button onClick={shareResult} className="bg-purple-600 hover:bg-purple-700">
-              <Share2 className="w-4 h-4 mr-2" />
-              Share Result
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <Button onClick={shareToTwitter} className="bg-blue-500 hover:bg-blue-600">
+              <Twitter className="w-4 h-4 mr-2" />
+              Share on X
+            </Button>
+            <Button onClick={shareToFacebook} className="bg-blue-700 hover:bg-blue-800">
+              <Facebook className="w-4 h-4 mr-2" />
+              Share on Facebook
+            </Button>
+            <Button onClick={shareToLinkedIn} className="bg-blue-600 hover:bg-blue-700">
+              <Linkedin className="w-4 h-4 mr-2" />
+              Share on LinkedIn
+            </Button>
+            <Button onClick={copyLink} variant="outline">
+              <Link2 className="w-4 h-4 mr-2" />
+              Copy Link
             </Button>
             <Button onClick={resetGame} variant="outline">
               <RefreshCw className="w-4 h-4 mr-2" />
@@ -456,24 +486,24 @@ const MemePersonalityGame = ({ onBack }: MemePersonalityGameProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {question.choices.map((choice) => (
               <Button
                 key={choice.id}
                 variant="outline"
-                className="w-full h-auto p-4 text-left justify-start hover:bg-purple-900/20 hover:border-purple-500 flex items-center space-x-4"
+                className="w-full h-auto p-6 text-left justify-start hover:bg-purple-900/20 hover:border-purple-500 flex items-center space-x-6"
                 onClick={() => handleAnswer(choice)}
               >
                 {choice.memeImage && (
                   <img 
                     src={choice.memeImage} 
                     alt="Choice meme"
-                    className="w-12 h-12 rounded object-cover border border-gray-600"
+                    className="w-20 h-20 rounded-lg object-cover border-2 border-gray-600 flex-shrink-0"
                   />
                 )}
                 <div className="flex-1">
-                  <span className="text-lg mr-3">{choice.text.split(' ')[0]}</span>
-                  <span>{choice.text.substring(choice.text.indexOf(' ') + 1)}</span>
+                  <span className="text-xl mr-3">{choice.text.split(' ')[0]}</span>
+                  <span className="text-base">{choice.text.substring(choice.text.indexOf(' ') + 1)}</span>
                 </div>
               </Button>
             ))}
