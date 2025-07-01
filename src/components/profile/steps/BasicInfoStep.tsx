@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { User } from 'lucide-react';
 import BasicInfoForm from './BasicInfoForm';
 import PhotoUpload from './PhotoUpload';
+import { validateBasicInfoStep } from '@/utils/profileValidation';
 
 interface BasicInfoStepProps {
   data: any;
@@ -19,6 +20,7 @@ interface Photo {
 const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [mainPhotoIndex, setMainPhotoIndex] = useState(0);
+  const validation = validateBasicInfoStep(data);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     onUpdate({ [field]: value });
@@ -37,14 +39,22 @@ const BasicInfoStep = ({ data, onUpdate }: BasicInfoStepProps) => {
 
       <BasicInfoForm data={data} onUpdate={handleInputChange} />
 
-      <PhotoUpload
-        photos={photos}
-        setPhotos={setPhotos}
-        mainPhotoIndex={mainPhotoIndex}
-        setMainPhotoIndex={setMainPhotoIndex}
-        onUpdate={onUpdate}
-        data={data}
-      />
+      <div className="space-y-2">
+        <h4 className="font-medium flex items-center gap-2">
+          Profile Photos *
+          {validation.errors.photo_urls && (
+            <span className="text-sm text-red-600 font-normal">- At least one photo required</span>
+          )}
+        </h4>
+        <PhotoUpload
+          photos={photos}
+          setPhotos={setPhotos}
+          mainPhotoIndex={mainPhotoIndex}
+          setMainPhotoIndex={setMainPhotoIndex}
+          onUpdate={onUpdate}
+          data={data}
+        />
+      </div>
     </div>
   );
 };

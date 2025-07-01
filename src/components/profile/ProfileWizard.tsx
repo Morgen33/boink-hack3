@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,8 +10,10 @@ import DatingPreferencesStep from './steps/DatingPreferencesStep';
 import CryptoProfileStep from './steps/CryptoProfileStep';
 import ReviewStep from './steps/ReviewStep';
 import ProfileVisibilityAlert from './ProfileVisibilityAlert';
+import ValidationStatus from './ValidationStatus';
 import { User } from '@supabase/supabase-js';
 import { ProfileFormData } from '@/types/ProfileTypes';
+import { validateStepByNumber } from '@/utils/profileValidation';
 
 const steps = [
   { id: 1, title: 'Basic Info', description: 'Tell us about yourself' },
@@ -69,7 +70,20 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
     setFormData(prev => ({ ...prev, ...updates }));
   };
 
+  // Get validation for current step
+  const currentValidation = validateStepByNumber(currentStep, formData);
+
   const handleNext = () => {
+    // Validate current step before allowing navigation
+    if (!currentValidation.isValid && currentStep < 5) {
+      toast({
+        title: "Required Fields Missing",
+        description: `Please complete all required fields in ${steps[currentStep - 1].title} before continuing.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     // If we're editing from review, go back to review instead of next step
     if (isEditingFromReview) {
       setCurrentStep(5);
@@ -194,6 +208,16 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
         </div>
       </div>
 
+      {/* Validation Status - Show for steps 1-4 */}
+      {currentStep < 5 && (
+        <div className="mb-6">
+          <ValidationStatus 
+            validation={currentValidation} 
+            stepTitle={steps[currentStep - 1].title}
+          />
+        </div>
+      )}
+
       {/* Step Content */}
       <Card>
         <CardContent className="p-6">
@@ -222,7 +246,10 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
             )}
           </Button>
           
-          <Button onClick={handleNext}>
+          <Button 
+            onClick={handleNext}
+            disabled={!currentValidation.isValid && currentStep < 5}
+          >
             {isEditingFromReview ? (
               <>
                 Return to Review

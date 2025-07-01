@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Heart, Sparkles, Target } from 'lucide-react';
+import { validateAboutYouStep } from '@/utils/profileValidation';
 
 interface AboutYouStepProps {
   data: any;
@@ -26,6 +27,8 @@ const lookingForOptions = [
 ];
 
 const AboutYouStep = ({ data, onUpdate }: AboutYouStepProps) => {
+  const validation = validateAboutYouStep(data);
+
   const handleInputChange = (field: string, value: string) => {
     onUpdate({ [field]: value });
   };
@@ -58,7 +61,7 @@ const AboutYouStep = ({ data, onUpdate }: AboutYouStepProps) => {
       <div className="space-y-2">
         <Label htmlFor="bio" className="flex items-center gap-2">
           <Sparkles className="w-4 h-4" />
-          Bio *
+          Bio * (minimum 50 characters)
         </Label>
         <Textarea
           id="bio"
@@ -66,11 +69,21 @@ const AboutYouStep = ({ data, onUpdate }: AboutYouStepProps) => {
           onChange={(e) => handleInputChange('bio', e.target.value)}
           placeholder="Tell us about yourself... Are you a diamond hands HODLer or a paper hands trader? What makes you unique in the crypto space? 💎🙌"
           rows={4}
-          className="resize-none"
+          className={`resize-none ${validation.errors.bio ? 'border-red-500' : ''}`}
         />
-        <p className="text-xs text-muted-foreground">
-          Tip: Mention your crypto journey, favorite projects, or what you're passionate about!
-        </p>
+        <div className="flex justify-between items-center">
+          <div>
+            {validation.errors.bio && (
+              <p className="text-sm text-red-600">{validation.errors.bio}</p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Tip: Mention your crypto journey, favorite projects, or what you're passionate about!
+            </p>
+          </div>
+          <span className="text-xs text-muted-foreground">
+            {data.bio?.length || 0}/50 min
+          </span>
+        </div>
       </div>
 
       <div className="space-y-2">
@@ -89,7 +102,7 @@ const AboutYouStep = ({ data, onUpdate }: AboutYouStepProps) => {
       <div className="space-y-3">
         <Label className="flex items-center gap-2">
           <Target className="w-4 h-4" />
-          What are you looking for? * (select all that apply)
+          What are you looking for? * (select at least one)
         </Label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {lookingForOptions.map((option) => (
@@ -108,6 +121,9 @@ const AboutYouStep = ({ data, onUpdate }: AboutYouStepProps) => {
             </div>
           ))}
         </div>
+        {validation.errors.looking_for && (
+          <p className="text-sm text-red-600">{validation.errors.looking_for}</p>
+        )}
         <p className="text-xs text-muted-foreground">
           Select all that apply. This helps our algorithm find better matches for you!
         </p>

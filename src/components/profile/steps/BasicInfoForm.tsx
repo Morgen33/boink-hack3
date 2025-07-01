@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { User, Calendar, MapPin, AtSign, Eye, EyeOff } from 'lucide-react';
+import { validateBasicInfoStep } from '@/utils/profileValidation';
 
 interface BasicInfoFormProps {
   data: any;
@@ -25,6 +26,8 @@ const calculateAge = (birthDate: string): string => {
 };
 
 const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
+  const validation = validateBasicInfoStep(data);
+
   const handleDateChange = (value: string) => {
     onUpdate('date_of_birth', value);
     // Auto-calculate and update age
@@ -46,7 +49,11 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             onChange={(e) => onUpdate('full_name', e.target.value)}
             placeholder="Your full name"
             required
+            className={validation.errors.full_name ? 'border-red-500' : ''}
           />
+          {validation.errors.full_name && (
+            <p className="text-sm text-red-600">{validation.errors.full_name}</p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -60,7 +67,11 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             onChange={(e) => onUpdate('username', e.target.value)}
             placeholder="cryptoqueen"
             required
+            className={validation.errors.username ? 'border-red-500' : ''}
           />
+          {validation.errors.username && (
+            <p className="text-sm text-red-600">{validation.errors.username}</p>
+          )}
           <p className="text-xs text-muted-foreground">
             This will be your unique handle on the platform
           </p>
@@ -79,7 +90,11 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             value={data.date_of_birth}
             onChange={(e) => handleDateChange(e.target.value)}
             required
+            className={validation.errors.date_of_birth ? 'border-red-500' : ''}
           />
+          {validation.errors.date_of_birth && (
+            <p className="text-sm text-red-600">{validation.errors.date_of_birth}</p>
+          )}
         </div>
 
         <div className="space-y-2">
