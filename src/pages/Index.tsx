@@ -31,14 +31,19 @@ const Index = () => {
     }
   }, []);
 
-  // Smart routing based on user and profile status
+  // Smart routing for authenticated users only (not automatic redirect)
   useEffect(() => {
     if (authLoading || profileLoading) return;
 
+    // Only handle routing for authenticated users - let unauthenticated users see the landing page
     if (user && profile) {
       if (profile.profile_completed) {
-        // Completed profile → redirect to daily matches
-        navigate('/daily-matches');
+        // Completed profile → redirect to daily matches after a short delay to let them see the landing page
+        const timer = setTimeout(() => {
+          navigate('/daily-matches');
+        }, 1500);
+        
+        return () => clearTimeout(timer);
       } else {
         // Incomplete profile → show completion prompt after a delay
         const timer = setTimeout(() => {

@@ -1,5 +1,6 @@
 
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import Header from '@/components/Header';
 import ProfileWizard from '@/components/profile/ProfileWizard';
@@ -19,6 +20,13 @@ const Profile = () => {
     handleProfileComplete,
     convertProfileToFormData,
   } = useProfileData();
+
+  // Redirect to auth if not authenticated (only for this protected page)
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
 
   // Check if we're in edit mode or if this is a new user
   const isEditing = searchParams.get('edit') === 'true' || isNewUser;

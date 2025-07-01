@@ -1,6 +1,5 @@
 
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfileFetch } from './useProfileFetch';
 import { useProfileSave } from './useProfileSave';
@@ -9,17 +8,11 @@ import { convertProfileToFormData } from '@/utils/profileDataUtils';
 
 export const useProfileData = () => {
   const { user, loading: authLoading, isNewUser } = useAuth();
-  const navigate = useNavigate();
   const { profile, loading, setProfile } = useProfileFetch();
   const { handleProfileSave: saveProfile } = useProfileSave();
   const { handleProfileComplete, profileJustCompleted } = useProfileComplete();
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate('/auth');
-    }
-  }, [user, authLoading, navigate]);
+  // Removed the automatic redirect to /auth - this should be handled by individual pages
 
   const handleProfileSave = async (formData: any, isPartial: boolean = false) => {
     const updateData = await saveProfile(formData, isPartial);
