@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { demoProfiles, ProfileCard } from '@/data/demoProfiles';
+import { ProfileCard } from '@/data/demoProfiles';
 import { User } from '@supabase/supabase-js';
 
 interface Profile {
@@ -286,8 +286,8 @@ export const useEnhancedMatching = (user: User | null) => {
 
         if (error) {
           console.error('Supabase query error:', error);
-          console.log('Falling back to demo profiles only');
-          setProfiles([...demoProfiles]);
+          console.log('No profiles available');
+          setProfiles([]);
         } else {
           console.log('Raw real profiles fetched:', realProfiles?.length || 0);
           console.log('Sample real profile data:', realProfiles?.[0]);
@@ -315,28 +315,21 @@ export const useEnhancedMatching = (user: User | null) => {
               // Convert back to ProfileCard format
               const matchedProfiles = scoredProfiles.map(match => convertToProfileCard(match.profile));
               
-              // PRIORITIZE REAL PROFILES: Put real profiles first, then add demo profiles
-              const finalProfiles = [...matchedProfiles, ...demoProfiles];
-              console.log('Final profile order - Real profiles first:', finalProfiles.length, 'total');
-              console.log('Real profiles count:', matchedProfiles.length);
-              console.log('Demo profiles count:', demoProfiles.length);
-              
-              setProfiles(finalProfiles);
+              console.log('Final matched profiles:', matchedProfiles.length);
+              setProfiles(matchedProfiles);
             } else {
-              // If no user profile for matching, still show real profiles first
-              const finalProfiles = [...convertedProfiles, ...demoProfiles];
-              console.log('No user profile for matching, showing real profiles first:', finalProfiles.length);
-              setProfiles(finalProfiles);
+              // If no user profile for matching, still show real profiles
+              console.log('No user profile for matching, showing real profiles:', convertedProfiles.length);
+              setProfiles(convertedProfiles);
             }
           } else {
-            console.log('No real profiles found - showing demo profiles only');
-            setProfiles([...demoProfiles]);
+            console.log('No real profiles found');
+            setProfiles([]);
           }
         }
       } catch (error: any) {
         console.error('Error in enhanced matching:', error);
-        // Fallback to demo profiles
-        setProfiles([...demoProfiles]);
+        setProfiles([]);
       } finally {
         setLoading(false);
       }
