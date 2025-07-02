@@ -35,8 +35,6 @@ const Discover = () => {
   // Debug info
   console.log('Discover page - Total profiles:', profiles.length);
   console.log('Current profile index:', profiles.findIndex(p => p.id === currentProfile?.id));
-  console.log('Real profiles (non-demo):', profiles.filter(p => !p.isDemo).length);
-  console.log('Demo profiles:', profiles.filter(p => p.isDemo).length);
 
   if (authLoading) {
     return (
@@ -95,8 +93,6 @@ const Discover = () => {
             {/* Debug info for development */}
             <div className="text-xs text-muted-foreground mt-2 space-y-1">
               <p>Total profiles: {profiles.length}</p>
-              <p>Real profiles: {profiles.filter(p => !p.isDemo).length}</p>
-              <p>Demo profiles: {profiles.filter(p => p.isDemo).length}</p>
             </div>
           </div>
 

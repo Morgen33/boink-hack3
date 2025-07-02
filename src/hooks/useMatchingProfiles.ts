@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { demoProfiles, ProfileCard } from '@/data/demoProfiles';
+import { ProfileCard } from '@/data/demoProfiles';
 import { User } from '@supabase/supabase-js';
 
 interface Profile {
@@ -45,11 +45,9 @@ export const useMatchingProfiles = (user: User | null) => {
           setUserProfile(currentUserProfile);
         }
 
-        // Always start with demo profiles for immediate content
-        setProfiles([...demoProfiles]);
-        setLoading(false);
+        setLoading(true);
 
-        // Then fetch real profiles with matching logic
+        // Fetch real profiles with matching logic
         let query = supabase
           .from('profiles')
           .select('id, full_name, age, bio, location, interests, looking_for, avatar_url, gender_identity, sexual_orientation, looking_for_gender, relationship_type')
@@ -64,6 +62,7 @@ export const useMatchingProfiles = (user: User | null) => {
 
         if (error) {
           console.error('Supabase query error:', error);
+          setProfiles([]);
         } else {
           console.log('Real profiles fetched:', data?.length || 0);
           
@@ -80,16 +79,19 @@ export const useMatchingProfiles = (user: User | null) => {
 
             console.log('Mutual matches found:', mutualMatches.length);
 
-            // Combine demo profiles with real matching profiles and shuffle
-            const allProfiles = [...demoProfiles, ...mutualMatches];
-            const shuffledProfiles = allProfiles.sort(() => Math.random() - 0.5);
+            const shuffledProfiles = mutualMatches.sort(() => Math.random() - 0.5);
             console.log('Updated profiles with matching logic:', shuffledProfiles.length);
             setProfiles(shuffledProfiles);
+          } else {
+            setProfiles([]);
           }
         }
+        
+        setLoading(false);
       } catch (error: any) {
         console.error('Error fetching matching profiles:', error);
-        // Demo profiles are already set, so we're good
+        setProfiles([]);
+        setLoading(false);
       }
     };
 
