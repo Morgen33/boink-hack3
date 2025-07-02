@@ -246,8 +246,8 @@ export const useEnhancedMatching = (user: User | null) => {
   useEffect(() => {
     const initializeProfiles = async () => {
       if (!user) {
-        console.log('No user, showing demo profiles only');
-        setProfiles([...demoProfiles]);
+        console.log('No user, showing empty profiles');
+        setProfiles([]);
         setLoading(false);
         return;
       }
