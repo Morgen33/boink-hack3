@@ -160,8 +160,6 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      {/* Profile Visibility Alert - Only show if not on review step */}
-      {currentStep < 5 && <ProfileVisibilityAlert />}
 
       {/* Progress Header */}
       <ProfileWizardHeader

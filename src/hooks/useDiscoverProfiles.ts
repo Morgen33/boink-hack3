@@ -26,7 +26,6 @@ export const useDiscoverProfiles = (user: User | null) => {
           .from('profiles')
           .select('id, full_name, age, bio, location, interests, looking_for, avatar_url')
           .neq('id', user.id)
-          .eq('profile_completed', true)
           .limit(10);
 
         if (error) {

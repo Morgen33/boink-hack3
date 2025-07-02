@@ -31,27 +31,17 @@ const Index = () => {
     }
   }, []);
 
-  // Smart routing for authenticated users only (not automatic redirect)
+  // Smart routing for authenticated users - redirect to daily matches
   useEffect(() => {
     if (authLoading || profileLoading) return;
 
-    // Only handle routing for authenticated users - let unauthenticated users see the landing page
+    // Redirect authenticated users to daily matches after seeing landing page briefly
     if (user && profile) {
-      if (profile.profile_completed) {
-        // Completed profile → redirect to daily matches after a short delay to let them see the landing page
-        const timer = setTimeout(() => {
-          navigate('/daily-matches');
-        }, 1500);
-        
-        return () => clearTimeout(timer);
-      } else {
-        // Incomplete profile → show completion prompt after a delay
-        const timer = setTimeout(() => {
-          setShowProfilePrompt(true);
-        }, 2000); // Show prompt after 2 seconds
-        
-        return () => clearTimeout(timer);
-      }
+      const timer = setTimeout(() => {
+        navigate('/daily-matches');
+      }, 1500);
+      
+      return () => clearTimeout(timer);
     }
   }, [user, profile, authLoading, profileLoading, navigate]);
 
@@ -92,12 +82,6 @@ const Index = () => {
       <Header />
       <GMGNLink />
       
-      {/* Show prominent warning for authenticated users with incomplete profiles */}
-      {user && profile && !profile.profile_completed && !showOverlay && !showProfilePrompt && (
-        <div className="container mx-auto px-4 pt-24 pb-6">
-          <IncompleteProfileWarning />
-        </div>
-      )}
       
       <main>
         <Hero />

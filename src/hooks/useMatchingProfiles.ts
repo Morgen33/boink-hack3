@@ -53,8 +53,7 @@ export const useMatchingProfiles = (user: User | null) => {
         let query = supabase
           .from('profiles')
           .select('id, full_name, age, bio, location, interests, looking_for, avatar_url, gender_identity, sexual_orientation, looking_for_gender, relationship_type')
-          .neq('id', user.id)
-          .eq('profile_completed', true);
+          .neq('id', user.id);
 
         // Apply gender preference filtering if user has preferences set
         if (currentUserProfile?.looking_for_gender && currentUserProfile.looking_for_gender.length > 0) {

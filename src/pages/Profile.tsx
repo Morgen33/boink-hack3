@@ -81,15 +81,13 @@ const Profile = () => {
     searchParams: searchParams.get('edit')
   });
 
-  const isProfileCompletedInDB = profile?.profile_completed === true;
-
-  const shouldShowWizard = isEditMode || !isProfileCompletedInDB;
+  const shouldShowWizard = isEditMode || !profile;
 
   if (shouldShowWizard) {
-    const reason = isEditMode ? 'edit mode requested' : 'profile not completed in database';
+    const reason = isEditMode ? 'edit mode requested' : 'no profile data';
     console.log('📝 Showing profile wizard - reason:', reason, {
       isEditMode,
-      profile_completed_db: isProfileCompletedInDB,
+      has_profile: !!profile,
       isNewUser_flag: isNewUser
     });
     
@@ -108,14 +106,14 @@ const Profile = () => {
     );
   }
 
-  console.log('✅ Profile is completed in database, showing completion status');
+  console.log('✅ Profile exists, showing profile summary');
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <div className="pt-20 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-4">Your Profile is Complete! 🎉</h1>
+            <h1 className="text-3xl font-bold mb-4">Your Profile 🎉</h1>
             <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-6 mb-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
@@ -147,18 +145,6 @@ const Profile = () => {
                 Edit Profile
               </button>
             </div>
-          </div>
-          
-          <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm">
-            <h3 className="font-semibold mb-2">Debug Info:</h3>
-            <p>Profile ID: {profile?.id}</p>
-            <p>Profile Completed (DB): {profile?.profile_completed ? 'Yes ✅' : 'No ❌'}</p>
-            <p>Is New User Flag: {isNewUser ? 'Yes' : 'No'}</p>
-            <p>Full Name: {profile?.full_name || 'Not set'}</p>
-            <p>Bio: {profile?.bio ? 'Set ✅' : 'Not set ❌'}</p>
-            <p>Age: {profile?.age || 'Not set'}</p>
-            <p>Photos: {profile?.photo_urls?.length || 0} uploaded</p>
-            <p>Last Updated: {new Date().toLocaleString()}</p>
           </div>
         </div>
       </div>
