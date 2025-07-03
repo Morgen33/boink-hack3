@@ -9,11 +9,12 @@ interface ProfileCardProps {
   profile: ProfileCardType;
   onLike: () => void;
   onPass: () => void;
+  onClick?: () => void;
 }
 
-const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
+const ProfileCard = ({ profile, onLike, onPass, onClick }: ProfileCardProps) => {
   return (
-    <Card className="relative overflow-hidden">
+    <Card className="relative overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={onClick}>
       {profile.isDemo && (
         <div className="absolute top-4 right-4 z-10">
           <Badge variant="outline" className="bg-background/80 backdrop-blur-sm">

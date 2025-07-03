@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEnhancedMatching } from '@/hooks/useEnhancedMatching';
 import ProfileCard from '@/components/ProfileCard';
+import DetailedProfileModal from '@/components/DetailedProfileModal';
 import Header from '@/components/Header';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, User, Sparkles } from 'lucide-react';
@@ -13,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 const Discover = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const [selectedProfile, setSelectedProfile] = useState(null);
   const { 
     currentProfile, 
     hasMoreProfiles, 
@@ -106,7 +108,18 @@ const Discover = () => {
                 profile={currentProfile}
                 onLike={handleLike}
                 onPass={handlePass}
+                onClick={() => setSelectedProfile(currentProfile)}
               />
+              
+              {selectedProfile && (
+                <DetailedProfileModal
+                  profile={selectedProfile}
+                  isOpen={!!selectedProfile}
+                  onClose={() => setSelectedProfile(null)}
+                  onLike={handleLike}
+                  onPass={handlePass}
+                />
+              )}
               
               {!hasMoreProfiles && (
                 <Card>
