@@ -9,6 +9,96 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      daily_matches: {
+        Row: {
+          compatibility_score: number
+          created_at: string
+          expires_at: string
+          generated_at: string
+          id: string
+          liked: boolean | null
+          match_breakdown: Json | null
+          matched_profile_id: string
+          user_id: string
+          viewed: boolean
+        }
+        Insert: {
+          compatibility_score: number
+          created_at?: string
+          expires_at?: string
+          generated_at?: string
+          id?: string
+          liked?: boolean | null
+          match_breakdown?: Json | null
+          matched_profile_id: string
+          user_id: string
+          viewed?: boolean
+        }
+        Update: {
+          compatibility_score?: number
+          created_at?: string
+          expires_at?: string
+          generated_at?: string
+          id?: string
+          liked?: boolean | null
+          match_breakdown?: Json | null
+          matched_profile_id?: string
+          user_id?: string
+          viewed?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_matches_matched_profile_id_fkey"
+            columns: ["matched_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_matches_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_history: {
+        Row: {
+          id: string
+          shown_at: string
+          shown_profile_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          shown_at?: string
+          shown_profile_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          shown_at?: string
+          shown_profile_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_history_shown_profile_id_fkey"
+            columns: ["shown_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           age: number | null
@@ -172,7 +262,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cleanup_expired_matches: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -1,1 +1,4 @@
 project_id = "pizlzaomylxreizohewd"
+
+[functions.generate-daily-matches]
+verify_jwt = false
