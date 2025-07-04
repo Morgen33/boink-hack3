@@ -24,6 +24,12 @@ interface Profile {
   defi_protocols: string[] | null;
   nft_collections: string[] | null;
   meme_coin_holdings: string[] | null;
+  biggest_crypto_win: string | null;
+  biggest_crypto_loss: string | null;
+  crypto_motto: string | null;
+  degen_score: number | null;
+  username: string | null;
+  photo_urls: string[] | null;
 }
 
 interface MatchScore {
@@ -277,7 +283,8 @@ export const useEnhancedMatching = (user: User | null) => {
             id, full_name, age, bio, location, interests, looking_for, avatar_url, 
             gender_identity, sexual_orientation, looking_for_gender, relationship_type,
             favorite_crypto, crypto_experience, portfolio_size, trading_style,
-            defi_protocols, nft_collections, meme_coin_holdings, profile_completed
+            defi_protocols, nft_collections, meme_coin_holdings, biggest_crypto_win,
+            biggest_crypto_loss, crypto_motto, degen_score, username, photo_urls, profile_completed
           `)
           .neq('id', user.id)
           .eq('profile_completed', true)

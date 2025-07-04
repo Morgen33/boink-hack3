@@ -20,7 +20,14 @@ export const useUserLikes = () => {
         .from('user_likes')
         .select(`
           *,
-          profiles!user_likes_liked_profile_id_fkey(*)
+          profiles!user_likes_liked_profile_id_fkey(
+            id, full_name, age, location, bio, interests, looking_for, avatar_url,
+            gender_identity, sexual_orientation, relationship_type, looking_for_gender,
+            wallet_address, favorite_crypto, crypto_experience, portfolio_size, 
+            trading_style, defi_protocols, nft_collections, meme_coin_holdings,
+            biggest_crypto_win, biggest_crypto_loss, crypto_motto, degen_score,
+            username, photo_urls
+          )
         `)
         .eq('user_id', user.id);
 
@@ -46,6 +53,7 @@ export const useUserLikes = () => {
             gender_identity: like.profiles.gender_identity,
             sexual_orientation: like.profiles.sexual_orientation,
             relationship_type: like.profiles.relationship_type,
+            looking_for_gender: like.profiles.looking_for_gender,
             wallet_address: like.profiles.wallet_address,
             favorite_crypto: like.profiles.favorite_crypto,
             crypto_experience: like.profiles.crypto_experience,
@@ -58,6 +66,8 @@ export const useUserLikes = () => {
             biggest_crypto_loss: like.profiles.biggest_crypto_loss,
             crypto_motto: like.profiles.crypto_motto,
             degen_score: like.profiles.degen_score,
+            username: like.profiles.username,
+            photo_urls: like.profiles.photo_urls,
           };
 
           if (like.is_mutual_match) {

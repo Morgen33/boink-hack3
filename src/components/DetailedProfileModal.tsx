@@ -12,6 +12,7 @@ interface DetailedProfileModalProps {
     gender_identity?: string;
     sexual_orientation?: string;
     relationship_type?: string;
+    looking_for_gender?: string[];
     wallet_address?: string;
     favorite_crypto?: string;
     crypto_experience?: string;
@@ -24,6 +25,8 @@ interface DetailedProfileModalProps {
     biggest_crypto_loss?: string;
     crypto_motto?: string;
     degen_score?: number;
+    username?: string;
+    photo_urls?: string[];
   };
   isOpen: boolean;
   onClose: () => void;
@@ -57,19 +60,33 @@ const DetailedProfileModal = ({
         
         <ScrollArea className="max-h-[80vh]">
           <div className="space-y-6">
-            {/* Header with photo and basic info */}
+            {/* Header with photos and basic info */}
             <div className="relative">
-              <div className="h-64 bg-gradient-to-br from-web3-red/10 to-web3-magenta/10 rounded-lg flex items-center justify-center">
-                {profile.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    alt={profile.full_name || 'Profile'}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                ) : (
-                  <User className="w-16 h-16 text-muted-foreground" />
-                )}
-              </div>
+              {profile.photo_urls && profile.photo_urls.length > 0 ? (
+                <div className="grid grid-cols-1 gap-2">
+                  {profile.photo_urls.map((photoUrl, index) => (
+                    <div key={index} className="h-64 bg-gradient-to-br from-web3-red/10 to-web3-magenta/10 rounded-lg overflow-hidden">
+                      <img
+                        src={photoUrl}
+                        alt={`${profile.full_name || 'Profile'} - Photo ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="h-64 bg-gradient-to-br from-web3-red/10 to-web3-magenta/10 rounded-lg flex items-center justify-center">
+                  {profile.avatar_url ? (
+                    <img
+                      src={profile.avatar_url}
+                      alt={profile.full_name || 'Profile'}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <User className="w-16 h-16 text-muted-foreground" />
+                  )}
+                </div>
+              )}
               <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm rounded-lg p-4">
                 <h2 className="text-2xl font-bold text-white">
                   {profile.full_name || 'Anonymous'}
@@ -118,8 +135,20 @@ const DetailedProfileModal = ({
                 )}
                 {profile.relationship_type && (
                   <div>
-                    <p className="text-sm text-muted-foreground">Looking For</p>
+                    <p className="text-sm text-muted-foreground">Relationship Type</p>
                     <Badge variant="outline">{profile.relationship_type}</Badge>
+                  </div>
+                )}
+                {profile.looking_for_gender && profile.looking_for_gender.length > 0 && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">Interested In</p>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {profile.looking_for_gender.map((gender, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">
+                          {gender}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 )}
                 {profile.looking_for && (
