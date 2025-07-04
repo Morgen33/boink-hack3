@@ -20,7 +20,7 @@ export const useUserLikes = () => {
         .from('user_likes')
         .select(`
           *,
-          profiles!liked_profile_id(*)
+          profiles!user_likes_liked_profile_id_fkey(*)
         `)
         .eq('user_id', user.id);
 
