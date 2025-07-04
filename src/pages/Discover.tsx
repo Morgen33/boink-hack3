@@ -113,7 +113,7 @@ const Discover = () => {
             <div className="flex items-center justify-center py-12">
               <Loader2 className="w-8 h-8 animate-spin" />
             </div>
-            {!userProfile?.looking_for_gender || userProfile.looking_for_gender.length === 0 ? (
+          ) : !userProfile?.looking_for_gender || userProfile.looking_for_gender.length === 0 ? (
               <Card>
                 <CardContent className="p-6 text-center">
                   <User className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
