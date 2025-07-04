@@ -1,10 +1,11 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useEnhancedMatching } from '@/hooks/useEnhancedMatching';
+import { useDiscoveryMatching } from '@/hooks/useDiscoveryMatching';
 import { useUserLikes } from '@/hooks/useUserLikes';
 import ProfileCard from '@/components/ProfileCard';
 import DetailedProfileModal from '@/components/DetailedProfileModal';
+import DiscoveryFilters from '@/components/DiscoveryFilters';
 import Header from '@/components/Header';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, User, Sparkles } from 'lucide-react';
@@ -23,8 +24,10 @@ const Discover = () => {
     nextProfile, 
     loading,
     userProfile,
-    profiles
-  } = useEnhancedMatching(user);
+    profiles,
+    filters,
+    updateFilters
+  } = useDiscoveryMatching(user);
 
   const handleLike = async () => {
     if (currentProfile) {
@@ -97,17 +100,33 @@ const Discover = () => {
                 Showing matches based on age, location, interests, and crypto preferences
               </p>
             )}
-            {/* Debug info for development */}
-            <div className="text-xs text-muted-foreground mt-2 space-y-1">
-              <p>Total profiles: {profiles.length}</p>
-            </div>
+            {/* Discovery Filters */}
+            <DiscoveryFilters
+              filters={filters}
+              onFiltersChange={updateFilters}
+              totalProfiles={profiles.length}
+              userLocation={userProfile?.location}
+            />
           </div>
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="w-8 h-8 animate-spin" />
             </div>
-          ) : currentProfile ? (
+            {!userProfile?.looking_for_gender || userProfile.looking_for_gender.length === 0 ? (
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <User className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                  <h3 className="font-semibold mb-2">Set your gender preferences</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Complete your dating preferences to see mutual matches who are also looking for someone like you.
+                  </p>
+                  <Button onClick={() => navigate('/profile')}>
+                    Update Preferences
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : currentProfile ? (
             <div className="space-y-4">
               <ProfileCard
                 profile={currentProfile}
@@ -138,7 +157,7 @@ const Discover = () => {
                 </Card>
               )}
             </div>
-          ) : (
+            ) : (
             <Card>
               <CardContent className="p-6 text-center">
                 <User className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
