@@ -12,6 +12,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import DailyMatches from "./pages/DailyMatches";
+import MyMatches from "./pages/MyMatches";
 import WeSupport from "./pages/WeSupport";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/daily-matches" element={<DailyMatches />} />
+            <Route path="/my-matches" element={<MyMatches />} />
             <Route path="/events" element={<EventsPage />} />
             <Route path="/games" element={<Games />} />
             <Route path="/auth" element={<Auth />} />

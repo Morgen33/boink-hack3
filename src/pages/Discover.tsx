@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEnhancedMatching } from '@/hooks/useEnhancedMatching';
+import { useUserLikes } from '@/hooks/useUserLikes';
 import ProfileCard from '@/components/ProfileCard';
 import DetailedProfileModal from '@/components/DetailedProfileModal';
 import Header from '@/components/Header';
@@ -15,6 +16,7 @@ const Discover = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
+  const { likeProfile } = useUserLikes();
   const { 
     currentProfile, 
     hasMoreProfiles, 
@@ -24,8 +26,11 @@ const Discover = () => {
     profiles
   } = useEnhancedMatching(user);
 
-  const handleLike = () => {
-    console.log('Liked profile:', currentProfile?.id);
+  const handleLike = async () => {
+    if (currentProfile) {
+      await likeProfile(currentProfile.id);
+      console.log('Liked profile:', currentProfile.id);
+    }
     nextProfile();
   };
 

@@ -257,6 +257,30 @@ export type Database = {
           },
         ]
       }
+      user_likes: {
+        Row: {
+          created_at: string
+          id: string
+          is_mutual_match: boolean
+          liked_profile_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_mutual_match?: boolean
+          liked_profile_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_mutual_match?: boolean
+          liked_profile_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
