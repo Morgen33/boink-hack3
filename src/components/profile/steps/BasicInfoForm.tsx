@@ -4,26 +4,12 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { User, Calendar, MapPin, AtSign, Eye, EyeOff } from 'lucide-react';
 import { validateBasicInfoStep } from '@/utils/profileValidation';
+import { calculateAge, isUserAdult, MINIMUM_AGE } from '@/utils/ageVerification';
 
 interface BasicInfoFormProps {
   data: any;
   onUpdate: (field: string, value: string | boolean) => void;
 }
-
-const calculateAge = (birthDate: string): string => {
-  if (!birthDate) return '';
-  
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-  
-  return age > 0 ? age.toString() : '';
-};
 
 const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
   const validation = validateBasicInfoStep(data);
@@ -32,8 +18,12 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
     onUpdate('date_of_birth', value);
     // Auto-calculate and update age
     const calculatedAge = calculateAge(value);
-    onUpdate('age', calculatedAge);
+    onUpdate('age', calculatedAge.toString());
   };
+
+  // Check if user meets age requirement
+  const calculatedAge = data.date_of_birth ? calculateAge(data.date_of_birth) : 0;
+  const isUnderage = data.date_of_birth && !isUserAdult(data.date_of_birth);
 
   return (
     <div className="space-y-6">
@@ -90,11 +80,28 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             value={data.date_of_birth}
             onChange={(e) => handleDateChange(e.target.value)}
             required
-            className={validation.errors.date_of_birth ? 'border-red-500' : ''}
+            max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+            className={validation.errors.date_of_birth ? 'border-red-500' : isUnderage ? 'border-red-500' : ''}
           />
           {validation.errors.date_of_birth && (
             <p className="text-sm text-red-600">{validation.errors.date_of_birth}</p>
           )}
+          {data.date_of_birth && !validation.errors.date_of_birth && (
+            <>
+              {isUnderage ? (
+                <p className="text-sm text-red-600 flex items-center gap-1">
+                  ⚠️ You must be at least 18 years old to use this platform
+                </p>
+              ) : (
+                <p className="text-sm text-green-600 flex items-center gap-1">
+                  ✅ Age verified ({calculatedAge} years old)
+                </p>
+              )}
+            </>
+          )}
+          <p className="text-xs text-muted-foreground">
+            🔞 This platform is restricted to users {MINIMUM_AGE} years and older
+          </p>
         </div>
 
         <div className="space-y-2">

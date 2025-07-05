@@ -388,7 +388,8 @@ export const useDiscoveryMatching = (user: User | null) => {
         .neq('id', user.id)
         .eq('profile_completed', true)
         .not('full_name', 'is', null)
-        .not('looking_for_gender', 'is', null);
+        .not('looking_for_gender', 'is', null)
+        .gte('age', 18); // Ensure only adults (18+) are shown
 
       // Pre-filter for users who are looking for current user's gender
       if (currentUserProfile.gender_identity) {

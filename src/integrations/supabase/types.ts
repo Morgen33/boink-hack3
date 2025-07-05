@@ -460,6 +460,10 @@ export type Database = {
         Args: { "": string } | { "": unknown }
         Returns: unknown
       }
+      calculate_age_from_birthdate: {
+        Args: { birth_date: string }
+        Returns: number
+      }
       cleanup_expired_matches: {
         Args: Record<PropertyKey, never>
         Returns: undefined

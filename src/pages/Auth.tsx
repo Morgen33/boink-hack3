@@ -9,15 +9,20 @@ import { Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { calculateAge, isUserAdult, getAgeVerificationError, MINIMUM_AGE } from '@/utils/ageVerification';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
   const [loading, setLoading] = useState(false);
   const { user, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Check if user is old enough
+  const isUserOldEnough = dateOfBirth ? isUserAdult(dateOfBirth) : true;
 
   // Check URL parameters for auth errors
   useEffect(() => {
@@ -62,11 +67,25 @@ const Auth = () => {
         });
         navigate('/');
       } else {
+        // Validate age before signup
+        if (!dateOfBirth) {
+          throw new Error('Date of birth is required for registration');
+        }
+        
+        if (!isUserAdult(dateOfBirth)) {
+          throw new Error(getAgeVerificationError());
+        }
+
+        const age = calculateAge(dateOfBirth);
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`
+            emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              date_of_birth: dateOfBirth,
+              age: age.toString()
+            }
           }
         });
         if (error) throw error;
@@ -127,8 +146,15 @@ const Auth = () => {
             Welcome to Boink
           </CardTitle>
           <CardDescription>
-            {isLogin ? 'Sign in to your account' : 'Create your account'}
+            {isLogin ? 'Sign in to your account' : `Create your account (${MINIMUM_AGE}+ only)`}
           </CardDescription>
+          {!isLogin && (
+            <div className="mt-2 p-3 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg">
+              <p className="text-sm text-amber-800 dark:text-amber-200">
+                🔞 This platform is restricted to users {MINIMUM_AGE} years and older
+              </p>
+            </div>
+          )}
         </CardHeader>
         <CardContent className="space-y-4">
           <Button
@@ -181,6 +207,32 @@ const Auth = () => {
                 disabled={loading}
               />
             </div>
+            
+            {!isLogin && (
+              <div className="space-y-2">
+                <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                <Input
+                  id="dateOfBirth"
+                  type="date"
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                  required
+                  disabled={loading}
+                  max={new Date(new Date().setFullYear(new Date().getFullYear() - MINIMUM_AGE)).toISOString().split('T')[0]}
+                />
+                {dateOfBirth && !isUserAdult(dateOfBirth) && (
+                  <p className="text-sm text-red-600 flex items-center gap-1">
+                    ⚠️ You must be at least {MINIMUM_AGE} years old to join this platform
+                  </p>
+                )}
+                {dateOfBirth && isUserAdult(dateOfBirth) && (
+                  <p className="text-sm text-green-600 flex items-center gap-1">
+                    ✅ Age verified ({calculateAge(dateOfBirth)} years old)
+                  </p>
+                )}
+              </div>
+            )}
+            
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -195,7 +247,7 @@ const Auth = () => {
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-web3-red to-web3-magenta hover:opacity-90"
-              disabled={loading}
+              disabled={loading || (!isLogin && !isUserOldEnough)}
             >
               {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Sign Up'}
             </Button>

@@ -1,5 +1,6 @@
 
 import { ProfileFormData } from '@/types/ProfileTypes';
+import { calculateAge, isUserAdult, getAgeVerificationError } from '@/utils/ageVerification';
 
 export interface ValidationResult {
   isValid: boolean;
@@ -24,6 +25,12 @@ export const validateBasicInfoStep = (data: ProfileFormData): ValidationResult =
   if (!data.date_of_birth) {
     missingFields.push('Date of Birth');
     errors.date_of_birth = 'Date of birth is required';
+  } else {
+    // Validate minimum age of 18
+    if (!isUserAdult(data.date_of_birth)) {
+      missingFields.push('Age Verification');
+      errors.date_of_birth = getAgeVerificationError();
+    }
   }
 
   if (!data.photo_urls || data.photo_urls.length === 0) {
