@@ -9,6 +9,60 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ai_compatibility_scores: {
+        Row: {
+          communication_compatibility: number | null
+          compatibility_score: number
+          created_at: string
+          crypto_alignment: number | null
+          id: string
+          personality_match: number | null
+          shared_values_score: number | null
+          target_user_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          communication_compatibility?: number | null
+          compatibility_score: number
+          created_at?: string
+          crypto_alignment?: number | null
+          id?: string
+          personality_match?: number | null
+          shared_values_score?: number | null
+          target_user_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          communication_compatibility?: number | null
+          compatibility_score?: number
+          created_at?: string
+          crypto_alignment?: number | null
+          id?: string
+          personality_match?: number | null
+          shared_values_score?: number | null
+          target_user_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_compatibility_scores_target_user_id_fkey"
+            columns: ["target_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_compatibility_scores_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_matches: {
         Row: {
           compatibility_score: number
@@ -94,6 +148,107 @@ export type Database = {
             foreignKeyName: "match_history_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_insights: {
+        Row: {
+          ai_confidence: number | null
+          compatibility_explanation: string
+          conversation_starters: string[] | null
+          created_at: string
+          crypto_common_ground: string | null
+          id: string
+          personality_highlights: string | null
+          shared_interests: string[] | null
+          target_user_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_confidence?: number | null
+          compatibility_explanation: string
+          conversation_starters?: string[] | null
+          created_at?: string
+          crypto_common_ground?: string | null
+          id?: string
+          personality_highlights?: string | null
+          shared_interests?: string[] | null
+          target_user_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_confidence?: number | null
+          compatibility_explanation?: string
+          conversation_starters?: string[] | null
+          created_at?: string
+          crypto_common_ground?: string | null
+          id?: string
+          personality_highlights?: string | null
+          shared_interests?: string[] | null
+          target_user_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_insights_target_user_id_fkey"
+            columns: ["target_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_insights_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profile_embeddings: {
+        Row: {
+          bio_embedding: string | null
+          communication_style: string | null
+          created_at: string
+          crypto_philosophy: string | null
+          id: string
+          interests_embedding: string | null
+          personality_traits: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bio_embedding?: string | null
+          communication_style?: string | null
+          created_at?: string
+          crypto_philosophy?: string | null
+          id?: string
+          interests_embedding?: string | null
+          personality_traits?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bio_embedding?: string | null
+          communication_style?: string | null
+          created_at?: string
+          crypto_philosophy?: string | null
+          id?: string
+          interests_embedding?: string | null
+          personality_traits?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_embeddings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -301,9 +456,101 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      binary_quantize: {
+        Args: { "": string } | { "": unknown }
+        Returns: unknown
+      }
       cleanup_expired_matches: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      halfvec_avg: {
+        Args: { "": number[] }
+        Returns: unknown
+      }
+      halfvec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      halfvec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      halfvec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
+      hnsw_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_sparsevec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnswhandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflat_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflat_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflathandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      l2_norm: {
+        Args: { "": unknown } | { "": unknown }
+        Returns: number
+      }
+      l2_normalize: {
+        Args: { "": string } | { "": unknown } | { "": unknown }
+        Returns: string
+      }
+      sparsevec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      sparsevec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      sparsevec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
+      vector_avg: {
+        Args: { "": number[] }
+        Returns: string
+      }
+      vector_dims: {
+        Args: { "": string } | { "": unknown }
+        Returns: number
+      }
+      vector_norm: {
+        Args: { "": string }
+        Returns: number
+      }
+      vector_out: {
+        Args: { "": string }
+        Returns: unknown
+      }
+      vector_send: {
+        Args: { "": string }
+        Returns: string
+      }
+      vector_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
       }
     }
     Enums: {

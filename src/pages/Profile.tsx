@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import ProfileWizard from '@/components/profile/ProfileWizard';
 import ProfileCompletion from '@/components/profile/ProfileCompletion';
 import IncompleteProfileWarning from '@/components/profile/IncompleteProfileWarning';
+import AIProfileAnalysis from '@/components/profile/AIProfileAnalysis';
 import { useProfileData } from '@/hooks/useProfileData';
 
 const Profile = () => {
@@ -129,6 +130,13 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+            
+            <AIProfileAnalysis 
+              profileData={profile}
+              onAnalysisComplete={() => {
+                console.log('AI analysis completed!');
+              }}
+            />
             
             <div className="flex gap-4">
               <button

@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { MapPin, User, Heart, Wallet, TrendingUp, Coins, Palette } from 'lucide-react';
 import { ProfileCard as ProfileCardType } from '@/data/demoProfiles';
 import ProfileActions from './ProfileActions';
+import AIMatchInsights from './AIMatchInsights';
 
 interface DetailedProfileModalProps {
   profile: ProfileCardType & {
@@ -102,6 +103,15 @@ const DetailedProfileModal = ({
                 )}
               </div>
             </div>
+
+            {/* AI Match Insights */}
+            <AIMatchInsights 
+              targetUserId={profile.id}
+              onStartConversation={() => {
+                // Handle conversation start
+                console.log('Starting conversation with', profile.full_name);
+              }}
+            />
 
             {/* Basic Info */}
             {profile.bio && (
