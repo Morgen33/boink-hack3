@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useDiscoveryMatching } from '@/hooks/useDiscoveryMatching';
 import { useUserLikes } from '@/hooks/useUserLikes';
 import ProfileCard from '@/components/ProfileCard';
-import DetailedProfileModal from '@/components/DetailedProfileModal';
+
 import DiscoveryFilters from '@/components/DiscoveryFilters';
 import Header from '@/components/Header';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,7 +16,7 @@ import { Badge } from '@/components/ui/badge';
 const Discover = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [selectedProfile, setSelectedProfile] = useState(null);
+  
   const { likeProfile } = useUserLikes();
   const { 
     currentProfile, 
@@ -132,18 +132,8 @@ const Discover = () => {
                 profile={currentProfile}
                 onLike={handleLike}
                 onPass={handlePass}
-                onClick={() => setSelectedProfile(currentProfile)}
+                onClick={() => navigate(`/profile/${currentProfile.id}`)}
               />
-              
-              {selectedProfile && (
-                <DetailedProfileModal
-                  profile={selectedProfile}
-                  isOpen={!!selectedProfile}
-                  onClose={() => setSelectedProfile(null)}
-                  onLike={handleLike}
-                  onPass={handlePass}
-                />
-              )}
               
               {!hasMoreProfiles && (
                 <Card>

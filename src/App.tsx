@@ -10,6 +10,7 @@ import EventsPage from "./pages/Events";
 import Games from "./pages/Games";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
+import ProfileDetail from "./pages/ProfileDetail";
 import Discover from "./pages/Discover";
 import DailyMatches from "./pages/DailyMatches";
 import MyMatches from "./pages/MyMatches";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<Profile />} />
+            <Route path="/profile/:profileId" element={<ProfileDetail />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/we-support" element={<WeSupport />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

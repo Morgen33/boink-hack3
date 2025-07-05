@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserLikes } from '@/hooks/useUserLikes';
 import ProfileCard from '@/components/ProfileCard';
-import DetailedProfileModal from '@/components/DetailedProfileModal';
+
 import Header from '@/components/Header';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, Heart, Sparkles } from 'lucide-react';
@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const MyMatches = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [selectedProfile, setSelectedProfile] = useState(null);
+  
   const { likedProfiles, mutualMatches, loading } = useUserLikes();
 
   if (authLoading) {
@@ -47,7 +47,7 @@ const MyMatches = () => {
   }
 
   const handleViewProfile = (profile: any) => {
-    setSelectedProfile(profile);
+    navigate(`/profile/${profile.id}`);
   };
 
   return (
@@ -164,16 +164,6 @@ const MyMatches = () => {
                 </div>
               </TabsContent>
             </Tabs>
-          )}
-
-          {selectedProfile && (
-            <DetailedProfileModal
-              profile={selectedProfile}
-              isOpen={!!selectedProfile}
-              onClose={() => setSelectedProfile(null)}
-              onLike={() => {}}
-              onPass={() => {}}
-            />
           )}
         </div>
       </div>

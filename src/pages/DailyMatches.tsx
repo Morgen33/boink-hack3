@@ -147,6 +147,7 @@ const DailyMatches = () => {
                         nextMatch();
                       }
                     }}
+                    onClick={() => navigate(`/profile/${currentMatch.profile.id}`)}
                   />
                   
                   {/* Compatibility Breakdown */}
