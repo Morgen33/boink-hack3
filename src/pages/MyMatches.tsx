@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserLikes } from '@/hooks/useUserLikes';
 import ProfileCard from '@/components/ProfileCard';
+import MessageButton from '@/components/MessageButton';
 
 import Header from '@/components/Header';
 import { Card, CardContent } from '@/components/ui/card';
@@ -119,6 +120,13 @@ const MyMatches = () => {
                             onPass={() => {}}
                             onClick={() => handleViewProfile(profile)}
                           />
+                          <div className="mt-3">
+                            <MessageButton 
+                              targetUserId={profile.id}
+                              variant="outline"
+                              className="w-full"
+                            />
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -151,13 +159,21 @@ const MyMatches = () => {
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {likedProfiles.map((profile) => (
-                        <ProfileCard
-                          key={profile.id}
-                          profile={profile}
-                          onLike={() => {}}
-                          onPass={() => {}}
-                          onClick={() => handleViewProfile(profile)}
-                        />
+                        <div key={profile.id}>
+                          <ProfileCard
+                            profile={profile}
+                            onLike={() => {}}
+                            onPass={() => {}}
+                            onClick={() => handleViewProfile(profile)}
+                          />
+                          <div className="mt-3">
+                            <MessageButton 
+                              targetUserId={profile.id}
+                              variant="outline"
+                              className="w-full"
+                            />
+                          </div>
+                        </div>
                       ))}
                     </div>
                   )}

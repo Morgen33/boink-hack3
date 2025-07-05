@@ -79,7 +79,11 @@ const ProfileCard = ({ profile, onLike, onPass, onClick }: ProfileCardProps) => 
           </div>
         )}
 
-        <ProfileActions onLike={onLike} onPass={onPass} />
+        <ProfileActions 
+          onLike={onLike} 
+          onPass={onPass} 
+          profile={profile}
+        />
       </CardContent>
     </Card>
   );

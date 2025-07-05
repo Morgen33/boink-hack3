@@ -6,6 +6,7 @@ import { useProfileData } from '@/hooks/useProfileData';
 import { useDailyMatches } from '@/hooks/useDailyMatches';
 import Header from '@/components/Header';
 import ProfileCard from '@/components/ProfileCard';
+import MessageButton from '@/components/MessageButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -198,6 +199,15 @@ const DailyMatches = () => {
                       )}
                     </CardContent>
                   </Card>
+                  
+                  {/* Message Button */}
+                  <div className="mt-4">
+                    <MessageButton 
+                      targetUserId={currentMatch.profile.id}
+                      variant="outline"
+                      className="w-full"
+                    />
+                  </div>
                 </div>
               )}
 

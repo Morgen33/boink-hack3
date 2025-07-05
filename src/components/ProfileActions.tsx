@@ -1,13 +1,17 @@
 
 import { Button } from '@/components/ui/button';
-import { Heart, X } from 'lucide-react';
+import { Heart, X, MessageCircle } from 'lucide-react';
+import MessageButton from './MessageButton';
 
 interface ProfileActionsProps {
   onLike: () => void;
   onPass: () => void;
+  profile: {
+    id: string;
+  };
 }
 
-const ProfileActions = ({ onLike, onPass }: ProfileActionsProps) => {
+const ProfileActions = ({ onLike, onPass, profile }: ProfileActionsProps) => {
   const handlePass = (e: React.MouseEvent) => {
     e.stopPropagation();
     onPass();
@@ -28,6 +32,14 @@ const ProfileActions = ({ onLike, onPass }: ProfileActionsProps) => {
       >
         <X className="w-6 h-6 text-red-500" />
       </Button>
+      
+      <MessageButton 
+        targetUserId={profile.id}
+        variant="outline"
+        size="lg"
+        className="rounded-full w-16 h-16 border-2"
+      />
+      
       <Button
         onClick={handleLike}
         size="lg"

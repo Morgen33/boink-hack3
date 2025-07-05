@@ -309,7 +309,7 @@ const DetailedProfileModal = ({
 
             {/* Action buttons */}
             <div className="pt-4">
-              <ProfileActions onLike={handleLike} onPass={handlePass} />
+              <ProfileActions onLike={handleLike} onPass={handlePass} profile={profile} />
             </div>
           </div>
         </ScrollArea>
