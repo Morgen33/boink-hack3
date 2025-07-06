@@ -39,6 +39,54 @@ const Token = () => {
             </p>
           </div>
 
+          {/* About Section */}
+          <Card className="mb-12">
+            <CardHeader>
+              <CardTitle>About $BOINK</CardTitle>
+              <CardDescription>
+                The social token powering on-chain connections
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                $BOINK is the social token behind everything we're building—dating, networking, IRL events, and a little chaos in between. 
+                The app's still in MVP mode, so while you'll see USD tiers, they're not live yet. We're focused on building the foundation first.
+              </p>
+              
+              <div className="space-y-3">
+                <h4 className="font-semibold text-foreground">What $BOINK Unlocks:</h4>
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                    Advanced matchmaking filters and premium features
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                    Exclusive access to private IRL events and meetups
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                    Profile boosts to increase your visibility
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                    Voting rights on new features and platform direction
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                    VIP access and holder rewards as we scale
+                  </li>
+                </ul>
+              </div>
+              
+              <p className="text-muted-foreground leading-relaxed">
+                We know not every $BOINK holder is single—that's why we built it for connection, not just dating. 
+                Whether you're looking for love, collaborations, or just want to hang out with like-minded degens, 
+                $BOINK adds flavor to every interaction.
+              </p>
+            </CardContent>
+          </Card>
+
           {/* DexScreener Chart */}
           <div className="mb-12">
             <style dangerouslySetInnerHTML={{
