@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { ProfileCard } from '@/data/demoProfiles';
 import { User } from '@supabase/supabase-js';
+import { useUserBlocks } from './useUserBlocks';
 
 interface DailyMatch {
   id: string;
@@ -23,6 +24,7 @@ export const useDailyMatches = (user: User | null) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { isUserBlocked } = useUserBlocks();
 
   useEffect(() => {
     const fetchDailyMatches = async () => {
@@ -80,7 +82,7 @@ export const useDailyMatches = (user: User | null) => {
           return;
         }
 
-        // Combine matches with profile data
+        // Combine matches with profile data and filter blocked users
         const matchesWithProfiles: DailyMatchWithProfile[] = dailyMatches.map(match => {
           const profile = profiles?.find(p => p.id === match.matched_profile_id);
           return {
@@ -97,7 +99,7 @@ export const useDailyMatches = (user: User | null) => {
               isDemo: false
             }
           };
-        }).filter(match => match.profile.id); // Filter out any matches where profile wasn't found
+        }).filter(match => match.profile.id && !isUserBlocked(match.profile.id)); // Filter out blocked users
 
         console.log('Daily matches with profiles:', matchesWithProfiles.length);
         setMatches(matchesWithProfiles);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
+import { useUserBlocks } from './useUserBlocks';
 
 export interface Conversation {
   id: string;
@@ -24,6 +25,7 @@ export const useConversations = (user: User | null) => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isUserBlocked } = useUserBlocks();
 
   const fetchConversations = async () => {
     if (!user) {
@@ -51,14 +53,14 @@ export const useConversations = (user: User | null) => {
         throw conversationsError;
       }
 
-      // Transform data to include the other user's info
+      // Transform data to include the other user's info and filter blocked users
       const transformedConversations: Conversation[] = (conversationsData || []).map((conv: any) => {
         const otherUser = conv.user1_id === user.id ? conv.user2 : conv.user1;
         return {
           ...conv,
           other_user: otherUser
         };
-      });
+      }).filter(conv => !isUserBlocked(conv.other_user?.id || ''));
 
       setConversations(transformedConversations);
     } catch (err: any) {

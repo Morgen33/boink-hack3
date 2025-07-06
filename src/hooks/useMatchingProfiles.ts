@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { ProfileCard } from '@/data/demoProfiles';
 import { User } from '@supabase/supabase-js';
+import { useUserBlocks } from './useUserBlocks';
 
 interface Profile {
   id: string;
@@ -24,6 +25,7 @@ export const useMatchingProfiles = (user: User | null) => {
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
+  const { isUserBlocked } = useUserBlocks();
 
   useEffect(() => {
     const initializeProfiles = async () => {
@@ -75,7 +77,7 @@ export const useMatchingProfiles = (user: User | null) => {
               }
               // If no specific gender preferences are set, include the profile
               return true;
-            });
+            }).filter(profile => !isUserBlocked(profile.id));
 
             console.log('Mutual matches found:', mutualMatches.length);
 

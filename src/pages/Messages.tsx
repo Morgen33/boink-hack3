@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useConversations } from '@/hooks/useConversations';
 import { useMessages } from '@/hooks/useMessages';
+import { useUserBlocks } from '@/hooks/useUserBlocks';
 import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,9 +11,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle, Send, ArrowLeft, Heart, Loader2 } from 'lucide-react';
+import { MessageCircle, Send, ArrowLeft, Heart, Loader2, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
+import BlockConfirmationModal from '@/components/BlockConfirmationModal';
 
 const Messages = () => {
   const { user, loading: authLoading } = useAuth();
@@ -20,6 +22,9 @@ const Messages = () => {
   const { conversations, loading: conversationsLoading, getUnreadCount } = useConversations(user);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const [messageInput, setMessageInput] = useState('');
+  const { blockUser } = useUserBlocks();
+  const [showBlockModal, setShowBlockModal] = useState(false);
+  const [blockingUserId, setBlockingUserId] = useState<string | null>(null);
 
   const selectedConversation = conversations.find(c => c.id === selectedConversationId);
   const { messages, loading: messagesLoading, sending, sendMessage } = useMessages(selectedConversationId, user);
@@ -35,6 +40,22 @@ const Messages = () => {
     const success = await sendMessage(messageInput, recipientId);
     if (success) {
       setMessageInput('');
+    }
+  };
+
+  const handleBlockUser = (userId: string) => {
+    setBlockingUserId(userId);
+    setShowBlockModal(true);
+  };
+
+  const handleConfirmBlock = async (reason?: string) => {
+    if (!blockingUserId) return;
+    
+    const success = await blockUser(blockingUserId, reason);
+    if (success) {
+      setSelectedConversationId(null); // Close conversation
+      setShowBlockModal(false);
+      setBlockingUserId(null);
     }
   };
 
@@ -202,6 +223,15 @@ const Messages = () => {
                         Active now
                       </p>
                     </div>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleBlockUser(selectedConversation.other_user?.id || '')}
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    >
+                      <Shield className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
 
@@ -303,6 +333,16 @@ const Messages = () => {
           </div>
         </div>
       </div>
+
+      <BlockConfirmationModal
+        isOpen={showBlockModal}
+        onClose={() => {
+          setShowBlockModal(false);
+          setBlockingUserId(null);
+        }}
+        onConfirm={handleConfirmBlock}
+        userName={conversations.find(c => c.other_user?.id === blockingUserId)?.other_user?.full_name || 'this user'}
+      />
     </div>
   );
 };

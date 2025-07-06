@@ -1,16 +1,18 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserBlocks } from '@/hooks/useUserBlocks';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { MapPin, User, Heart, Wallet, TrendingUp, Coins, Palette, ArrowLeft, Loader2 } from 'lucide-react';
+import { MapPin, User, Heart, Wallet, TrendingUp, Coins, Palette, ArrowLeft, Loader2, Shield } from 'lucide-react';
 import { ProfileCard as ProfileCardType } from '@/data/demoProfiles';
 import ProfileActions from '@/components/ProfileActions';
 import AIMatchInsights from '@/components/AIMatchInsights';
 import Header from '@/components/Header';
-import { useAuth } from '@/contexts/AuthContext';
+import BlockConfirmationModal from '@/components/BlockConfirmationModal';
 
 interface ExtendedProfile extends ProfileCardType {
   // Extended profile fields from database
@@ -38,8 +40,10 @@ const ProfileDetail = () => {
   const { profileId } = useParams<{ profileId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { blockUser } = useUserBlocks();
   const [profile, setProfile] = useState<ExtendedProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showBlockModal, setShowBlockModal] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -94,6 +98,16 @@ const ProfileDetail = () => {
       </div>
     );
   }
+
+  const handleBlockUser = async (reason?: string) => {
+    if (!profile) return;
+    
+    const success = await blockUser(profile.id, reason);
+    if (success) {
+      navigate(-1); // Go back after blocking
+      setShowBlockModal(false);
+    }
+  };
 
   if (!profile) {
     return (
@@ -376,14 +390,33 @@ const ProfileDetail = () => {
 
               {/* Action buttons */}
               {user && (
-                <div className="pt-4">
+                <div className="pt-4 space-y-4">
                   <ProfileActions onLike={handleLike} onPass={handlePass} profile={profile} />
+                  
+                  <div className="flex justify-center">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setShowBlockModal(true)}
+                      className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+                    >
+                      <Shield className="w-4 h-4 mr-2" />
+                      Block User
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
           </ScrollArea>
         </div>
       </div>
+
+      <BlockConfirmationModal
+        isOpen={showBlockModal}
+        onClose={() => setShowBlockModal(false)}
+        onConfirm={handleBlockUser}
+        userName={profile?.full_name || 'this user'}
+      />
     </div>
   );
 };

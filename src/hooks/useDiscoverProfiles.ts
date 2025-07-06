@@ -3,11 +3,13 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { ProfileCard } from '@/data/demoProfiles';
 import { User } from '@supabase/supabase-js';
+import { useUserBlocks } from './useUserBlocks';
 
 export const useDiscoverProfiles = (user: User | null) => {
   const [profiles, setProfiles] = useState<ProfileCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { isUserBlocked } = useUserBlocks();
 
   useEffect(() => {
     const initializeProfiles = async () => {
@@ -27,7 +29,8 @@ export const useDiscoverProfiles = (user: User | null) => {
           console.error('Supabase query error:', error);
         } else {
           console.log('Real profiles fetched:', data?.length || 0);
-          const shuffledProfiles = (data || []).sort(() => Math.random() - 0.5);
+          const filteredProfiles = (data || []).filter(profile => !isUserBlocked(profile.id));
+          const shuffledProfiles = filteredProfiles.sort(() => Math.random() - 0.5);
           setProfiles(shuffledProfiles);
         }
       } catch (error: any) {
