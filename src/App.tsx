@@ -15,6 +15,7 @@ import Discover from "./pages/Discover";
 import DailyMatches from "./pages/DailyMatches";
 import MyMatches from "./pages/MyMatches";
 import Messages from "./pages/Messages";
+import Token from "./pages/Token";
 import WeSupport from "./pages/WeSupport";
 import NotFound from "./pages/NotFound";
 
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/profile/edit" element={<Profile />} />
             <Route path="/profile/:profileId" element={<ProfileDetail />} />
             <Route path="/discover" element={<Discover />} />
+            <Route path="/token" element={<Token />} />
             <Route path="/we-support" element={<WeSupport />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
