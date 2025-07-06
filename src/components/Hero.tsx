@@ -196,7 +196,7 @@ const Hero = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                 <Users className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <p className="text-lg font-semibold text-foreground">50K+ Degens</p>
+              <p className="text-lg font-semibold text-foreground">Growing Community</p>
               <p className="text-sm text-muted-foreground">Active & Based</p>
             </div>
             <div className="text-center">

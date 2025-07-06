@@ -89,9 +89,9 @@ const SafetyFeatures = () => {
             </div>
             <div className="animate-fade-in" style={{animationDelay: '0.1s'}}>
               <div className="text-4xl font-bold bg-gradient-to-r from-web3-orange to-web3-coral bg-clip-text text-transparent mb-2">
-                50K+
+                100%
               </div>
-              <p className="text-gray-600">Verified Members</p>
+              <p className="text-gray-600">Verification Required</p>
             </div>
             <div className="animate-fade-in" style={{animationDelay: '0.2s'}}>
               <div className="text-4xl font-bold bg-gradient-to-r from-web3-magenta to-web3-pink bg-clip-text text-transparent mb-2">

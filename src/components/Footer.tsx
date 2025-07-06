@@ -74,7 +74,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center text-sm text-gray-400">
                 <Users className="w-4 h-4 mr-2 text-blue-400" />
-                <span>50K+ Members</span>
+                <span>Growing Community</span>
               </div>
             </div>
             

@@ -109,7 +109,7 @@ const Testimonials = () => {
           <div className="inline-flex items-center bg-gradient-to-r from-web3-yellow/10 to-web3-orange/10 rounded-full px-8 py-4">
             <Shield className="w-6 h-6 text-web3-orange mr-3" />
             <span className="text-gray-700 font-semibold">
-              Trusted by 50,000+ Web3 professionals worldwide
+              Built for the Web3 community with love
             </span>
           </div>
         </div>
