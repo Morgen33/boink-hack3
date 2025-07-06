@@ -109,7 +109,7 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             </>
           )}
           <p className="text-xs text-muted-foreground">
-            🔞 This platform is restricted to users {MINIMUM_AGE} years old and older
+            🔞 This platform restricts users under {MINIMUM_AGE} years old
           </p>
         </div>
 
