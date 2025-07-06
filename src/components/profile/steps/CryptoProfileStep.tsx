@@ -248,21 +248,6 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="wallet_address" className="flex items-center gap-2">
-            <Wallet className="w-4 h-4" />
-            Main Wallet Address
-          </Label>
-          <Input
-            id="wallet_address"
-            value={data.wallet_address}
-            onChange={(e) => handleInputChange('wallet_address', e.target.value)}
-            placeholder="0x1234... (optional but shows you're legit)"
-          />
-          <p className="text-xs text-muted-foreground">
-            Optional: This helps verify you're a real crypto user
-          </p>
-        </div>
       </div>
 
       {/* DeFi & Protocols */}
@@ -516,7 +501,6 @@ const CryptoProfileStep = ({ data, onUpdate }: CryptoProfileStepProps) => {
           <li>• Multiple choice options make it easier to find your crypto tribe</li>
           <li>• Be honest about your experience - we match based on compatibility</li>
           <li>• Select all DeFi protocols you actively use</li>
-          <li>• Your wallet address helps prove you're not a bot</li>
         </ul>
       </div>
     </div>
