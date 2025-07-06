@@ -86,7 +86,6 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             max={new Date(new Date().setFullYear(new Date().getFullYear() - MINIMUM_AGE)).toISOString().split('T')[0]}
             min="1900-01-01"
             className={validation.errors.date_of_birth ? 'border-red-500' : isUnderage ? 'border-red-500' : ''}
-            disabled={!canProceed && isUnderage}
           />
           {validation.errors.date_of_birth && (
             <p className="text-sm text-red-600">{validation.errors.date_of_birth}</p>
