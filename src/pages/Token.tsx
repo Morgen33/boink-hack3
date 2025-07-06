@@ -79,48 +79,6 @@ const Token = () => {
             </div>
           </div>
 
-          {/* Key Stats Grid */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <DollarSign className="w-5 h-5" />
-                  Market Cap
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-foreground">$62,142.98</p>
-                <p className="text-sm text-muted-foreground">100% Market Cap Progress</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Supply & Holders
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-foreground">999.98M</p>
-                <p className="text-sm text-muted-foreground">Total Supply • 169 Holders</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  Current Price
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-foreground">$0.0₄24982</p>
-                <p className="text-sm text-success">+41.18% (24h)</p>
-              </CardContent>
-            </Card>
-          </div>
-
           {/* Token Details */}
           <div className="grid lg:grid-cols-2 gap-8 mb-12">
             {/* Locked Supply */}
