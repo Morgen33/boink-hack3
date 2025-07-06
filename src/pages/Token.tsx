@@ -14,16 +14,9 @@ const Token = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-6">
-              <img 
-                src="https://ipfs.io/ipfs/bafkreigm2qn7fvawp2odbbd36d2qoby7smmtbsfqv4k4jytt4axvqpxwyq" 
-                alt="BOINK Token" 
-                className="w-20 h-20 rounded-full mr-4"
-              />
-              <div>
-                <h1 className="text-4xl font-bold text-foreground mb-2">$BOINK Token</h1>
-                <p className="text-xl text-muted-foreground">Fueling the chaos of on-chain dating</p>
-              </div>
+            <div className="mb-6">
+              <h1 className="text-4xl font-bold text-foreground mb-2">$BOINK Token</h1>
+              <p className="text-xl text-muted-foreground">Fueling the chaos of on-chain dating</p>
             </div>
             
             <div className="flex flex-wrap justify-center gap-4 mb-8">
