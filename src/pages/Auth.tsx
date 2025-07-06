@@ -21,8 +21,9 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Check if user is old enough
-  const isUserOldEnough = dateOfBirth ? isUserAdult(dateOfBirth) : true;
+  // STRICT age check - must be exactly 18+ or signup is blocked
+  const calculatedAge = dateOfBirth ? calculateAge(dateOfBirth) : 0;
+  const isUserOldEnough = dateOfBirth ? isUserAdult(dateOfBirth) && calculatedAge >= MINIMUM_AGE : true;
 
   // Check URL parameters for auth errors
   useEffect(() => {
@@ -67,16 +68,18 @@ const Auth = () => {
         });
         navigate('/');
       } else {
-        // Validate age before signup
+        // STRICT age validation before signup
         if (!dateOfBirth) {
           throw new Error('Date of birth is required for registration');
         }
         
-        if (!isUserAdult(dateOfBirth)) {
-          throw new Error(getAgeVerificationError());
+        const validatedAge = calculateAge(dateOfBirth);
+        
+        // Multiple validation layers
+        if (!isUserAdult(dateOfBirth) || validatedAge < MINIMUM_AGE || validatedAge <= 0) {
+          throw new Error(`REGISTRATION BLOCKED: ${getAgeVerificationError()}`);
         }
 
-        const age = calculateAge(dateOfBirth);
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -84,7 +87,7 @@ const Auth = () => {
             emailRedirectTo: `${window.location.origin}/`,
             data: {
               date_of_birth: dateOfBirth,
-              age: age.toString()
+              age: validatedAge.toString()
             }
           }
         });
@@ -220,14 +223,19 @@ const Auth = () => {
                   disabled={loading}
                   max={new Date(new Date().setFullYear(new Date().getFullYear() - MINIMUM_AGE)).toISOString().split('T')[0]}
                 />
-                {dateOfBirth && !isUserAdult(dateOfBirth) && (
-                  <p className="text-sm text-red-600 flex items-center gap-1">
-                    ⚠️ You must be at least {MINIMUM_AGE} years old to join this platform
-                  </p>
+                 {dateOfBirth && !isUserOldEnough && (
+                  <div className="space-y-1">
+                    <p className="text-sm text-red-600 flex items-center gap-1 font-semibold">
+                      🚫 REGISTRATION BLOCKED: Must be {MINIMUM_AGE}+ years old
+                    </p>
+                    <p className="text-xs text-red-500">
+                      Current age: {calculatedAge} years. This platform is strictly for adults only.
+                    </p>
+                  </div>
                 )}
-                {dateOfBirth && isUserAdult(dateOfBirth) && (
+                {dateOfBirth && isUserOldEnough && (
                   <p className="text-sm text-green-600 flex items-center gap-1">
-                    ✅ Age verified ({calculateAge(dateOfBirth)} years old)
+                    ✅ Age verified ({calculatedAge} years old)
                   </p>
                 )}
               </div>

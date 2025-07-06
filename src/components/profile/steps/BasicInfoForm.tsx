@@ -21,9 +21,12 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
     onUpdate('age', calculatedAge.toString());
   };
 
-  // Check if user meets age requirement
+  // Check if user meets age requirement - STRICT validation
   const calculatedAge = data.date_of_birth ? calculateAge(data.date_of_birth) : 0;
-  const isUnderage = data.date_of_birth && !isUserAdult(data.date_of_birth);
+  const isUnderage = data.date_of_birth && (!isUserAdult(data.date_of_birth) || calculatedAge < MINIMUM_AGE);
+  
+  // Block any progression if underage
+  const canProceed = !data.date_of_birth || (isUserAdult(data.date_of_birth) && calculatedAge >= MINIMUM_AGE);
 
   return (
     <div className="space-y-6">
@@ -80,18 +83,25 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
             value={data.date_of_birth}
             onChange={(e) => handleDateChange(e.target.value)}
             required
-            max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+            max={new Date(new Date().setFullYear(new Date().getFullYear() - MINIMUM_AGE)).toISOString().split('T')[0]}
+            min="1900-01-01"
             className={validation.errors.date_of_birth ? 'border-red-500' : isUnderage ? 'border-red-500' : ''}
+            disabled={!canProceed && isUnderage}
           />
           {validation.errors.date_of_birth && (
             <p className="text-sm text-red-600">{validation.errors.date_of_birth}</p>
           )}
-          {data.date_of_birth && !validation.errors.date_of_birth && (
+          {data.date_of_birth && (
             <>
               {isUnderage ? (
-                <p className="text-sm text-red-600 flex items-center gap-1">
-                  ⚠️ You must be at least 18 years old to use this platform
-                </p>
+                <div className="space-y-2">
+                  <p className="text-sm text-red-600 flex items-center gap-1 font-semibold">
+                    🚫 ACCOUNT BLOCKED: You must be at least {MINIMUM_AGE} years old
+                  </p>
+                  <p className="text-xs text-red-500">
+                    Current age: {calculatedAge} years. This platform is strictly for adults {MINIMUM_AGE}+.
+                  </p>
+                </div>
               ) : (
                 <p className="text-sm text-green-600 flex items-center gap-1">
                   ✅ Age verified ({calculatedAge} years old)
