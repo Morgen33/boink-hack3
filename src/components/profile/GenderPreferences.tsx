@@ -45,6 +45,7 @@ const relationshipOptions = [
   'Casual dating',
   'Friends first',
   'Hookups',
+  'Networking',
   'Open to anything',
   'Prefer not to say'
 ];
