@@ -29,6 +29,10 @@ const NetworkingReviewStep = ({ data }: NetworkingReviewStepProps) => {
         <CardContent className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
+              <p className="text-sm font-medium text-muted-foreground">Full Name</p>
+              <p className="font-medium">{data.full_name || 'Not specified'}</p>
+            </div>
+            <div>
               <p className="text-sm font-medium text-muted-foreground">Job Title</p>
               <p className="font-medium">{data.job_title || 'Not specified'}</p>
             </div>

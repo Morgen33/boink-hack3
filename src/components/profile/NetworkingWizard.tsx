@@ -18,6 +18,7 @@ const STEPS = [
 ];
 
 interface NetworkingFormData {
+  full_name: string;
   company_name: string;
   job_title: string;
   industry: string;
@@ -33,6 +34,7 @@ interface NetworkingFormData {
 const NetworkingWizard = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<NetworkingFormData>({
+    full_name: '',
     company_name: '',
     job_title: '',
     industry: '',

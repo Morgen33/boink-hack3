@@ -47,6 +47,17 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="full_name">Full Name *</Label>
+            <Input
+              id="full_name"
+              placeholder="e.g., John Doe"
+              value={data.full_name || ''}
+              onChange={(e) => onUpdate('full_name', e.target.value)}
+              required
+            />
+          </div>
+
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="job_title">Job Title *</Label>
