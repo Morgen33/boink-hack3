@@ -69,6 +69,19 @@ export const createProfileFromData = (data: any): Profile => {
     biggest_crypto_win: data.biggest_crypto_win || null,
     biggest_crypto_loss: data.biggest_crypto_loss || null,
     crypto_motto: data.crypto_motto || null,
+    // Platform intent and networking fields
+    platform_intent: data.platform_intent || null,
+    company_name: data.company_name || null,
+    job_title: data.job_title || null,
+    industry: data.industry || null,
+    years_in_crypto: data.years_in_crypto || null,
+    networking_goals: data.networking_goals || null,
+    expertise_areas: data.expertise_areas || null,
+    professional_bio: data.professional_bio || null,
+    linkedin_url: data.linkedin_url || null,
+    website_url: data.website_url || null,
+    looking_for_networking: data.looking_for_networking || null,
+    networking_completed: data.networking_completed || null,
   };
 };
 

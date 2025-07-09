@@ -33,6 +33,19 @@ export interface Profile {
   biggest_crypto_win: string | null;
   biggest_crypto_loss: string | null;
   crypto_motto: string | null;
+  // Platform intent and networking fields
+  platform_intent: 'dating' | 'networking' | 'both' | null;
+  company_name: string | null;
+  job_title: string | null;
+  industry: string | null;
+  years_in_crypto: number | null;
+  networking_goals: string[] | null;
+  expertise_areas: string[] | null;
+  professional_bio: string | null;
+  linkedin_url: string | null;
+  website_url: string | null;
+  looking_for_networking: string[] | null;
+  networking_completed: boolean | null;
 }
 
 export interface ProfileFormData {

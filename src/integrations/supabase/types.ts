@@ -367,6 +367,7 @@ export type Database = {
           biggest_crypto_loss: string | null
           biggest_crypto_win: string | null
           bio: string | null
+          company_name: string | null
           created_at: string
           crypto_experience: string | null
           crypto_motto: string | null
@@ -374,19 +375,30 @@ export type Database = {
           defi_protocols: string[] | null
           degen_score: number | null
           email: string | null
+          expertise_areas: string[] | null
           favorite_crypto: string | null
           full_name: string | null
           gender_identity: string | null
           id: string
+          industry: string | null
           interests: string[] | null
+          job_title: string | null
+          linkedin_url: string | null
           location: string | null
           looking_for: string | null
           looking_for_gender: string[] | null
+          looking_for_networking: string[] | null
           main_photo_index: number | null
           meme_coin_holdings: string[] | null
+          networking_completed: boolean | null
+          networking_goals: string[] | null
           nft_collections: string[] | null
           photo_urls: string[] | null
+          platform_intent:
+            | Database["public"]["Enums"]["platform_intent_type"]
+            | null
           portfolio_size: string | null
+          professional_bio: string | null
           profile_completed: boolean | null
           relationship_type: string | null
           sexual_orientation: string | null
@@ -394,6 +406,8 @@ export type Database = {
           updated_at: string
           username: string | null
           wallet_address: string | null
+          website_url: string | null
+          years_in_crypto: number | null
         }
         Insert: {
           age?: number | null
@@ -401,6 +415,7 @@ export type Database = {
           biggest_crypto_loss?: string | null
           biggest_crypto_win?: string | null
           bio?: string | null
+          company_name?: string | null
           created_at?: string
           crypto_experience?: string | null
           crypto_motto?: string | null
@@ -408,19 +423,30 @@ export type Database = {
           defi_protocols?: string[] | null
           degen_score?: number | null
           email?: string | null
+          expertise_areas?: string[] | null
           favorite_crypto?: string | null
           full_name?: string | null
           gender_identity?: string | null
           id: string
+          industry?: string | null
           interests?: string[] | null
+          job_title?: string | null
+          linkedin_url?: string | null
           location?: string | null
           looking_for?: string | null
           looking_for_gender?: string[] | null
+          looking_for_networking?: string[] | null
           main_photo_index?: number | null
           meme_coin_holdings?: string[] | null
+          networking_completed?: boolean | null
+          networking_goals?: string[] | null
           nft_collections?: string[] | null
           photo_urls?: string[] | null
+          platform_intent?:
+            | Database["public"]["Enums"]["platform_intent_type"]
+            | null
           portfolio_size?: string | null
+          professional_bio?: string | null
           profile_completed?: boolean | null
           relationship_type?: string | null
           sexual_orientation?: string | null
@@ -428,6 +454,8 @@ export type Database = {
           updated_at?: string
           username?: string | null
           wallet_address?: string | null
+          website_url?: string | null
+          years_in_crypto?: number | null
         }
         Update: {
           age?: number | null
@@ -435,6 +463,7 @@ export type Database = {
           biggest_crypto_loss?: string | null
           biggest_crypto_win?: string | null
           bio?: string | null
+          company_name?: string | null
           created_at?: string
           crypto_experience?: string | null
           crypto_motto?: string | null
@@ -442,19 +471,30 @@ export type Database = {
           defi_protocols?: string[] | null
           degen_score?: number | null
           email?: string | null
+          expertise_areas?: string[] | null
           favorite_crypto?: string | null
           full_name?: string | null
           gender_identity?: string | null
           id?: string
+          industry?: string | null
           interests?: string[] | null
+          job_title?: string | null
+          linkedin_url?: string | null
           location?: string | null
           looking_for?: string | null
           looking_for_gender?: string[] | null
+          looking_for_networking?: string[] | null
           main_photo_index?: number | null
           meme_coin_holdings?: string[] | null
+          networking_completed?: boolean | null
+          networking_goals?: string[] | null
           nft_collections?: string[] | null
           photo_urls?: string[] | null
+          platform_intent?:
+            | Database["public"]["Enums"]["platform_intent_type"]
+            | null
           portfolio_size?: string | null
+          professional_bio?: string | null
           profile_completed?: boolean | null
           relationship_type?: string | null
           sexual_orientation?: string | null
@@ -462,6 +502,8 @@ export type Database = {
           updated_at?: string
           username?: string | null
           wallet_address?: string | null
+          website_url?: string | null
+          years_in_crypto?: number | null
         }
         Relationships: []
       }
@@ -607,7 +649,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      platform_intent_type: "dating" | "networking" | "both"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -734,6 +776,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      platform_intent_type: ["dating", "networking", "both"],
+    },
   },
 } as const

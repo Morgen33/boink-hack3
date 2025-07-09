@@ -34,26 +34,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('🔍 Checking profile completion for user:', userId);
       const { data: profile, error } = await supabase
         .from('profiles')
-        .select('profile_completed')
+        .select('profile_completed, platform_intent')
         .eq('id', userId)
         .single();
 
       if (error) {
         console.error('❌ Error checking profile completion:', error);
-        return { completed: false, error: true };
+        return { completed: false, error: true, needsPlatformIntent: false };
       }
 
+      const hasPlatformIntent = profile?.platform_intent !== null;
       const isCompleted = profile?.profile_completed === true;
+      
       console.log('📊 Profile completion status:', {
         userId,
         profile_completed: isCompleted,
-        raw_value: profile?.profile_completed
+        platform_intent: profile?.platform_intent,
+        hasPlatformIntent
       });
 
-      return { completed: isCompleted, error: false };
+      return { 
+        completed: isCompleted, 
+        error: false, 
+        needsPlatformIntent: !hasPlatformIntent 
+      };
     } catch (error) {
       console.error('❌ Error in checkProfileCompletion:', error);
-      return { completed: false, error: true };
+      return { completed: false, error: true, needsPlatformIntent: false };
     }
   };
 
