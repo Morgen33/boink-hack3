@@ -140,11 +140,30 @@ serve(async (req) => {
   }
 
   try {
+    // Verify authentication
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      throw new Error('Missing authorization header');
+    }
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: { persistSession: false }
+    });
+
+    // Verify user JWT token
+    const { data: { user }, error: authError } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
+    if (authError || !user) {
+      throw new Error('Invalid authentication token');
+    }
 
     const { userId, targetUserId } = await req.json();
+
+    // Verify user can only analyze their own compatibility
+    if (userId !== user.id) {
+      throw new Error('Unauthorized: Can only analyze your own compatibility');
+    }
 
     if (!userId || !targetUserId) {
       throw new Error('Both userId and targetUserId are required');
@@ -152,26 +171,29 @@ serve(async (req) => {
 
     console.log(`Calculating AI compatibility between ${userId} and ${targetUserId}`);
 
+    // Switch to service role for database operations
+    const supabaseAdmin = createClient(supabaseUrl, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+
     // Get embeddings and profiles for both users
-    const { data: userEmbedding } = await supabase
+    const { data: userEmbedding } = await supabaseAdmin
       .from('profile_embeddings')
       .select('*')
       .eq('user_id', userId)
       .single();
 
-    const { data: targetEmbedding } = await supabase
+    const { data: targetEmbedding } = await supabaseAdmin
       .from('profile_embeddings')
       .select('*')
       .eq('user_id', targetUserId)
       .single();
 
-    const { data: userProfile } = await supabase
+    const { data: userProfile } = await supabaseAdmin
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
 
-    const { data: targetProfile } = await supabase
+    const { data: targetProfile } = await supabaseAdmin
       .from('profiles')
       .select('*')
       .eq('id', targetUserId)
@@ -264,7 +286,7 @@ serve(async (req) => {
       shared_values_score: Math.round(((bioSimilarity + interestsSimilarity) / 2) * 100) / 100,
     };
 
-    const { error: compatibilityError } = await supabase
+    const { error: compatibilityError } = await supabaseAdmin
       .from('ai_compatibility_scores')
       .upsert(compatibilityData, { onConflict: 'user_id,target_user_id' });
 
@@ -284,7 +306,7 @@ serve(async (req) => {
       ai_confidence: Math.round(overallScore * 100) / 100,
     };
 
-    const { error: insightsError } = await supabase
+    const { error: insightsError } = await supabaseAdmin
       .from('match_insights')
       .upsert(insightsData, { onConflict: 'user_id,target_user_id' });
 

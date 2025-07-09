@@ -136,11 +136,30 @@ serve(async (req) => {
   }
 
   try {
+    // Verify authentication
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      throw new Error('Missing authorization header');
+    }
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: { persistSession: false }
+    });
+
+    // Verify user JWT token
+    const { data: { user }, error: authError } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
+    if (authError || !user) {
+      throw new Error('Invalid authentication token');
+    }
 
     const { userId, bio, interests, cryptoExperience, favoriteCrypto, tradingStyle, cryptoMotto } = await req.json();
+
+    // Verify user can only analyze their own profile
+    if (userId !== user.id) {
+      throw new Error('Unauthorized: Can only analyze your own profile');
+    }
 
     if (!userId) {
       throw new Error('User ID is required');
@@ -148,8 +167,11 @@ serve(async (req) => {
 
     console.log(`Analyzing profile for user: ${userId}`);
 
+    // Switch to service role for database operations
+    const supabaseAdmin = createClient(supabaseUrl, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+
     // Check if profile analysis already exists
-    const { data: existingEmbedding } = await supabase
+    const { data: existingEmbedding } = await supabaseAdmin
       .from('profile_embeddings')
       .select('*')
       .eq('user_id', userId)
@@ -177,14 +199,14 @@ serve(async (req) => {
     };
 
     if (existingEmbedding) {
-      const { error: updateError } = await supabase
+      const { error: updateError } = await supabaseAdmin
         .from('profile_embeddings')
         .update(embedData)
         .eq('user_id', userId);
 
       if (updateError) throw updateError;
     } else {
-      const { error: insertError } = await supabase
+      const { error: insertError } = await supabaseAdmin
         .from('profile_embeddings')
         .insert(embedData);
 
