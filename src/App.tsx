@@ -40,6 +40,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/platform-intent" element={<PlatformIntent />} />
             <Route path="/profile/setup/networking" element={<NetworkingWizard />} />
+            <Route path="/profile/setup/combined" element={<NetworkingWizard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<Profile />} />
             <Route path="/profile/:profileId" element={<ProfileDetail />} />
