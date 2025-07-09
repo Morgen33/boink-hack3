@@ -44,9 +44,9 @@ const UserMenu = ({ user, onSignOut }: UserMenuProps) => {
           </div>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate('/profile?edit=true')}>
+        <DropdownMenuItem onClick={() => navigate('/account')}>
           <Settings className="mr-2 h-4 w-4" />
-          <span>Profile</span>
+          <span>Account</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={onSignOut}>
           <LogOut className="mr-2 h-4 w-4" />

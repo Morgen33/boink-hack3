@@ -372,6 +372,7 @@ export type Database = {
           crypto_experience: string | null
           crypto_motto: string | null
           date_of_birth: string | null
+          dating_profile_completed: boolean | null
           defi_protocols: string[] | null
           degen_score: number | null
           email: string | null
@@ -392,6 +393,7 @@ export type Database = {
           meme_coin_holdings: string[] | null
           networking_completed: boolean | null
           networking_goals: string[] | null
+          networking_profile_completed: boolean | null
           nft_collections: string[] | null
           photo_urls: string[] | null
           platform_intent:
@@ -420,6 +422,7 @@ export type Database = {
           crypto_experience?: string | null
           crypto_motto?: string | null
           date_of_birth?: string | null
+          dating_profile_completed?: boolean | null
           defi_protocols?: string[] | null
           degen_score?: number | null
           email?: string | null
@@ -440,6 +443,7 @@ export type Database = {
           meme_coin_holdings?: string[] | null
           networking_completed?: boolean | null
           networking_goals?: string[] | null
+          networking_profile_completed?: boolean | null
           nft_collections?: string[] | null
           photo_urls?: string[] | null
           platform_intent?:
@@ -468,6 +472,7 @@ export type Database = {
           crypto_experience?: string | null
           crypto_motto?: string | null
           date_of_birth?: string | null
+          dating_profile_completed?: boolean | null
           defi_protocols?: string[] | null
           degen_score?: number | null
           email?: string | null
@@ -488,6 +493,7 @@ export type Database = {
           meme_coin_holdings?: string[] | null
           networking_completed?: boolean | null
           networking_goals?: string[] | null
+          networking_profile_completed?: boolean | null
           nft_collections?: string[] | null
           photo_urls?: string[] | null
           platform_intent?:

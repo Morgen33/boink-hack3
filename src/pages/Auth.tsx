@@ -16,6 +16,8 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(false);
   const { user, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
@@ -84,8 +86,10 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`,
+            emailRedirectTo: `${window.location.origin}/platform-intent`,
             data: {
+              full_name: fullName.trim(),
+              location: location.trim(),
               date_of_birth: dateOfBirth,
               age: validatedAge.toString()
             }
@@ -210,6 +214,36 @@ const Auth = () => {
                 disabled={loading}
               />
             </div>
+
+            {!isLogin && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="fullName">Full Name</Label>
+                  <Input
+                    id="fullName"
+                    type="text"
+                    placeholder="John Doe"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Input
+                    id="location"
+                    type="text"
+                    placeholder="New York, NY"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
+                </div>
+              </>
+            )}
             
             {!isLogin && (
               <div className="space-y-2">
@@ -255,7 +289,7 @@ const Auth = () => {
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-web3-red to-web3-magenta hover:opacity-90"
-              disabled={loading || (!isLogin && !isUserOldEnough)}
+              disabled={loading || (!isLogin && (!isUserOldEnough || !fullName.trim() || !location.trim()))}
             >
               {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Sign Up'}
             </Button>

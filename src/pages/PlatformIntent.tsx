@@ -27,14 +27,8 @@ const PlatformIntent = () => {
 
       if (error) throw error;
 
-      // Navigate based on intent
-      if (intent === 'dating') {
-        navigate('/profile/setup/dating');
-      } else if (intent === 'networking') {
-        navigate('/profile/setup/networking');
-      } else {
-        navigate('/profile/setup/combined');
-      }
+      // Navigate to account dashboard
+      navigate('/account');
       
       toast({
         title: "Great choice!",

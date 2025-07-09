@@ -19,6 +19,7 @@ import Token from "./pages/Token";
 import WeSupport from "./pages/WeSupport";
 import NotFound from "./pages/NotFound";
 import PlatformIntent from "./pages/PlatformIntent";
+import Account from "./pages/Account";
 import NetworkingWizard from "./components/profile/NetworkingWizard";
 import CombinedProfileSetup from "./components/profile/CombinedProfileSetup";
 
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/games" element={<Games />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/platform-intent" element={<PlatformIntent />} />
+            <Route path="/account" element={<Account />} />
             <Route path="/profile/setup/dating" element={<Profile />} />
             <Route path="/profile/setup/networking" element={<NetworkingWizard />} />
             <Route path="/profile/setup/combined" element={<CombinedProfileSetup />} />
