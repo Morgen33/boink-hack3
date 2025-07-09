@@ -20,6 +20,7 @@ import WeSupport from "./pages/WeSupport";
 import NotFound from "./pages/NotFound";
 import PlatformIntent from "./pages/PlatformIntent";
 import NetworkingWizard from "./components/profile/NetworkingWizard";
+import CombinedProfileSetup from "./components/profile/CombinedProfileSetup";
 
 const queryClient = new QueryClient();
 
@@ -39,8 +40,9 @@ const App = () => (
             <Route path="/games" element={<Games />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/platform-intent" element={<PlatformIntent />} />
+            <Route path="/profile/setup/dating" element={<Profile />} />
             <Route path="/profile/setup/networking" element={<NetworkingWizard />} />
-            <Route path="/profile/setup/combined" element={<NetworkingWizard />} />
+            <Route path="/profile/setup/combined" element={<CombinedProfileSetup />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<Profile />} />
             <Route path="/profile/:profileId" element={<ProfileDetail />} />
