@@ -5,6 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { User, Calendar, MapPin, AtSign, Eye, EyeOff } from 'lucide-react';
 import { validateBasicInfoStep } from '@/utils/profileValidation';
 import { calculateAge, isUserAdult, MINIMUM_AGE } from '@/utils/ageVerification';
+import { sanitizeInput } from '@/utils/securityUtils';
 
 interface BasicInfoFormProps {
   data: any;
@@ -13,6 +14,12 @@ interface BasicInfoFormProps {
 
 const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
   const validation = validateBasicInfoStep(data);
+
+  const handleInputChange = (field: string, value: string | boolean) => {
+    // Sanitize string inputs for security
+    const sanitizedValue = typeof value === 'string' ? sanitizeInput(value) : value;
+    onUpdate(field, sanitizedValue);
+  };
 
   const handleDateChange = (value: string) => {
     onUpdate('date_of_birth', value);
@@ -39,7 +46,7 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
           <Input
             id="full_name"
             value={data.full_name}
-            onChange={(e) => onUpdate('full_name', e.target.value)}
+            onChange={(e) => handleInputChange('full_name', e.target.value)}
             placeholder="Your full name"
             required
             className={validation.errors.full_name ? 'border-red-500' : ''}
@@ -57,7 +64,7 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
           <Input
             id="username"
             value={data.username}
-            onChange={(e) => onUpdate('username', e.target.value)}
+            onChange={(e) => handleInputChange('username', e.target.value)}
             placeholder="cryptoqueen"
             required
             className={validation.errors.username ? 'border-red-500' : ''}
@@ -154,7 +161,7 @@ const BasicInfoForm = ({ data, onUpdate }: BasicInfoFormProps) => {
         <Input
           id="location"
           value={data.location}
-          onChange={(e) => onUpdate('location', e.target.value)}
+          onChange={(e) => handleInputChange('location', e.target.value)}
           placeholder="New York, NY"
         />
         <p className="text-xs text-muted-foreground">

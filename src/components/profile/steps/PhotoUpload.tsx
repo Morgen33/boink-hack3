@@ -52,6 +52,20 @@ const PhotoUpload = ({
       return;
     }
 
+    // Validate each file
+    for (const file of newFiles) {
+      const { validateFileUpload } = await import('@/utils/securityUtils');
+      const validation = validateFileUpload(file);
+      if (!validation.valid) {
+        toast({
+          title: "Invalid file",
+          description: validation.error,
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
     setIsUploading(true);
 
     try {

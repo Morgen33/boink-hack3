@@ -370,7 +370,15 @@ serve(async (req) => {
 
   } catch (error: any) {
     console.error('Error in generate-daily-matches function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    
+    // Sanitize error message for client response
+    const sanitizedError = error.message?.includes('permission') 
+      ? 'Access denied'
+      : error.message?.includes('network') 
+      ? 'Service temporarily unavailable'
+      : 'An error occurred while generating matches';
+    
+    return new Response(JSON.stringify({ error: sanitizedError }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

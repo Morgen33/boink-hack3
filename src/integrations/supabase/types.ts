@@ -513,6 +513,27 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_log: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       social_media_connections: {
         Row: {
           access_token: string | null
@@ -641,13 +662,30 @@ export type Database = {
         Args: { birth_date: string }
         Returns: number
       }
+      check_rate_limit: {
+        Args: {
+          user_id: string
+          action_type: string
+          max_attempts?: number
+          time_window?: unknown
+        }
+        Returns: boolean
+      }
       cleanup_expired_matches: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_rate_limit_logs: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
       get_or_create_conversation: {
         Args: { user1: string; user2: string }
         Returns: string
+      }
+      is_profile_access_allowed: {
+        Args: { target_user_id: string }
+        Returns: boolean
       }
       mark_messages_as_read: {
         Args: { conversation_uuid: string; reader_id: string }

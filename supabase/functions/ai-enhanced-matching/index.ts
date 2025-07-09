@@ -333,7 +333,15 @@ serve(async (req) => {
 
   } catch (error: any) {
     console.error('Error in ai-enhanced-matching function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    
+    // Sanitize error message for client response
+    const sanitizedError = error.message?.includes('API') 
+      ? 'AI service temporarily unavailable'
+      : error.message?.includes('permission') 
+      ? 'Access denied'
+      : 'Matching service error';
+    
+    return new Response(JSON.stringify({ error: sanitizedError }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
