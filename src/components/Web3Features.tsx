@@ -1,48 +1,48 @@
 
-import { Bitcoin, Shield, Users, Heart, Award, Rocket } from "lucide-react";
+import { Bitcoin, Shield, Users, Heart, Award, Rocket, Briefcase, Network } from "lucide-react";
 
 const Web3Features = () => {
   const features = [
     {
-      icon: Bitcoin,
-      title: "Crypto-Native Matching",
-      description: "Find your perfect match based on DeFi interests, NFT collections, and investment strategies. Connect with people who share your Web3 vision.",
-      gradient: "from-web3-yellow to-web3-orange",
+      icon: Heart,
+      title: "Dating & Romance",
+      description: "Find your perfect romantic match based on shared Web3 interests, crypto experience, and lifestyle preferences. Connect with someone who truly gets your passion.",
+      gradient: "from-web3-red to-web3-magenta",
       delay: "0s"
     },
     {
-      icon: Shield,
-      title: "Blockchain Verification",
-      description: "Verify your identity through on-chain transactions and wallet history. No more fake profiles or catfishing in our community.",
-      gradient: "from-web3-orange to-web3-coral",
+      icon: Users,
+      title: "Professional Networking",
+      description: "Connect with co-founders, investors, developers, and industry leaders. Build meaningful business relationships in the Web3 ecosystem.",
+      gradient: "from-blue-500 to-purple-500",
       delay: "0.2s"
     },
     {
-      icon: Users,
-      title: "DAO Governance",
-      description: "Community-driven platform decisions. Token holders vote on new features, safety policies, and platform improvements.",
-      gradient: "from-web3-coral to-web3-red",
+      icon: Bitcoin,
+      title: "Crypto-Native Matching",
+      description: "Advanced matching algorithm considers your DeFi activity, NFT collections, investment strategies, and crypto philosophy for better connections.",
+      gradient: "from-web3-yellow to-web3-orange",
       delay: "0.4s"
     },
     {
-      icon: Heart,
-      title: "NFT Date Experiences",
-      description: "Unlock exclusive dating experiences with NFTs. VIP events, private lounges, and unique date activities only for holders.",
-      gradient: "from-web3-red to-web3-magenta",
+      icon: Shield,
+      title: "Verified Identities",
+      description: "Multi-layer verification through wallet signatures, social media connections, and community vouching ensures authentic, trustworthy profiles.",
+      gradient: "from-web3-orange to-web3-coral",
       delay: "0.6s"
     },
     {
-      icon: Award,
-      title: "On-Chain Reputation",
-      description: "Build your dating reputation on the blockchain. Positive interactions and successful matches create immutable trust scores.",
-      gradient: "from-web3-magenta to-web3-pink",
+      icon: Briefcase,
+      title: "Professional Profiles",
+      description: "Showcase your expertise, projects, and professional background. Connect based on skills, industry experience, and collaboration goals.",
+      gradient: "from-web3-coral to-web3-red",
       delay: "0.8s"
     },
     {
-      icon: Rocket,
-      title: "Future-Proof Love",
-      description: "Smart contracts for relationship milestones, decentralized storage for memories, and Web3 tools for modern couples.",
-      gradient: "from-web3-pink to-web3-salmon",
+      icon: Network,
+      title: "Dual-Purpose Platform",
+      description: "One profile, two opportunities. Switch seamlessly between dating and networking modes, or use both simultaneously for maximum connections.",
+      gradient: "from-web3-magenta to-web3-pink",
       delay: "1s"
     }
   ];
@@ -61,11 +61,11 @@ const Web3Features = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Dating Reimagined for Web3
+            Dating & Networking Reimagined for Web3
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Experience the future of online dating with blockchain technology, crypto culture, 
-            and decentralized trust. Built by Web3 natives, for Web3 natives.
+            The first platform designed specifically for Web3 professionals seeking both meaningful business 
+            connections and romantic relationships. Built by crypto natives, for crypto natives.
           </p>
         </div>
 
@@ -98,27 +98,27 @@ const Web3Features = () => {
         <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div className="animate-fade-in">
             <div className="text-4xl font-bold bg-gradient-to-r from-web3-yellow to-web3-orange bg-clip-text text-transparent mb-2">
-              10K+
+              1K+
             </div>
-            <p className="text-gray-300">Active Web3 Singles</p>
+            <p className="text-gray-300">Web3 Professionals</p>
           </div>
           <div className="animate-fade-in" style={{animationDelay: '0.2s'}}>
             <div className="text-4xl font-bold bg-gradient-to-r from-web3-orange to-web3-coral bg-clip-text text-transparent mb-2">
-              2.5K
+              500+
             </div>
-            <p className="text-gray-300">Successful Matches</p>
+            <p className="text-gray-300">Successful Connections</p>
           </div>
           <div className="animate-fade-in" style={{animationDelay: '0.4s'}}>
             <div className="text-4xl font-bold bg-gradient-to-r from-web3-coral to-web3-red bg-clip-text text-transparent mb-2">
-              150+
+              2
             </div>
-            <p className="text-gray-300">Happy Couples</p>
+            <p className="text-gray-300">Profile Types</p>
           </div>
           <div className="animate-fade-in" style={{animationDelay: '0.6s'}}>
             <div className="text-4xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent mb-2">
-              50+
+              24/7
             </div>
-            <p className="text-gray-300">Countries</p>
+            <p className="text-gray-300">Platform Active</p>
           </div>
         </div>
       </div>

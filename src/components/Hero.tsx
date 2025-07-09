@@ -141,7 +141,7 @@ const Hero = () => {
           </div>
           
           <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground">
-            Where crypto culture meets human connection. Finally.
+            Where Web3 professionals connect, collaborate, and find love.
           </h2>
           
           {/* Hackathon Badge */}
@@ -152,8 +152,8 @@ const Hero = () => {
           </div>
           
           <p className="text-xl mb-8 max-w-2xl mx-auto leading-relaxed text-muted-foreground">
-            Tired of rugpulls in love? Join the wildest crypto dating scene where diamond hands meet diamond hearts. 
-            For serious lovers who speak fluent degen but want something real AF.
+            The first platform built for Web3 natives seeking both professional networking and romantic connections. 
+            Whether you're looking for your next co-founder, investor, or life partner - we've got you covered.
           </p>
           
           {/* CTA Buttons */}
@@ -172,7 +172,7 @@ const Hero = () => {
               onClick={() => navigate('/discover')}
               className="border-2 text-xl px-12 py-6 rounded-full transition-all duration-300"
             >
-              Show Me the Alpha
+              Explore Profiles
             </Button>
           </div>
 
@@ -182,29 +182,29 @@ const Hero = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/20 dark:to-green-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                 <Shield className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <p className="text-lg font-semibold text-foreground">No Rug Pulls</p>
-              <p className="text-sm text-muted-foreground">Wallet & Soul Verified</p>
+              <p className="text-lg font-semibold text-foreground">Verified Profiles</p>
+              <p className="text-sm text-muted-foreground">Wallet & Identity Verified</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-pink-200 dark:from-red-900/20 dark:to-pink-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                 <Heart className="w-8 h-8 text-red-500 dark:text-red-400" />
               </div>
-              <p className="text-lg font-semibold text-foreground">Real Feels</p>
-              <p className="text-sm text-muted-foreground">Actual Relationships</p>
+              <p className="text-lg font-semibold text-foreground">Dual Purpose</p>
+              <p className="text-sm text-muted-foreground">Dating & Networking</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                 <Users className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <p className="text-lg font-semibold text-foreground">Growing Community</p>
-              <p className="text-sm text-muted-foreground">Active & Based</p>
+              <p className="text-lg font-semibold text-foreground">Web3 Community</p>
+              <p className="text-sm text-muted-foreground">Professionals & Builders</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-[#FBE24F]/20 to-[#FFA70F]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                 <Sparkles className="w-8 h-8 text-[#FFA70F]" />
               </div>
-              <p className="text-lg font-semibold text-foreground">Alpha Features</p>
-              <p className="text-sm text-muted-foreground">Next-Level Matching</p>
+              <p className="text-lg font-semibold text-foreground">Smart Matching</p>
+              <p className="text-sm text-muted-foreground">AI-Powered Connections</p>
             </div>
           </div>
         </div>

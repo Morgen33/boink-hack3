@@ -5,38 +5,38 @@ const SafetyFeatures = () => {
   const safetyFeatures = [
     {
       icon: Shield,
-      title: "Multi-Layer Verification",
-      description: "Blockchain identity verification, social media linking, and community vouching system to ensure authentic profiles.",
+      title: "Wallet Verification",
+      description: "Connect your wallet to verify your identity and establish trust within the Web3 community. Authentic profiles only.",
       color: "from-web3-red to-web3-magenta"
     },
     {
       icon: Lock,
-      title: "Encrypted Communications",
-      description: "End-to-end encrypted messaging with optional self-destructing messages for ultimate privacy protection.",
+      title: "Privacy Controls",
+      description: "Full control over your profile visibility and who can contact you. Switch between public discovery and private networking modes.",
       color: "from-web3-orange to-web3-coral"
     },
     {
       icon: Users,
-      title: "Community Safety Network",
-      description: "Decentralized reporting system where the community helps identify and remove bad actors together.",
+      title: "Professional Standards",
+      description: "Curated community of verified Web3 professionals. Our standards ensure quality connections for both dating and networking.",
       color: "from-web3-magenta to-web3-pink"
     },
     {
       icon: Award,
-      title: "Reputation System",
-      description: "On-chain reputation tracking that rewards good behavior and flags concerning patterns automatically.",
+      title: "Profile Quality",
+      description: "Detailed profile validation ensures complete and authentic information, creating a high-quality networking environment.",
       color: "from-web3-coral to-web3-salmon"
     },
     {
       icon: Bell,
-      title: "Smart Safety Alerts",
-      description: "AI-powered alerts that warn you about potential scams, fake profiles, or suspicious activities.",
+      title: "Smart Notifications",
+      description: "Get notified about meaningful connections, profile views, and opportunities that match your networking or dating goals.",
       color: "from-web3-peach to-web3-cream"
     },
     {
       icon: Star,
-      title: "Verified Web3 Profiles",
-      description: "Connect your wallet, ENS domain, and NFT collections to prove your authentic presence in Web3.",
+      title: "Verified Web3 Identity",
+      description: "Link your ENS domain, showcase your NFT collections, and connect social media to build a comprehensive Web3 identity.",
       color: "from-web3-yellow to-web3-orange"
     }
   ];
@@ -46,11 +46,11 @@ const SafetyFeatures = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Your Safety is Our Priority
+            Built with Trust & Safety in Mind
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We understand that crypto can feel scary. That's why we've built the most comprehensive 
-            safety system in Web3 dating, protecting you from scams, fake profiles, and bad actors.
+            We prioritize authentic connections in Web3. Our comprehensive verification system ensures you're 
+            connecting with real people, whether for professional networking or romantic relationships.
           </p>
         </div>
 
@@ -83,27 +83,27 @@ const SafetyFeatures = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div className="animate-fade-in">
               <div className="text-4xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent mb-2">
-                99.8%
+                100%
               </div>
-              <p className="text-gray-600">Scam Prevention Rate</p>
+              <p className="text-gray-600">Wallet Verification</p>
             </div>
             <div className="animate-fade-in" style={{animationDelay: '0.1s'}}>
               <div className="text-4xl font-bold bg-gradient-to-r from-web3-orange to-web3-coral bg-clip-text text-transparent mb-2">
-                100%
+                2
               </div>
-              <p className="text-gray-600">Verification Required</p>
+              <p className="text-gray-600">Profile Types Available</p>
             </div>
             <div className="animate-fade-in" style={{animationDelay: '0.2s'}}>
               <div className="text-4xl font-bold bg-gradient-to-r from-web3-magenta to-web3-pink bg-clip-text text-transparent mb-2">
-                24/7
+                Real-Time
               </div>
-              <p className="text-gray-600">Safety Monitoring</p>
+              <p className="text-gray-600">Matching Algorithm</p>
             </div>
             <div className="animate-fade-in" style={{animationDelay: '0.3s'}}>
               <div className="text-4xl font-bold bg-gradient-to-r from-web3-yellow to-web3-orange bg-clip-text text-transparent mb-2">
-                4.9★
+                Web3
               </div>
-              <p className="text-gray-600">Safety Rating</p>
+              <p className="text-gray-600">Native Platform</p>
             </div>
           </div>
         </div>
