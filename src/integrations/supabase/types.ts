@@ -70,7 +70,9 @@ export type Database = {
       }
       conversations: {
         Row: {
+          conversation_context: string | null
           created_at: string
+          created_from_intent: string | null
           id: string
           last_message_at: string | null
           last_message_preview: string | null
@@ -81,7 +83,9 @@ export type Database = {
           user2_unread_count: number | null
         }
         Insert: {
+          conversation_context?: string | null
           created_at?: string
+          created_from_intent?: string | null
           id?: string
           last_message_at?: string | null
           last_message_preview?: string | null
@@ -92,7 +96,9 @@ export type Database = {
           user2_unread_count?: number | null
         }
         Update: {
+          conversation_context?: string | null
           created_at?: string
+          created_from_intent?: string | null
           id?: string
           last_message_at?: string | null
           last_message_preview?: string | null
