@@ -38,6 +38,16 @@ export const useProfileFlow = () => {
           return;
         }
 
+        // For returning users (all profiles complete), redirect to account
+        const datingComplete = !['dating', 'both'].includes(profile.platform_intent) || profile.profile_completed;
+        const networkingComplete = !['networking', 'both'].includes(profile.platform_intent) || profile.networking_completed;
+        
+        if (datingComplete && networkingComplete) {
+          // User has completed all required profiles, redirect to account
+          navigate('/account');
+          return;
+        }
+
         // Check if user needs to complete their profile based on their intent
         const needsDatingProfile = ['dating', 'both'].includes(profile.platform_intent) && !profile.profile_completed;
         const needsNetworkingProfile = ['networking', 'both'].includes(profile.platform_intent) && !profile.networking_completed;
@@ -52,7 +62,6 @@ export const useProfileFlow = () => {
           // User needs to complete networking profile
           navigate('/profile/setup/networking');
         }
-        // If all profiles are complete, user stays on current page
 
       } catch (error) {
         console.error('Error in profile flow check:', error);

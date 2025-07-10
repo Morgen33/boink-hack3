@@ -4,11 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Header from '@/components/Header';
-import { Heart, Users, CheckCircle, Circle, User, MapPin, Calendar } from 'lucide-react';
+import { Heart, Users, CheckCircle, Circle, User, MapPin, Calendar, MessageCircle, Send } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useConversations } from '@/hooks/useConversations';
+import { formatDistanceToNow } from 'date-fns';
 
 interface ProfileStats {
   dating_profile_completed: boolean;
@@ -25,6 +29,7 @@ const Account = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { conversations, loading: conversationsLoading, getUnreadCount } = useConversations(user);
 
   useEffect(() => {
     if (!user) {
@@ -69,6 +74,13 @@ const Account = () => {
 
   const showDatingCard = profileStats?.platform_intent === 'dating' || profileStats?.platform_intent === 'both';
   const showNetworkingCard = profileStats?.platform_intent === 'networking' || profileStats?.platform_intent === 'both';
+  
+  const getProfilePhoto = (photoUrls: string[] | null, avatarUrl: string | null) => {
+    if (photoUrls && photoUrls.length > 0) {
+      return photoUrls[0];
+    }
+    return avatarUrl;
+  };
 
   if (loading) {
     return (
@@ -234,6 +246,90 @@ const Account = () => {
               </Card>
             )}
           </div>
+
+          {/* Messages Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-web3-red" />
+                Messages
+              </CardTitle>
+              <CardDescription>
+                Your recent conversations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {conversationsLoading ? (
+                <div className="text-center py-4">Loading conversations...</div>
+              ) : conversations.length === 0 ? (
+                <div className="text-center py-8">
+                  <MessageCircle className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-muted-foreground mb-4">
+                    No conversations yet. Start discovering to get matches!
+                  </p>
+                  <Button onClick={() => navigate('/discover')}>
+                    <Heart className="w-4 h-4 mr-2" />
+                    Start Discovering
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {conversations.slice(0, 3).map((conversation) => {
+                    const unreadCount = getUnreadCount(conversation);
+                    const otherUser = conversation.other_user;
+                    
+                    if (!otherUser) return null;
+
+                    return (
+                      <div 
+                        key={conversation.id}
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent cursor-pointer transition-colors"
+                        onClick={() => navigate('/messages')}
+                      >
+                        <Avatar className="w-10 h-10">
+                          <AvatarImage 
+                            src={getProfilePhoto(otherUser.photo_urls, otherUser.avatar_url) || undefined} 
+                          />
+                          <AvatarFallback>
+                            {otherUser.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || '??'}
+                          </AvatarFallback>
+                        </Avatar>
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-medium truncate">
+                              {otherUser.full_name}
+                            </h4>
+                            {unreadCount > 0 && (
+                              <Badge variant="destructive" className="text-xs">
+                                {unreadCount}
+                              </Badge>
+                            )}
+                          </div>
+                          
+                          <p className="text-sm text-muted-foreground truncate">
+                            {conversation.last_message_preview || 'Start a conversation...'}
+                          </p>
+                          
+                          <p className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true })}
+                          </p>
+                        </div>
+
+                        <Send className="w-4 h-4 text-muted-foreground" />
+                      </div>
+                    );
+                  })}
+                  
+                  {conversations.length > 3 && (
+                    <Button variant="outline" className="w-full" onClick={() => navigate('/messages')}>
+                      View All Messages ({conversations.length})
+                    </Button>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Quick Actions */}
           <Card>
