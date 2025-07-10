@@ -672,12 +672,15 @@ export type Database = {
         Returns: number
       }
       check_rate_limit: {
-        Args: {
-          user_id: string
-          action_type: string
-          max_attempts?: number
-          time_window?: unknown
-        }
+        Args:
+          | Record<PropertyKey, never>
+          | { resource_name: string; max_count: number; window_size: unknown }
+          | {
+              user_id: string
+              action_type: string
+              max_attempts?: number
+              time_window?: unknown
+            }
         Returns: boolean
       }
       cleanup_expired_matches: {
