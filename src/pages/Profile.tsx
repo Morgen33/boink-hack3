@@ -82,13 +82,19 @@ const Profile = () => {
     searchParams: searchParams.get('edit')
   });
 
-  const shouldShowWizard = isEditMode || !profile;
+  // Show wizard if in edit mode, no profile exists, OR profile is not completed
+  const shouldShowWizard = isEditMode || !profile || !profile.profile_completed;
 
   if (shouldShowWizard) {
-    const reason = isEditMode ? 'edit mode requested' : 'no profile data';
+    const reason = isEditMode 
+      ? 'edit mode requested' 
+      : !profile 
+        ? 'no profile data' 
+        : 'profile not completed';
     console.log('📝 Showing profile wizard - reason:', reason, {
       isEditMode,
       has_profile: !!profile,
+      profile_completed: profile?.profile_completed,
       isNewUser_flag: isNewUser
     });
     
@@ -107,7 +113,7 @@ const Profile = () => {
     );
   }
 
-  console.log('✅ Profile exists, showing profile summary');
+  console.log('✅ Profile exists and is completed, showing profile summary');
   return (
     <div className="min-h-screen bg-background">
       <Header />
