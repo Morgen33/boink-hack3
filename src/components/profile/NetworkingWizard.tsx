@@ -7,14 +7,16 @@ import { useProfileData } from '@/hooks/useProfileData';
 import { useToast } from '@/hooks/use-toast';
 import NetworkingBasicInfoStep from './steps/NetworkingBasicInfoStep';
 import NetworkingBackgroundStep from './steps/NetworkingBackgroundStep';
+import NetworkingCryptoStep from './steps/NetworkingCryptoStep';
 import NetworkingPreferencesStep from './steps/NetworkingPreferencesStep';
 import NetworkingReviewStep from './steps/NetworkingReviewStep';
 
 const STEPS = [
   { id: 1, title: 'Professional Info', component: NetworkingBasicInfoStep },
-  { id: 2, title: 'Crypto Background', component: NetworkingBackgroundStep },
-  { id: 3, title: 'Networking Goals', component: NetworkingPreferencesStep },
-  { id: 4, title: 'Review', component: NetworkingReviewStep },
+  { id: 2, title: 'Web3 Expertise', component: NetworkingBackgroundStep },
+  { id: 3, title: 'Crypto Profile', component: NetworkingCryptoStep },
+  { id: 4, title: 'Networking Goals', component: NetworkingPreferencesStep },
+  { id: 5, title: 'Review', component: NetworkingReviewStep },
 ];
 
 interface NetworkingFormData {
@@ -43,6 +45,18 @@ interface NetworkingFormData {
   networking_timeline: string;
   collaboration_preferences: string[];
   looking_for_networking: string[];
+  // Crypto fields
+  crypto_experience: string;
+  favorite_crypto: string;
+  portfolio_size: string;
+  trading_style: string;
+  defi_protocols: string[];
+  nft_collections: string;
+  biggest_crypto_win: string;
+  biggest_crypto_loss: string;
+  crypto_motto: string;
+  meme_coin_holdings: string;
+  favorite_memes: string;
 }
 
 const NetworkingWizard = () => {
@@ -73,6 +87,18 @@ const NetworkingWizard = () => {
     networking_timeline: '',
     collaboration_preferences: [],
     looking_for_networking: [],
+    // Crypto fields
+    crypto_experience: '',
+    favorite_crypto: '',
+    portfolio_size: '',
+    trading_style: '',
+    defi_protocols: [],
+    nft_collections: '',
+    biggest_crypto_win: '',
+    biggest_crypto_loss: '',
+    crypto_motto: '',
+    meme_coin_holdings: '',
+    favorite_memes: '',
   });
 
   const { handleProfileSave } = useProfileData();
