@@ -384,6 +384,7 @@ export type Database = {
           email: string | null
           expertise_areas: string[] | null
           favorite_crypto: string | null
+          favorite_memes: Json | null
           full_name: string | null
           gender_identity: string | null
           id: string
@@ -434,6 +435,7 @@ export type Database = {
           email?: string | null
           expertise_areas?: string[] | null
           favorite_crypto?: string | null
+          favorite_memes?: Json | null
           full_name?: string | null
           gender_identity?: string | null
           id: string
@@ -484,6 +486,7 @@ export type Database = {
           email?: string | null
           expertise_areas?: string[] | null
           favorite_crypto?: string | null
+          favorite_memes?: Json | null
           full_name?: string | null
           gender_identity?: string | null
           id?: string

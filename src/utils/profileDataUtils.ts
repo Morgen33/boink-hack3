@@ -3,6 +3,9 @@ import { Profile, ProfileFormData } from '@/types/ProfileTypes';
 
 export const convertProfileToFormData = (profile: Profile): ProfileFormData => {
   return {
+    // Platform Intent
+    platform_intent: profile.platform_intent || '',
+    // Basic Info
     full_name: profile.full_name || '',
     username: profile.username || '',
     age: profile.age ? profile.age.toString() : '',
@@ -25,12 +28,13 @@ export const convertProfileToFormData = (profile: Profile): ProfileFormData => {
     crypto_experience: profile.crypto_experience || '',
     portfolio_size: profile.portfolio_size || '',
     trading_style: profile.trading_style || '',
-    defi_protocols: profile.defi_protocols ? profile.defi_protocols.join(', ') : '',
+    defi_protocols: profile.defi_protocols || [],
     nft_collections: profile.nft_collections ? profile.nft_collections.join(', ') : '',
     meme_coin_holdings: profile.meme_coin_holdings ? profile.meme_coin_holdings.join(', ') : '',
     biggest_crypto_win: profile.biggest_crypto_win || '',
     biggest_crypto_loss: profile.biggest_crypto_loss || '',
     crypto_motto: profile.crypto_motto || '',
+    favorite_memes: [],
   };
 };
 
@@ -87,6 +91,12 @@ export const createProfileFromData = (data: any): Profile => {
 
 export const prepareUpdateData = (formData: ProfileFormData) => {
   return {
+    // Platform Intent
+    platform_intent: (formData.platform_intent && 
+      ['dating', 'networking', 'both'].includes(formData.platform_intent)) 
+      ? formData.platform_intent as 'dating' | 'networking' | 'both' 
+      : null,
+    // Basic Info
     full_name: formData.full_name || null,
     username: formData.username || null,
     bio: formData.bio || null,
@@ -110,12 +120,13 @@ export const prepareUpdateData = (formData: ProfileFormData) => {
     crypto_experience: formData.crypto_experience || null,
     portfolio_size: formData.portfolio_size || null,
     trading_style: formData.trading_style || null,
-    defi_protocols: formData.defi_protocols ? formData.defi_protocols.split(',').map((i: string) => i.trim()).filter(Boolean) : null,
+    defi_protocols: Array.isArray(formData.defi_protocols) ? formData.defi_protocols : null,
     nft_collections: formData.nft_collections ? formData.nft_collections.split(',').map((i: string) => i.trim()).filter(Boolean) : null,
     meme_coin_holdings: formData.meme_coin_holdings ? formData.meme_coin_holdings.split(',').map((i: string) => i.trim()).filter(Boolean) : null,
     biggest_crypto_win: formData.biggest_crypto_win || null,
     biggest_crypto_loss: formData.biggest_crypto_loss || null,
     crypto_motto: formData.crypto_motto || null,
+    favorite_memes: formData.favorite_memes || null,
     updated_at: new Date().toISOString(),
   };
 };

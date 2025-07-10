@@ -2,10 +2,11 @@
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import PlatformIntentStep from './steps/PlatformIntentStep';
 import BasicInfoStep from './steps/BasicInfoStep';
 import AboutYouStep from './steps/AboutYouStep';
 import DatingPreferencesStep from './steps/DatingPreferencesStep';
-import CryptoProfileStep from './steps/CryptoProfileStep';
+import UnifiedCryptoStep from './steps/UnifiedCryptoStep';
 import ReviewStep from './steps/ReviewStep';
 import ProfileVisibilityAlert from './ProfileVisibilityAlert';
 import ProfileWizardHeader from './ProfileWizardHeader';
@@ -15,13 +16,28 @@ import { User } from '@supabase/supabase-js';
 import { ProfileFormData } from '@/types/ProfileTypes';
 import { validateStepByNumber } from '@/utils/profileValidation';
 
-const steps = [
-  { id: 1, title: 'Basic Info', description: 'Tell us about yourself' },
-  { id: 2, title: 'About You', description: 'Share your story' },
-  { id: 3, title: 'Dating Preferences', description: 'Who are you looking for' },
-  { id: 4, title: 'Crypto Profile', description: 'Your crypto journey' },
-  { id: 5, title: 'Review', description: 'Finalize your profile' },
-];
+const getSteps = (platformIntent: string) => {
+  const baseSteps = [
+    { id: 1, title: 'Platform Intent', description: 'What brings you here' },
+    { id: 2, title: 'Basic Info', description: 'Tell us about yourself' },
+    { id: 3, title: 'About You', description: 'Share your story' },
+  ];
+
+  if (platformIntent === 'dating' || platformIntent === 'both') {
+    baseSteps.push({ id: 4, title: 'Dating Preferences', description: 'Who are you looking for' });
+  }
+
+  if (platformIntent === 'networking' || platformIntent === 'both') {
+    // Add networking-specific steps if needed
+  }
+
+  baseSteps.push(
+    { id: baseSteps.length + 1, title: 'Crypto Profile', description: 'Your crypto journey' },
+    { id: baseSteps.length + 2, title: 'Review', description: 'Finalize your profile' }
+  );
+
+  return baseSteps;
+};
 
 interface ProfileWizardProps {
   user: User;
@@ -36,6 +52,9 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
   const [isEditingFromReview, setIsEditingFromReview] = useState(false);
   const { toast } = useToast();
   const [formData, setFormData] = useState<ProfileFormData>({
+    // Platform Intent
+    platform_intent: initialData?.platform_intent || '',
+    // Basic Info
     full_name: initialData?.full_name || '',
     username: initialData?.username || '',
     age: initialData?.age || '',
@@ -58,18 +77,20 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
     crypto_experience: initialData?.crypto_experience || '',
     portfolio_size: initialData?.portfolio_size || '',
     trading_style: initialData?.trading_style || '',
-    defi_protocols: initialData?.defi_protocols || '',
+    defi_protocols: initialData?.defi_protocols || [],
     nft_collections: initialData?.nft_collections || '',
     meme_coin_holdings: initialData?.meme_coin_holdings || '',
     biggest_crypto_win: initialData?.biggest_crypto_win || '',
     biggest_crypto_loss: initialData?.biggest_crypto_loss || '',
     crypto_motto: initialData?.crypto_motto || '',
+    favorite_memes: initialData?.favorite_memes || [],
   });
 
   const updateFormData = (updates: Partial<ProfileFormData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
   };
 
+  const steps = getSteps(formData.platform_intent);
   const currentValidation = validateStepByNumber(currentStep, formData);
 
   const handleNext = () => {
@@ -134,16 +155,42 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
   };
 
   const renderCurrentStep = () => {
+    const currentStepData = steps.find(step => step.id === currentStep);
+    if (!currentStepData) return null;
+
     switch (currentStep) {
       case 1:
-        return <BasicInfoStep data={formData} onUpdate={updateFormData} />;
+        return <PlatformIntentStep data={formData} onUpdate={updateFormData} />;
       case 2:
-        return <AboutYouStep data={formData} onUpdate={updateFormData} />;
+        return <BasicInfoStep data={formData} onUpdate={updateFormData} />;
       case 3:
-        return <DatingPreferencesStep data={formData} onUpdate={updateFormData} />;
+        return <AboutYouStep data={formData} onUpdate={updateFormData} />;
       case 4:
-        return <CryptoProfileStep data={formData} onUpdate={updateFormData} />;
+        // Dating preferences step only shows for dating/both users
+        if (formData.platform_intent === 'dating' || formData.platform_intent === 'both') {
+          return <DatingPreferencesStep data={formData} onUpdate={updateFormData} />;
+        } else {
+          // Skip to crypto step for networking-only users
+          return <UnifiedCryptoStep data={formData} onUpdate={updateFormData} />;
+        }
       case 5:
+        // This could be crypto step or review step depending on platform intent
+        if (formData.platform_intent === 'networking' && currentStepData.title === 'Crypto Profile') {
+          return <UnifiedCryptoStep data={formData} onUpdate={updateFormData} />;
+        } else if (currentStepData.title === 'Crypto Profile') {
+          return <UnifiedCryptoStep data={formData} onUpdate={updateFormData} />;
+        } else {
+          return (
+            <ReviewStep 
+              data={formData} 
+              onUpdate={updateFormData} 
+              onComplete={handleComplete}
+              onBack={handlePrevious}
+              onEditStep={handleEditFromReview}
+            />
+          );
+        }
+      case 6:
         return (
           <ReviewStep 
             data={formData} 
@@ -185,7 +232,7 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
       </Card>
 
       {/* Navigation - Show for all steps except when ReviewStep handles its own navigation */}
-      {currentStep < 5 && (
+      {currentStep < steps.length && (
         <ProfileWizardNavigation
           currentStep={currentStep}
           isEditingFromReview={isEditingFromReview}

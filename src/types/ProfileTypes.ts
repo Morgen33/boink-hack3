@@ -49,6 +49,9 @@ export interface Profile {
 }
 
 export interface ProfileFormData {
+  // Platform Intent
+  platform_intent: string;
+  // Basic Info
   full_name: string;
   username: string;
   age: string;
@@ -71,10 +74,11 @@ export interface ProfileFormData {
   crypto_experience: string;
   portfolio_size: string;
   trading_style: string;
-  defi_protocols: string;
+  defi_protocols: string[];
   nft_collections: string;
   meme_coin_holdings: string;
   biggest_crypto_win: string;
   biggest_crypto_loss: string;
   crypto_motto: string;
+  favorite_memes: any[];
 }
