@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useConversations } from '@/hooks/useConversations';
+import { useConversations, getConversationContextInfo, getContextSpecificInfo, ConversationFilter } from '@/hooks/useConversations';
 import { useMessages } from '@/hooks/useMessages';
 import { useUserBlocks } from '@/hooks/useUserBlocks';
 import Header from '@/components/Header';
@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle, Send, ArrowLeft, Heart, Loader2, Shield } from 'lucide-react';
+import { MessageCircle, Send, ArrowLeft, Heart, Loader2, Shield, Filter } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import BlockConfirmationModal from '@/components/BlockConfirmationModal';
@@ -19,7 +19,14 @@ import BlockConfirmationModal from '@/components/BlockConfirmationModal';
 const Messages = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const { conversations, loading: conversationsLoading, getUnreadCount } = useConversations(user);
+  const { 
+    conversations, 
+    allConversations, 
+    loading: conversationsLoading, 
+    filter,
+    setFilter,
+    getUnreadCount 
+  } = useConversations(user);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const [messageInput, setMessageInput] = useState('');
   const { blockUser } = useUserBlocks();
@@ -110,6 +117,36 @@ const Messages = () => {
                 <h1 className="text-2xl font-bold">Messages</h1>
               </div>
 
+              {/* Context Filter */}
+              {allConversations.length > 0 && (
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Filter className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-muted-foreground">Filter by context</span>
+                  </div>
+                  <div className="flex gap-2 flex-wrap">
+                    {(['all', 'dating', 'networking', 'mixed'] as ConversationFilter[]).map((filterOption) => (
+                      <Button
+                        key={filterOption}
+                        variant={filter === filterOption ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setFilter(filterOption)}
+                        className="text-xs"
+                      >
+                        {filterOption === 'all' ? '🌟 All' : 
+                         filterOption === 'dating' ? '💕 Dating' :
+                         filterOption === 'networking' ? '🤝 Networking' : '🌟 Mixed'}
+                        {filterOption !== 'all' && (
+                          <span className="ml-1">
+                            ({allConversations.filter(c => c.conversation_context === filterOption).length})
+                          </span>
+                        )}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {conversationsLoading ? (
                 <div className="flex items-center justify-center py-8">
                   <Loader2 className="w-6 h-6 animate-spin" />
@@ -131,56 +168,70 @@ const Messages = () => {
               ) : (
                 <ScrollArea className="h-[calc(100vh-200px)]">
                   <div className="space-y-2">
-                    {conversations.map((conversation) => {
-                      const unreadCount = getUnreadCount(conversation);
-                      const otherUser = conversation.other_user;
-                      
-                      if (!otherUser) return null;
+                     {conversations.map((conversation) => {
+                       const unreadCount = getUnreadCount(conversation);
+                       const otherUser = conversation.other_user;
+                       const contextInfo = getConversationContextInfo(conversation);
+                       const contextSpecific = getContextSpecificInfo(conversation);
+                       
+                       if (!otherUser) return null;
 
-                      return (
-                        <Card 
-                          key={conversation.id}
-                          className={`cursor-pointer transition-colors hover:bg-accent ${
-                            selectedConversationId === conversation.id ? 'bg-accent' : ''
-                          }`}
-                          onClick={() => setSelectedConversationId(conversation.id)}
-                        >
-                          <CardContent className="p-4">
-                            <div className="flex items-center gap-3">
-                              <Avatar className="w-12 h-12">
-                                <AvatarImage 
-                                  src={getProfilePhoto(otherUser.photo_urls, otherUser.avatar_url) || undefined} 
-                                />
-                                <AvatarFallback>
-                                  {otherUser.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || '??'}
-                                </AvatarFallback>
-                              </Avatar>
-                              
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between">
-                                  <h3 className="font-semibold truncate">
-                                    {otherUser.full_name}
-                                  </h3>
-                                  {unreadCount > 0 && (
-                                    <Badge variant="destructive" className="text-xs">
-                                      {unreadCount}
-                                    </Badge>
-                                  )}
-                                </div>
-                                
-                                <p className="text-sm text-muted-foreground truncate">
-                                  {conversation.last_message_preview || 'Start a conversation...'}
-                                </p>
-                                
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  {formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true })}
-                                </p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
+                       return (
+                         <Card 
+                           key={conversation.id}
+                           className={`cursor-pointer transition-colors hover:bg-accent ${
+                             selectedConversationId === conversation.id ? 'bg-accent' : ''
+                           }`}
+                           onClick={() => setSelectedConversationId(conversation.id)}
+                         >
+                           <CardContent className="p-4">
+                             <div className="flex items-start gap-3">
+                               <Avatar className="w-12 h-12">
+                                 <AvatarImage 
+                                   src={getProfilePhoto(otherUser.photo_urls, otherUser.avatar_url) || undefined} 
+                                 />
+                                 <AvatarFallback>
+                                   {otherUser.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || '??'}
+                                 </AvatarFallback>
+                               </Avatar>
+                               
+                               <div className="flex-1 min-w-0">
+                                 <div className="flex items-center justify-between mb-1">
+                                   <div className="flex items-center gap-2">
+                                     <h3 className="font-semibold truncate">
+                                       {otherUser.full_name}
+                                     </h3>
+                                     <Badge className={`text-xs px-2 py-0.5 ${contextInfo.color}`}>
+                                       {contextInfo.icon} {contextInfo.label}
+                                     </Badge>
+                                   </div>
+                                   {unreadCount > 0 && (
+                                     <Badge variant="destructive" className="text-xs">
+                                       {unreadCount}
+                                     </Badge>
+                                   )}
+                                 </div>
+                                 
+                                 {/* Context-specific secondary info */}
+                                 {contextSpecific?.secondaryInfo && (
+                                   <p className="text-xs text-muted-foreground mb-1 truncate">
+                                     {contextSpecific.secondaryInfo}
+                                   </p>
+                                 )}
+                                 
+                                 <p className="text-sm text-muted-foreground truncate">
+                                   {conversation.last_message_preview || 'Start a conversation...'}
+                                 </p>
+                                 
+                                 <p className="text-xs text-muted-foreground mt-1">
+                                   {formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true })}
+                                 </p>
+                               </div>
+                             </div>
+                           </CardContent>
+                         </Card>
+                       );
+                     })}
                   </div>
                 </ScrollArea>
               )}
@@ -215,12 +266,17 @@ const Messages = () => {
                       </AvatarFallback>
                     </Avatar>
                     
-                    <div>
-                      <h2 className="font-semibold">
-                        {selectedConversation.other_user?.full_name}
-                      </h2>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h2 className="font-semibold">
+                          {selectedConversation.other_user?.full_name}
+                        </h2>
+                        <Badge className={`text-xs px-2 py-0.5 ${getConversationContextInfo(selectedConversation).color}`}>
+                          {getConversationContextInfo(selectedConversation).icon} {getConversationContextInfo(selectedConversation).label}
+                        </Badge>
+                      </div>
                       <p className="text-sm text-muted-foreground">
-                        Active now
+                        {getContextSpecificInfo(selectedConversation)?.secondaryInfo || 'Active now'}
                       </p>
                     </div>
 
@@ -301,7 +357,7 @@ const Messages = () => {
                     <Input
                       value={messageInput}
                       onChange={(e) => setMessageInput(e.target.value)}
-                      placeholder="Type a message..."
+                      placeholder={getContextSpecificInfo(selectedConversation)?.placeholder || "Type a message..."}
                       disabled={sending}
                       className="flex-1"
                     />

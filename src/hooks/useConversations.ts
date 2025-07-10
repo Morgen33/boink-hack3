@@ -13,18 +13,93 @@ export interface Conversation {
   last_message_preview: string | null;
   user1_unread_count: number;
   user2_unread_count: number;
+  conversation_context: 'dating' | 'networking' | 'mixed';
+  created_from_intent: 'dating' | 'networking' | 'both';
   other_user: {
     id: string;
     full_name: string;
     avatar_url: string | null;
     photo_urls: string[] | null;
+    platform_intent: 'dating' | 'networking' | 'both' | null;
+    bio: string | null;
+    professional_bio: string | null;
+    job_title: string | null;
+    company_name: string | null;
+    interests: string[] | null;
+    expertise_areas: string[] | null;
   } | null;
 }
+
+export type ConversationFilter = 'all' | 'dating' | 'networking' | 'mixed';
+
+export const getConversationContextInfo = (conversation: Conversation) => {
+  const { conversation_context } = conversation;
+  
+  switch (conversation_context) {
+    case 'dating':
+      return {
+        label: 'Dating',
+        color: 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300',
+        icon: '💕'
+      };
+    case 'networking':
+      return {
+        label: 'Networking',
+        color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+        icon: '🤝'
+      };
+    case 'mixed':
+      return {
+        label: 'Mixed',
+        color: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+        icon: '🌟'
+      };
+    default:
+      return {
+        label: 'Mixed',
+        color: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
+        icon: '💭'
+      };
+  }
+};
+
+export const getContextSpecificInfo = (conversation: Conversation) => {
+  const { other_user, conversation_context } = conversation;
+  if (!other_user) return null;
+
+  switch (conversation_context) {
+    case 'dating':
+      return {
+        primaryInfo: other_user.bio || 'No bio available',
+        secondaryInfo: other_user.interests?.slice(0, 3).join(', ') || 'No interests listed',
+        placeholder: "Hey! I saw your profile and would love to get to know you better 😊"
+      };
+    case 'networking':
+      return {
+        primaryInfo: other_user.professional_bio || other_user.bio || 'No bio available',
+        secondaryInfo: `${other_user.job_title || 'Professional'}${other_user.company_name ? ` at ${other_user.company_name}` : ''}`,
+        placeholder: "Hi! I'd love to connect and discuss potential collaboration opportunities."
+      };
+    case 'mixed':
+      return {
+        primaryInfo: other_user.bio || other_user.professional_bio || 'No bio available',
+        secondaryInfo: `${other_user.job_title || 'Professional'}${other_user.interests?.length ? ` • Interests: ${other_user.interests.slice(0, 2).join(', ')}` : ''}`,
+        placeholder: "Hi there! Looking forward to connecting with you."
+      };
+    default:
+      return {
+        primaryInfo: other_user.bio || 'No bio available',
+        secondaryInfo: '',
+        placeholder: "Hi! How are you doing?"
+      };
+  }
+};
 
 export const useConversations = (user: User | null) => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<ConversationFilter>('all');
   const { isUserBlocked } = useUserBlocks();
 
   const fetchConversations = async () => {
@@ -38,13 +113,19 @@ export const useConversations = (user: User | null) => {
       setLoading(true);
       setError(null);
 
-      // Fetch conversations with other user profile data
+      // Fetch conversations with enhanced other user profile data
       const { data: conversationsData, error: conversationsError } = await supabase
         .from('conversations')
         .select(`
           *,
-          user1:profiles!conversations_user1_id_fkey(id, full_name, avatar_url, photo_urls),
-          user2:profiles!conversations_user2_id_fkey(id, full_name, avatar_url, photo_urls)
+          user1:profiles!conversations_user1_id_fkey(
+            id, full_name, avatar_url, photo_urls, platform_intent, 
+            bio, professional_bio, job_title, company_name, interests, expertise_areas
+          ),
+          user2:profiles!conversations_user2_id_fkey(
+            id, full_name, avatar_url, photo_urls, platform_intent,
+            bio, professional_bio, job_title, company_name, interests, expertise_areas
+          )
         `)
         .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
         .order('last_message_at', { ascending: false });
@@ -131,10 +212,19 @@ export const useConversations = (user: User | null) => {
     };
   }, [user]);
 
+  // Filter conversations based on current filter
+  const filteredConversations = conversations.filter(conv => {
+    if (filter === 'all') return true;
+    return conv.conversation_context === filter;
+  });
+
   return {
-    conversations,
+    conversations: filteredConversations,
+    allConversations: conversations,
     loading,
     error,
+    filter,
+    setFilter,
     fetchConversations,
     createConversation,
     getUnreadCount
