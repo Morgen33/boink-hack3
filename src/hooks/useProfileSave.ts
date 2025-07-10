@@ -3,6 +3,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { ProfileFormData } from '@/types/ProfileTypes';
 import { prepareUpdateData } from '@/utils/profileDataUtils';
+import { 
+  validateBasicInfoStep, 
+  validateAboutYouStep, 
+  validateDatingPreferencesStep, 
+  validateCryptoProfileStep 
+} from '@/utils/profileValidation';
 
 export const useProfileSave = () => {
   const { user } = useAuth();
@@ -23,10 +29,29 @@ export const useProfileSave = () => {
         photo_count: formData.photo_urls?.length || 0
       });
       
+      // Only mark as completed if it's not a partial save AND all required fields are valid
+      let isProfileComplete = false;
+      if (!isPartial) {
+        const step1Valid = validateBasicInfoStep(formData).isValid;
+        const step2Valid = validateAboutYouStep(formData).isValid;
+        const step3Valid = validateDatingPreferencesStep(formData).isValid;
+        const step4Valid = validateCryptoProfileStep(formData).isValid;
+        
+        isProfileComplete = step1Valid && step2Valid && step3Valid && step4Valid;
+        
+        console.log('📊 Profile completion validation:', {
+          step1_basic_info: step1Valid,
+          step2_about_you: step2Valid,
+          step3_dating_preferences: step3Valid,
+          step4_crypto_profile: step4Valid,
+          overall_complete: isProfileComplete
+        });
+      }
+      
       const updateData = {
         ...prepareUpdateData(formData),
-        profile_completed: !isPartial, // Mark as completed ONLY if it's not a partial save
-        updated_at: new Date().toISOString(), // Ensure we track when this was updated
+        profile_completed: isProfileComplete,
+        updated_at: new Date().toISOString(),
       };
 
       console.log('💾 Updating profile in database with:', {
