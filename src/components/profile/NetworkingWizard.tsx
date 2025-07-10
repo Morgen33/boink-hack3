@@ -22,12 +22,26 @@ interface NetworkingFormData {
   company_name: string;
   job_title: string;
   industry: string;
+  role_level: string;
+  company_stage: string;
+  funding_focus: string;
+  location: string;
+  timezone: string;
   years_in_crypto: string;
   networking_goals: string[];
   expertise_areas: string[];
+  blockchain_experience: string[];
+  protocol_experience: string[];
+  development_stack: string[];
   professional_bio: string;
+  notable_projects: string;
+  github_url: string;
+  portfolio_url: string;
   linkedin_url: string;
   website_url: string;
+  twitter_url: string;
+  networking_timeline: string;
+  collaboration_preferences: string[];
   looking_for_networking: string[];
 }
 
@@ -38,12 +52,26 @@ const NetworkingWizard = () => {
     company_name: '',
     job_title: '',
     industry: '',
+    role_level: '',
+    company_stage: '',
+    funding_focus: '',
+    location: '',
+    timezone: '',
     years_in_crypto: '',
     networking_goals: [],
     expertise_areas: [],
+    blockchain_experience: [],
+    protocol_experience: [],
+    development_stack: [],
     professional_bio: '',
+    notable_projects: '',
+    github_url: '',
+    portfolio_url: '',
     linkedin_url: '',
     website_url: '',
+    twitter_url: '',
+    networking_timeline: '',
+    collaboration_preferences: [],
     looking_for_networking: [],
   });
 

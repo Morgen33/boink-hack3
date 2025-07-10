@@ -20,11 +20,53 @@ const industries = [
   'DAO/Governance',
   'Crypto Investment/VC',
   'Blockchain Consulting',
+  'Layer 2 Solutions',
+  'Cross-chain/Interoperability',
+  'Stablecoins',
+  'RWA/Tokenization',
+  'Web3 Security/Auditing',
   'Traditional Finance',
   'Technology/Software',
   'Marketing/Community',
   'Legal/Compliance',
   'Other'
+];
+
+const companyStages = [
+  'Pre-seed Startup',
+  'Seed Stage',
+  'Series A',
+  'Series B',
+  'Series C+',
+  'Public Company',
+  'Independent/Freelancer',
+  'Stealth Mode',
+  'DAO/Protocol'
+];
+
+const roleLevels = [
+  'Individual Contributor',
+  'Senior IC',
+  'Tech Lead',
+  'Team Lead/Manager',
+  'Senior Manager',
+  'Director',
+  'VP/SVP',
+  'C-Level',
+  'Founder',
+  'Co-Founder'
+];
+
+const fundingFocus = [
+  'Pre-seed/Seed Investment',
+  'Series A/B Investment',
+  'Growth Stage Investment',
+  'DeFi Protocols',
+  'Infrastructure Projects',
+  'Consumer Web3 Apps',
+  'Gaming/Metaverse',
+  'Developer Tools',
+  'Not Applicable'
 ];
 
 const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProps) => {
@@ -86,22 +128,97 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
             </Select>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="years_in_crypto">Years in Crypto/Web3 *</Label>
-            <Select value={data.years_in_crypto} onValueChange={(value) => onUpdate('years_in_crypto', value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="How long have you been in Web3?" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="0">Just getting started</SelectItem>
-                <SelectItem value="1">1 year</SelectItem>
-                <SelectItem value="2">2 years</SelectItem>
-                <SelectItem value="3">3 years</SelectItem>
-                <SelectItem value="4">4 years</SelectItem>
-                <SelectItem value="5">5+ years</SelectItem>
-                <SelectItem value="10">10+ years (OG)</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="role_level">Role Level *</Label>
+              <Select value={data.role_level} onValueChange={(value) => onUpdate('role_level', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your role level" />
+                </SelectTrigger>
+                <SelectContent>
+                  {roleLevels.map((level) => (
+                    <SelectItem key={level} value={level}>
+                      {level}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="company_stage">Company Stage</Label>
+              <Select value={data.company_stage} onValueChange={(value) => onUpdate('company_stage', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select company stage" />
+                </SelectTrigger>
+                <SelectContent>
+                  {companyStages.map((stage) => (
+                    <SelectItem key={stage} value={stage}>
+                      {stage}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="years_in_crypto">Years in Crypto/Web3 *</Label>
+              <Select value={data.years_in_crypto} onValueChange={(value) => onUpdate('years_in_crypto', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="How long have you been in Web3?" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0">Just getting started</SelectItem>
+                  <SelectItem value="1">1 year</SelectItem>
+                  <SelectItem value="2">2 years</SelectItem>
+                  <SelectItem value="3">3 years</SelectItem>
+                  <SelectItem value="4">4 years</SelectItem>
+                  <SelectItem value="5">5+ years</SelectItem>
+                  <SelectItem value="10">10+ years (OG)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="funding_focus">Investment/Funding Focus</Label>
+              <Select value={data.funding_focus} onValueChange={(value) => onUpdate('funding_focus', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select if applicable" />
+                </SelectTrigger>
+                <SelectContent>
+                  {fundingFocus.map((focus) => (
+                    <SelectItem key={focus} value={focus}>
+                      {focus}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="location">Location *</Label>
+              <Input
+                id="location"
+                placeholder="e.g., San Francisco, Remote, NYC"
+                value={data.location || ''}
+                onChange={(e) => onUpdate('location', e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="timezone">Timezone</Label>
+              <Input
+                id="timezone"
+                placeholder="e.g., PST, UTC+1, EST"
+                value={data.timezone || ''}
+                onChange={(e) => onUpdate('timezone', e.target.value)}
+              />
+            </div>
           </div>
         </CardContent>
       </Card>

@@ -45,6 +45,14 @@ const NetworkingReviewStep = ({ data }: NetworkingReviewStepProps) => {
               <p className="font-medium">{data.industry || 'Not specified'}</p>
             </div>
             <div>
+              <p className="text-sm font-medium text-muted-foreground">Role Level</p>
+              <p className="font-medium">{data.role_level || 'Not specified'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Company Stage</p>
+              <p className="font-medium">{data.company_stage || 'Not specified'}</p>
+            </div>
+            <div>
               <p className="text-sm font-medium text-muted-foreground">Years in Web3</p>
               <p className="font-medium">
                 {data.years_in_crypto === '0' ? 'Just getting started' : 
@@ -52,6 +60,22 @@ const NetworkingReviewStep = ({ data }: NetworkingReviewStepProps) => {
                  data.years_in_crypto ? `${data.years_in_crypto} years` : 'Not specified'}
               </p>
             </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Location</p>
+              <p className="font-medium">{data.location || 'Not specified'}</p>
+            </div>
+            {data.funding_focus && data.funding_focus !== 'Not Applicable' && (
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Investment Focus</p>
+                <p className="font-medium">{data.funding_focus}</p>
+              </div>
+            )}
+            {data.networking_timeline && (
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Timeline</p>
+                <p className="font-medium">{data.networking_timeline}</p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -127,7 +151,75 @@ const NetworkingReviewStep = ({ data }: NetworkingReviewStepProps) => {
         </Card>
       )}
 
-      {(data.linkedin_url || data.website_url) && (
+      {data.blockchain_experience && data.blockchain_experience.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Blockchain Experience</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {data.blockchain_experience.map((blockchain: string) => (
+                <Badge key={blockchain} variant="secondary">
+                  {blockchain}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {data.protocol_experience && data.protocol_experience.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Protocol Experience</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {data.protocol_experience.map((protocol: string) => (
+                <Badge key={protocol} variant="secondary">
+                  {protocol}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {data.development_stack && data.development_stack.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Development Stack</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {data.development_stack.map((stack: string) => (
+                <Badge key={stack} variant="secondary">
+                  {stack}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {data.collaboration_preferences && data.collaboration_preferences.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Collaboration Preferences</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {data.collaboration_preferences.map((pref: string) => (
+                <Badge key={pref} variant="outline">
+                  {pref}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {(data.linkedin_url || data.website_url || data.github_url || data.twitter_url) && (
         <Card>
           <CardHeader>
             <CardTitle>Online Presence</CardTitle>
@@ -149,6 +241,26 @@ const NetworkingReviewStep = ({ data }: NetworkingReviewStepProps) => {
                 <p className="text-sm text-blue-600 hover:underline">
                   <a href={data.website_url} target="_blank" rel="noopener noreferrer">
                     {data.website_url}
+                  </a>
+                </p>
+              </div>
+            )}
+            {data.github_url && (
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">GitHub</p>
+                <p className="text-sm text-blue-600 hover:underline">
+                  <a href={data.github_url} target="_blank" rel="noopener noreferrer">
+                    {data.github_url}
+                  </a>
+                </p>
+              </div>
+            )}
+            {data.twitter_url && (
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Twitter/X</p>
+                <p className="text-sm text-blue-600 hover:underline">
+                  <a href={data.twitter_url} target="_blank" rel="noopener noreferrer">
+                    {data.twitter_url}
                   </a>
                 </p>
               </div>
