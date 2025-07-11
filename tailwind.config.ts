@@ -156,10 +156,10 @@ export default {
 				'float': 'float 3s ease-in-out infinite'
 			},
 			backgroundImage: {
-				'gradient-web3': 'linear-gradient(135deg, #FBE24F 0%, #FFA70F 25%, #FF7A55 50%, #F51F3B 75%, #E809CB 100%)',
-				'gradient-warm': 'linear-gradient(135deg, #FD8F52 0%, #FE676E 50%, #FFBD7A 100%)',
-				'gradient-cool': 'linear-gradient(135deg, #C73866 0%, #E809CB 50%, #F51F3B 100%)',
-				'gradient-soft': 'linear-gradient(135deg, #FFDCA2 0%, #FFBD7A 50%, #FD8F52 100%)'
+				'gradient-web3': 'var(--gradient-web3)',
+				'gradient-warm': 'var(--gradient-warm)',
+				'gradient-cool': 'var(--gradient-cool)',
+				'gradient-soft': 'var(--gradient-soft)'
 			}
 		}
 	},

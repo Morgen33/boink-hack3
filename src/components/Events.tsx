@@ -61,10 +61,10 @@ const Events = () => {
       <div className="pt-24 pb-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-[#FBE24F] to-[#FFA70F] rounded-xl flex items-center justify-center mr-3">
+            <div className="w-12 h-12 bg-gradient-to-r from-web3-yellow to-web3-orange rounded-xl flex items-center justify-center mr-3">
               <CalendarDays className="w-6 h-6 text-gray-800" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#F51F3B] to-[#E809CB] bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
               Community Events
             </h1>
           </div>
@@ -72,7 +72,7 @@ const Events = () => {
             Join fellow crypto enthusiasts and Bonk community members at exclusive events. 
             Build meaningful connections in person while exploring the world of Web3 together.
           </p>
-          <Button size="lg" className="bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] hover:from-[#FFA70F] hover:to-[#FF7A55] text-white">
+          <Button size="lg" className="bg-gradient-to-r from-web3-coral to-web3-red hover:from-web3-orange hover:to-web3-coral text-white">
             Host an Event
           </Button>
         </div>
@@ -101,7 +101,7 @@ const Events = () => {
                       {event.tags.slice(0, 2).map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-1 text-xs bg-[#FBE24F]/30 text-[#F51F3B] rounded-full"
+                          className="px-2 py-1 text-xs bg-web3-yellow/30 text-web3-red rounded-full"
                         >
                           {tag}
                         </span>
@@ -136,7 +136,7 @@ const Events = () => {
                   
                   <div className="flex gap-3">
                     <Button 
-                      className="flex-1 bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] hover:from-[#FFA70F] hover:to-[#FF7A55] text-white"
+                      className="flex-1 bg-gradient-to-r from-web3-coral to-web3-red hover:from-web3-orange hover:to-web3-coral text-white"
                       size="sm"
                     >
                       Join Event
@@ -144,7 +144,7 @@ const Events = () => {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      className="border-[#FFA70F] text-[#F51F3B] hover:bg-[#FBE24F]/20"
+                      className="border-web3-orange text-web3-red hover:bg-web3-yellow/20"
                     >
                       Learn More
                     </Button>
@@ -157,7 +157,7 @@ const Events = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-[#FBE24F]/10 to-[#FFA70F]/10 py-16 px-6">
+      <div className="bg-gradient-to-r from-web3-yellow/10 to-web3-orange/10 py-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Want to Host Your Own Event?
@@ -169,14 +169,14 @@ const Events = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-[#FF7A55] to-[#F51F3B] hover:from-[#FFA70F] hover:to-[#FF7A55] text-white"
+              className="bg-gradient-to-r from-web3-coral to-web3-red hover:from-web3-orange hover:to-web3-coral text-white"
             >
               Host an Event
             </Button>
             <Button 
               size="lg" 
               variant="outline"
-              className="border-[#FFA70F] text-[#F51F3B] hover:bg-[#FBE24F]/20"
+              className="border-web3-orange text-web3-red hover:bg-web3-yellow/20"
             >
               Event Guidelines
             </Button>

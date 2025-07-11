@@ -63,6 +63,12 @@
     --web3-peach: 25 98% 66%;
     --web3-cream: 33 100% 74%;
     --web3-light: 30 100% 82%;
+
+    /* Gradient Variables */
+    --gradient-web3: linear-gradient(135deg, hsl(var(--web3-yellow)) 0%, hsl(var(--web3-orange)) 25%, hsl(var(--web3-coral)) 50%, hsl(var(--web3-red)) 75%, hsl(var(--web3-magenta)) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(var(--web3-peach)) 0%, hsl(var(--web3-salmon)) 50%, hsl(var(--web3-light)) 100%);
+    --gradient-cool: linear-gradient(135deg, hsl(var(--web3-pink)) 0%, hsl(var(--web3-magenta)) 50%, hsl(var(--web3-red)) 100%);
+    --gradient-soft: linear-gradient(135deg, hsl(var(--web3-light)) 0%, hsl(var(--web3-cream)) 50%, hsl(var(--web3-peach)) 100%);
   }
 
   .dark {

@@ -77,17 +77,17 @@ const Hero = () => {
       {/* Floating Hearts and Coins */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Hearts */}
-        <Heart className="absolute top-32 left-10 w-6 h-6 text-[#F51F3B] animate-bounce" style={{ animationDelay: '0s' }} />
-        <Heart className="absolute top-44 right-16 w-4 h-4 text-[#E809CB] animate-bounce" style={{ animationDelay: '1s' }} />
-        <Heart className="absolute bottom-40 left-20 w-5 h-5 text-[#F51F3B] animate-bounce" style={{ animationDelay: '2s' }} />
-        <Heart className="absolute top-72 left-1/4 w-4 h-4 text-[#FF7A55] animate-bounce" style={{ animationDelay: '0.5s' }} />
-        <Heart className="absolute bottom-60 right-1/4 w-6 h-6 text-[#E809CB] animate-bounce" style={{ animationDelay: '1.5s' }} />
+        <Heart className="absolute top-32 left-10 w-6 h-6 text-web3-red animate-bounce" style={{ animationDelay: '0s' }} />
+        <Heart className="absolute top-44 right-16 w-4 h-4 text-web3-magenta animate-bounce" style={{ animationDelay: '1s' }} />
+        <Heart className="absolute bottom-40 left-20 w-5 h-5 text-web3-red animate-bounce" style={{ animationDelay: '2s' }} />
+        <Heart className="absolute top-72 left-1/4 w-4 h-4 text-web3-coral animate-bounce" style={{ animationDelay: '0.5s' }} />
+        <Heart className="absolute bottom-60 right-1/4 w-6 h-6 text-web3-magenta animate-bounce" style={{ animationDelay: '1.5s' }} />
         
         {/* Coins */}
-        <Coins className="absolute top-52 right-10 w-6 h-6 text-[#FFA70F] animate-bounce" style={{ animationDelay: '0.8s' }} />
-        <Coins className="absolute bottom-32 left-32 w-5 h-5 text-[#FBE24F] animate-bounce" style={{ animationDelay: '2.2s' }} />
-        <Coins className="absolute top-84 right-1/3 w-4 h-4 text-[#FFA70F] animate-bounce" style={{ animationDelay: '1.8s' }} />
-        <Coins className="absolute bottom-72 left-1/3 w-6 h-6 text-[#FBE24F] animate-bounce" style={{ animationDelay: '0.3s' }} />
+        <Coins className="absolute top-52 right-10 w-6 h-6 text-web3-orange animate-bounce" style={{ animationDelay: '0.8s' }} />
+        <Coins className="absolute bottom-32 left-32 w-5 h-5 text-web3-yellow animate-bounce" style={{ animationDelay: '2.2s' }} />
+        <Coins className="absolute top-84 right-1/3 w-4 h-4 text-web3-orange animate-bounce" style={{ animationDelay: '1.8s' }} />
+        <Coins className="absolute bottom-72 left-1/3 w-6 h-6 text-web3-yellow animate-bounce" style={{ animationDelay: '0.3s' }} />
       </div>
 
       {/* Content */}
@@ -109,17 +109,8 @@ const Hero = () => {
             {/* Color-changing circular ring background */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div 
-                className="w-80 h-80 rounded-full p-2"
+                className="w-80 h-80 rounded-full p-2 bg-gradient-web3"
                 style={{
-                  background: `conic-gradient(
-                    from 0deg,
-                    #FBE24F 0deg,
-                    #FFA70F 72deg,
-                    #FF7A55 144deg,
-                    #F51F3B 216deg,
-                    #E809CB 288deg,
-                    #FBE24F 360deg
-                  )`,
                   animation: 'spin 8s linear infinite'
                 }}
               >
@@ -135,8 +126,8 @@ const Hero = () => {
                 className="w-64 h-64 mx-auto relative z-10 rounded-full"
               />
               {/* Character-specific floating elements */}
-              <Heart className="absolute -top-2 -right-2 w-4 h-4 text-[#F51F3B] animate-pulse z-20" />
-              <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-[#FFA70F] animate-pulse z-20" />
+              <Heart className="absolute -top-2 -right-2 w-4 h-4 text-web3-red animate-pulse z-20" />
+              <Coins className="absolute -bottom-2 -left-2 w-4 h-4 text-web3-orange animate-pulse z-20" />
             </div>
           </div>
           
@@ -145,8 +136,8 @@ const Hero = () => {
           </h2>
           
           {/* Hackathon Badge */}
-          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#FBE24F]/20 to-[#FFA70F]/20 rounded-full border border-[#FFA70F]/30 mb-6">
-            <span className="text-sm font-medium text-[#FFA70F] dark:text-yellow-300">
+          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-web3-yellow/20 to-web3-orange/20 rounded-full border border-web3-orange/30 mb-6">
+            <span className="text-sm font-medium text-web3-orange dark:text-yellow-300">
               Built for Bonk Hackathon 2025 🚀
             </span>
           </div>
@@ -162,7 +153,7 @@ const Hero = () => {
               size="lg" 
               onClick={handleMainCTA}
               disabled={authLoading || profileLoading}
-              className="bg-gradient-to-r from-[#F51F3B] to-[#E809CB] hover:from-[#F51F3B]/90 hover:to-[#E809CB]/90 text-white text-xl px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-gradient-to-r from-web3-red to-web3-magenta hover:from-web3-red/90 hover:to-web3-magenta/90 text-white text-xl px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
               {getMainCTAText()}
             </Button>
@@ -200,8 +191,8 @@ const Hero = () => {
               <p className="text-sm text-muted-foreground">Professionals & Builders</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#FBE24F]/20 to-[#FFA70F]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <Sparkles className="w-8 h-8 text-[#FFA70F]" />
+              <div className="w-16 h-16 bg-gradient-to-br from-web3-yellow/20 to-web3-orange/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Sparkles className="w-8 h-8 text-web3-orange" />
               </div>
               <p className="text-lg font-semibold text-foreground">Smart Matching</p>
               <p className="text-sm text-muted-foreground">AI-Powered Connections</p>
