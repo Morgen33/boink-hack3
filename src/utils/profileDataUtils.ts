@@ -22,6 +22,15 @@ export const convertProfileToFormData = (profile: Profile): ProfileFormData => {
     // Photo fields
     photo_urls: profile.photo_urls || [],
     main_photo_index: profile.main_photo_index || 0,
+    // Professional/Networking fields
+    job_title: profile.job_title || '',
+    company_name: profile.company_name || '',
+    industry: profile.industry || '',
+    professional_bio: profile.professional_bio || '',
+    networking_goals: profile.networking_goals || [],
+    expertise_areas: profile.expertise_areas || [],
+    linkedin_url: profile.linkedin_url || '',
+    website_url: profile.website_url || '',
     // Crypto fields
     wallet_address: profile.wallet_address || '',
     favorite_crypto: profile.favorite_crypto || '',
@@ -127,6 +136,15 @@ export const prepareUpdateData = (formData: ProfileFormData) => {
     biggest_crypto_loss: formData.biggest_crypto_loss || null,
     crypto_motto: formData.crypto_motto || null,
     favorite_memes: formData.favorite_memes || null,
+    // Professional/Networking fields
+    job_title: formData.job_title || null,
+    company_name: formData.company_name || null,
+    industry: formData.industry || null,
+    professional_bio: formData.professional_bio || null,
+    networking_goals: Array.isArray(formData.networking_goals) ? formData.networking_goals : null,
+    expertise_areas: Array.isArray(formData.expertise_areas) ? formData.expertise_areas : null,
+    linkedin_url: formData.linkedin_url || null,
+    website_url: formData.website_url || null,
     updated_at: new Date().toISOString(),
   };
 };

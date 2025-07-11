@@ -6,8 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface NetworkingBasicInfoStepProps {
   data: any;
-  onUpdate: (field: string, value: string) => void;
+  onUpdate: (updates: any) => void;
 }
+
+const handleFieldUpdate = (field: string, value: string | string[], onUpdate: (updates: any) => void) => {
+  onUpdate({ [field]: value });
+};
 
 const industries = [
   'DeFi/Decentralized Finance',
@@ -70,6 +74,10 @@ const fundingFocus = [
 ];
 
 const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProps) => {
+  
+  const handleInputChange = (field: string, value: string | string[]) => {
+    handleFieldUpdate(field, value, onUpdate);
+  };
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
@@ -96,7 +104,7 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
                 id="job_title"
                 placeholder="e.g., Blockchain Developer, DeFi Analyst"
                 value={data.job_title || ''}
-                onChange={(e) => onUpdate('job_title', e.target.value)}
+                onChange={(e) => handleInputChange('job_title', e.target.value)}
                 required
               />
             </div>
@@ -107,14 +115,14 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
                 id="company_name"
                 placeholder="e.g., Ethereum Foundation, Independent"
                 value={data.company_name || ''}
-                onChange={(e) => onUpdate('company_name', e.target.value)}
+                onChange={(e) => handleInputChange('company_name', e.target.value)}
               />
             </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="industry">Industry *</Label>
-            <Select value={data.industry} onValueChange={(value) => onUpdate('industry', value)}>
+            <Select value={data.industry} onValueChange={(value) => handleInputChange('industry', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select your primary industry" />
               </SelectTrigger>
@@ -131,7 +139,7 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="role_level">Role Level *</Label>
-              <Select value={data.role_level} onValueChange={(value) => onUpdate('role_level', value)}>
+              <Select value={data.role_level} onValueChange={(value) => handleInputChange('role_level', value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select your role level" />
                 </SelectTrigger>
@@ -147,7 +155,7 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
 
             <div className="space-y-2">
               <Label htmlFor="company_stage">Company Stage</Label>
-              <Select value={data.company_stage} onValueChange={(value) => onUpdate('company_stage', value)}>
+              <Select value={data.company_stage} onValueChange={(value) => handleInputChange('company_stage', value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select company stage" />
                 </SelectTrigger>
@@ -165,7 +173,7 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="years_in_crypto">Years in Crypto/Web3 *</Label>
-              <Select value={data.years_in_crypto} onValueChange={(value) => onUpdate('years_in_crypto', value)}>
+              <Select value={data.years_in_crypto} onValueChange={(value) => handleInputChange('years_in_crypto', value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="How long have you been in Web3?" />
                 </SelectTrigger>
@@ -183,7 +191,7 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
 
             <div className="space-y-2">
               <Label htmlFor="funding_focus">Investment/Funding Focus</Label>
-              <Select value={data.funding_focus} onValueChange={(value) => onUpdate('funding_focus', value)}>
+              <Select value={data.funding_focus} onValueChange={(value) => handleInputChange('funding_focus', value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select if applicable" />
                 </SelectTrigger>
@@ -205,7 +213,7 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
                 id="location"
                 placeholder="e.g., San Francisco, Remote, NYC"
                 value={data.location || ''}
-                onChange={(e) => onUpdate('location', e.target.value)}
+                onChange={(e) => handleInputChange('location', e.target.value)}
                 required
               />
             </div>
@@ -216,7 +224,7 @@ const NetworkingBasicInfoStep = ({ data, onUpdate }: NetworkingBasicInfoStepProp
                 id="timezone"
                 placeholder="e.g., PST, UTC+1, EST"
                 value={data.timezone || ''}
-                onChange={(e) => onUpdate('timezone', e.target.value)}
+                onChange={(e) => handleInputChange('timezone', e.target.value)}
               />
             </div>
           </div>

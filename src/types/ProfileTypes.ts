@@ -68,6 +68,15 @@ export interface ProfileFormData {
   // Photo fields
   photo_urls: string[];
   main_photo_index: number;
+  // Professional/Networking fields
+  job_title: string;
+  company_name: string;
+  industry: string;
+  professional_bio: string;
+  networking_goals: string[];
+  expertise_areas: string[];
+  linkedin_url: string;
+  website_url: string;
   // Crypto fields
   wallet_address: string;
   favorite_crypto: string;

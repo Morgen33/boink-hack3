@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import PlatformIntentStep from './steps/PlatformIntentStep';
 import BasicInfoStep from './steps/BasicInfoStep';
 import AboutYouStep from './steps/AboutYouStep';
+import NetworkingBasicInfoStep from './steps/NetworkingBasicInfoStep';
 import DatingPreferencesStep from './steps/DatingPreferencesStep';
 import UnifiedCryptoStep from './steps/UnifiedCryptoStep';
 import ReviewStep from './steps/ReviewStep';
@@ -16,27 +17,16 @@ import { User } from '@supabase/supabase-js';
 import { ProfileFormData } from '@/types/ProfileTypes';
 import { validateStepByNumber } from '@/utils/profileValidation';
 
-const getSteps = (platformIntent: string) => {
-  const baseSteps = [
+const getSteps = () => {
+  return [
     { id: 1, title: 'Platform Intent', description: 'What brings you here' },
-    { id: 2, title: 'Basic Info', description: 'Tell us about yourself' },
-    { id: 3, title: 'About You', description: 'Share your story' },
+    { id: 2, title: 'Basic Info', description: 'Name, age, location & photos' },
+    { id: 3, title: 'About You', description: 'Your story & interests' },
+    { id: 4, title: 'Professional Info', description: 'Work & networking details' },
+    { id: 5, title: 'Dating Preferences', description: 'Who you\'re looking for' },
+    { id: 6, title: 'Crypto Profile', description: 'Your crypto journey' },
+    { id: 7, title: 'Review', description: 'Finalize your profile' }
   ];
-
-  if (platformIntent === 'dating' || platformIntent === 'both') {
-    baseSteps.push({ id: 4, title: 'Dating Preferences', description: 'Who are you looking for' });
-  }
-
-  if (platformIntent === 'networking' || platformIntent === 'both') {
-    // Add networking-specific steps if needed
-  }
-
-  baseSteps.push(
-    { id: baseSteps.length + 1, title: 'Crypto Profile', description: 'Your crypto journey' },
-    { id: baseSteps.length + 2, title: 'Review', description: 'Finalize your profile' }
-  );
-
-  return baseSteps;
 };
 
 interface ProfileWizardProps {
@@ -84,13 +74,22 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
     biggest_crypto_loss: initialData?.biggest_crypto_loss || '',
     crypto_motto: initialData?.crypto_motto || '',
     favorite_memes: initialData?.favorite_memes || [],
+    // Professional/Networking fields
+    job_title: initialData?.job_title || '',
+    company_name: initialData?.company_name || '',
+    industry: initialData?.industry || '',
+    professional_bio: initialData?.professional_bio || '',
+    networking_goals: initialData?.networking_goals || [],
+    expertise_areas: initialData?.expertise_areas || [],
+    linkedin_url: initialData?.linkedin_url || '',
+    website_url: initialData?.website_url || '',
   });
 
   const updateFormData = (updates: Partial<ProfileFormData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
   };
 
-  const steps = getSteps(formData.platform_intent);
+  const steps = getSteps();
   const currentValidation = validateStepByNumber(currentStep, formData);
 
   const handleNext = () => {
@@ -106,7 +105,7 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
 
     // If we're editing from review, go back to review instead of next step
     if (isEditingFromReview) {
-      setCurrentStep(5);
+      setCurrentStep(7);
       setIsEditingFromReview(false);
     } else if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
@@ -116,7 +115,7 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
   const handlePrevious = () => {
     // If we're editing from review, go back to review
     if (isEditingFromReview) {
-      setCurrentStep(5);
+      setCurrentStep(7);
       setIsEditingFromReview(false);
     } else if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
@@ -155,9 +154,6 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
   };
 
   const renderCurrentStep = () => {
-    const currentStepData = steps.find(step => step.id === currentStep);
-    if (!currentStepData) return null;
-
     switch (currentStep) {
       case 1:
         return <PlatformIntentStep data={formData} onUpdate={updateFormData} />;
@@ -166,31 +162,12 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
       case 3:
         return <AboutYouStep data={formData} onUpdate={updateFormData} />;
       case 4:
-        // Dating preferences step only shows for dating/both users
-        if (formData.platform_intent === 'dating' || formData.platform_intent === 'both') {
-          return <DatingPreferencesStep data={formData} onUpdate={updateFormData} />;
-        } else {
-          // Skip to crypto step for networking-only users
-          return <UnifiedCryptoStep data={formData} onUpdate={updateFormData} />;
-        }
+        return <NetworkingBasicInfoStep data={formData} onUpdate={updateFormData} />;
       case 5:
-        // This could be crypto step or review step depending on platform intent
-        if (formData.platform_intent === 'networking' && currentStepData.title === 'Crypto Profile') {
-          return <UnifiedCryptoStep data={formData} onUpdate={updateFormData} />;
-        } else if (currentStepData.title === 'Crypto Profile') {
-          return <UnifiedCryptoStep data={formData} onUpdate={updateFormData} />;
-        } else {
-          return (
-            <ReviewStep 
-              data={formData} 
-              onUpdate={updateFormData} 
-              onComplete={handleComplete}
-              onBack={handlePrevious}
-              onEditStep={handleEditFromReview}
-            />
-          );
-        }
+        return <DatingPreferencesStep data={formData} onUpdate={updateFormData} />;
       case 6:
+        return <UnifiedCryptoStep data={formData} onUpdate={updateFormData} />;
+      case 7:
         return (
           <ReviewStep 
             data={formData} 
