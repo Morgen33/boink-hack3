@@ -6,4 +6,5 @@ export const navigationItems = [
   { name: 'Games', href: '/games' },
   { name: 'Events', href: '/events' },
   { name: 'Token', href: '/token' },
+  { name: 'We Support', href: '/we-support' },
 ];
