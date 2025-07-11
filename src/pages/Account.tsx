@@ -201,7 +201,7 @@ const Account = () => {
                     <Progress value={calculateDatingProgress()} className="h-2" />
                   </div>
                   <Button
-                    onClick={() => navigate('/profile/setup')}
+                    onClick={() => navigate('/profile?edit=true')}
                     className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:opacity-90"
                   >
                     {profileStats.dating_profile_completed ? 'Edit Dating Profile' : 'Complete Dating Profile'}
@@ -237,7 +237,7 @@ const Account = () => {
                     <Progress value={calculateNetworkingProgress()} className="h-2" />
                   </div>
                   <Button
-                    onClick={() => navigate('/profile/setup')}
+                    onClick={() => navigate('/profile?edit=true')}
                     className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90"
                   >
                     {profileStats.networking_profile_completed ? 'Edit Professional Profile' : 'Complete Professional Profile'}

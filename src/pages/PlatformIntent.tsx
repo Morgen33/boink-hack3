@@ -27,8 +27,8 @@ const PlatformIntent = () => {
 
       if (error) throw error;
 
-      // Navigate to account dashboard
-      navigate('/account');
+      // Navigate to unified profile setup
+      navigate('/profile');
       
       toast({
         title: "Great choice!",
