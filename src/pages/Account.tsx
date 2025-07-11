@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Header from '@/components/Header';
-import { Heart, Users, CheckCircle, Circle, User, MapPin, Calendar, MessageCircle, Send } from 'lucide-react';
+import { Heart, Users, CheckCircle, Circle, User, MapPin, Calendar, MessageCircle, Send, Zap } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -15,8 +15,7 @@ import { useConversations } from '@/hooks/useConversations';
 import { formatDistanceToNow } from 'date-fns';
 
 interface ProfileStats {
-  dating_profile_completed: boolean;
-  networking_profile_completed: boolean;
+  profile_completed: boolean;
   platform_intent: 'dating' | 'networking' | 'both' | null;
   full_name: string | null;
   location: string | null;
@@ -41,7 +40,7 @@ const Account = () => {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('dating_profile_completed, networking_profile_completed, platform_intent, full_name, location, age')
+          .select('profile_completed, platform_intent, full_name, location, age')
           .eq('id', user.id)
           .single();
 
@@ -62,18 +61,30 @@ const Account = () => {
     fetchProfileStats();
   }, [user, navigate, toast]);
 
-  const calculateDatingProgress = () => {
+  const calculateProfileProgress = () => {
     if (!profileStats) return 0;
-    return profileStats.dating_profile_completed ? 100 : 0;
+    return profileStats.profile_completed ? 100 : 0;
   };
 
-  const calculateNetworkingProgress = () => {
-    if (!profileStats) return 0;
-    return profileStats.networking_profile_completed ? 100 : 0;
+  const getProfileTitle = () => {
+    if (!profileStats?.platform_intent) return 'Profile';
+    switch (profileStats.platform_intent) {
+      case 'dating': return 'Dating Profile';
+      case 'networking': return 'Professional Profile';  
+      case 'both': return 'Dating & Professional Profile';
+      default: return 'Profile';
+    }
   };
 
-  const showDatingCard = profileStats?.platform_intent === 'dating' || profileStats?.platform_intent === 'both';
-  const showNetworkingCard = profileStats?.platform_intent === 'networking' || profileStats?.platform_intent === 'both';
+  const getProfileDescription = () => {
+    if (!profileStats?.platform_intent) return 'Complete your profile';
+    switch (profileStats.platform_intent) {
+      case 'dating': return 'Set up your dating preferences, photos, and crypto interests';
+      case 'networking': return 'Build your professional Web3 networking profile';
+      case 'both': return 'Set up your complete dating and professional profile';
+      default: return 'Complete your profile';
+    }
+  };
   
   const getProfilePhoto = (photoUrls: string[] | null, avatarUrl: string | null) => {
     if (photoUrls && photoUrls.length > 0) {
@@ -172,80 +183,48 @@ const Account = () => {
             </CardContent>
           </Card>
 
-          {/* Profile Completion Cards */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {showDatingCard && (
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Heart className="w-6 h-6 text-pink-500" />
-                      <CardTitle>Dating Profile</CardTitle>
-                    </div>
-                    {profileStats.dating_profile_completed ? (
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                    ) : (
-                      <Circle className="w-5 h-5 text-muted-foreground" />
-                    )}
-                  </div>
-                  <CardDescription>
-                    Set up your dating preferences, photos, and crypto interests
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Progress</span>
-                      <span>{calculateDatingProgress()}%</span>
-                    </div>
-                    <Progress value={calculateDatingProgress()} className="h-2" />
-                  </div>
-                  <Button
-                    onClick={() => navigate('/profile?edit=true')}
-                    className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:opacity-90"
-                  >
-                    {profileStats.dating_profile_completed ? 'Edit Dating Profile' : 'Complete Dating Profile'}
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-
-            {showNetworkingCard && (
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Users className="w-6 h-6 text-blue-500" />
-                      <CardTitle>Professional Profile</CardTitle>
-                    </div>
-                    {profileStats.networking_profile_completed ? (
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                    ) : (
-                      <Circle className="w-5 h-5 text-muted-foreground" />
-                    )}
-                  </div>
-                  <CardDescription>
-                    Build your professional Web3 networking profile
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Progress</span>
-                      <span>{calculateNetworkingProgress()}%</span>
-                    </div>
-                    <Progress value={calculateNetworkingProgress()} className="h-2" />
-                  </div>
-                  <Button
-                    onClick={() => navigate('/profile?edit=true')}
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90"
-                  >
-                    {profileStats.networking_profile_completed ? 'Edit Professional Profile' : 'Complete Professional Profile'}
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+          {/* Unified Profile Completion Card */}
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {profileStats?.platform_intent === 'dating' && <Heart className="w-6 h-6 text-pink-500" />}
+                  {profileStats?.platform_intent === 'networking' && <Users className="w-6 h-6 text-blue-500" />}
+                  {profileStats?.platform_intent === 'both' && <Zap className="w-6 h-6 text-web3-red" />}
+                  <CardTitle>{getProfileTitle()}</CardTitle>
+                </div>
+                {profileStats?.profile_completed ? (
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                ) : (
+                  <Circle className="w-5 h-5 text-muted-foreground" />
+                )}
+              </div>
+              <CardDescription>
+                {getProfileDescription()}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progress</span>
+                  <span>{calculateProfileProgress()}%</span>
+                </div>
+                <Progress value={calculateProfileProgress()} className="h-2" />
+              </div>
+              <Button
+                onClick={() => navigate(profileStats?.profile_completed ? '/profile?edit=true' : '/profile')}
+                className={`w-full ${
+                  profileStats?.platform_intent === 'dating' 
+                    ? 'bg-gradient-to-r from-pink-500 to-red-500' 
+                    : profileStats?.platform_intent === 'networking'
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500'
+                    : 'bg-gradient-to-r from-web3-red to-web3-magenta'
+                } hover:opacity-90`}
+              >
+                {profileStats?.profile_completed ? `Edit ${getProfileTitle()}` : `Complete ${getProfileTitle()}`}
+              </Button>
+            </CardContent>
+          </Card>
 
           {/* Messages Section */}
           <Card>
@@ -347,7 +326,7 @@ const Account = () => {
                 <Button variant="outline" onClick={() => navigate('/discover')}>
                   Start Discovering
                 </Button>
-                {(profileStats.dating_profile_completed || profileStats.networking_profile_completed) && (
+                {profileStats.profile_completed && (
                   <Button variant="outline" onClick={() => navigate('/daily-matches')}>
                     View Daily Matches
                   </Button>
