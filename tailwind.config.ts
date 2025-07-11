@@ -65,16 +65,16 @@ export default {
 				},
 				// Custom Web3 Dating Platform Colors
 				web3: {
-					yellow: 'hsl(50, 95%, 64%)',
-					orange: 'hsl(39, 100%, 53%)',
-					coral: 'hsl(14, 100%, 67%)',
-					red: 'hsl(347, 91%, 54%)',
-					magenta: 'hsl(312, 93%, 48%)',
-					pink: 'hsl(342, 50%, 58%)',
-					salmon: 'hsl(356, 98%, 70%)',
-					peach: 'hsl(25, 98%, 66%)',
-					cream: 'hsl(33, 100%, 74%)',
-					light: 'hsl(30, 100%, 82%)'
+					yellow: 'hsl(var(--web3-yellow))',
+					orange: 'hsl(var(--web3-orange))',
+					coral: 'hsl(var(--web3-coral))',
+					red: 'hsl(var(--web3-red))',
+					magenta: 'hsl(var(--web3-magenta))',
+					pink: 'hsl(var(--web3-pink))',
+					salmon: 'hsl(var(--web3-salmon))',
+					peach: 'hsl(var(--web3-peach))',
+					cream: 'hsl(var(--web3-cream))',
+					light: 'hsl(var(--web3-light))'
 				}
 			},
 			borderRadius: {

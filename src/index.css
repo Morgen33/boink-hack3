@@ -51,6 +51,18 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Web3 Dating Platform Colors */
+    --web3-yellow: 50 95% 64%;
+    --web3-orange: 39 100% 53%;
+    --web3-coral: 14 100% 67%;
+    --web3-red: 347 91% 54%;
+    --web3-magenta: 312 93% 48%;
+    --web3-pink: 342 50% 58%;
+    --web3-salmon: 356 98% 70%;
+    --web3-peach: 25 98% 66%;
+    --web3-cream: 33 100% 74%;
+    --web3-light: 30 100% 82%;
   }
 
   .dark {
@@ -89,6 +101,18 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Web3 Dating Platform Colors (Dark Mode) */
+    --web3-yellow: 50 95% 64%;
+    --web3-orange: 39 100% 53%;
+    --web3-coral: 14 100% 67%;
+    --web3-red: 347 91% 54%;
+    --web3-magenta: 312 93% 48%;
+    --web3-pink: 342 50% 58%;
+    --web3-salmon: 356 98% 70%;
+    --web3-peach: 25 98% 66%;
+    --web3-cream: 33 100% 74%;
+    --web3-light: 30 100% 82%;
   }
 }
 
