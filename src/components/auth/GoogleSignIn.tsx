@@ -10,11 +10,28 @@ interface GoogleSignInProps {
 export const GoogleSignIn = ({ loading, setLoading }: GoogleSignInProps) => {
   const { toast } = useToast();
 
+  // Check if running in iframe (like Lovable preview)
+  const isInIframe = window.self !== window.top;
+
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
       console.log('Starting Google sign in...');
       console.log('Current origin:', window.location.origin);
+      console.log('Is in iframe:', isInIframe);
+      
+      if (isInIframe) {
+        // Open OAuth in new window when in iframe
+        const authUrl = `https://pizlzaomylxreizohewd.supabase.co/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(window.location.origin)}/`;
+        window.open(authUrl, '_blank', 'width=500,height=600,scrollbars=yes,resizable=yes');
+        
+        toast({
+          title: "OAuth Window Opened",
+          description: "Complete the sign-in in the new window. For best experience, test Google sign-in on the deployed site.",
+          variant: "default",
+        });
+        return;
+      }
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
