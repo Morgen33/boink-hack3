@@ -1,5 +1,6 @@
 
 export const navigationItems = [
+  { name: 'Home', href: '/' },
   { name: 'Daily Matches', href: '/daily-matches' },
   { name: 'My Matches', href: '/my-matches' },
   { name: 'Discover', href: '/discover' },
