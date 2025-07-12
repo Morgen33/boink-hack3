@@ -1,14 +1,26 @@
 
 import { navigationItems } from "@/constants/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NavigationProps {
   onNavClick: (href: string) => void;
 }
 
 const Navigation = ({ onNavClick }: NavigationProps) => {
+  const { user } = useAuth();
+  
+  const authRequiredItems = ['Daily Matches', 'My Matches', 'Discover'];
+  
+  const filteredItems = navigationItems.filter(item => {
+    if (authRequiredItems.includes(item.name)) {
+      return user !== null;
+    }
+    return true;
+  });
+
   return (
     <nav className="hidden md:flex items-center space-x-8">
-      {navigationItems.map((item) => (
+      {filteredItems.map((item) => (
         <button
           key={item.name}
           onClick={() => onNavClick(item.href)}
