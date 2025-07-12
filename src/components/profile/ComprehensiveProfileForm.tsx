@@ -13,6 +13,7 @@ import { CalendarIcon, Heart, Users, Upload, Plus, X, Rocket } from 'lucide-reac
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface FormData {
   // Purpose Selection
@@ -78,6 +79,7 @@ interface ComprehensiveProfileFormProps {
 
 const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfileFormProps) => {
   const { toast } = useToast();
+  const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     purposes: [],
     photos: [],
@@ -157,6 +159,125 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
     updateFormData({
       projects: formData.projects.filter((_, i) => i !== index)
     });
+  };
+
+  // Photo upload handlers
+  const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const remainingSlots = 6 - formData.photos.length;
+    if (files.length > remainingSlots) {
+      toast({
+        title: "Too many photos",
+        description: `You can only upload ${remainingSlots} more photo(s). Maximum 6 photos allowed.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      
+      if (userError || !user) {
+        throw new Error('You must be logged in to upload photos');
+      }
+
+      const uploadPromises = Array.from(files).map(async (file, index) => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}_${index}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('profile-photos')
+          .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('profile-photos')
+          .getPublicUrl(fileName);
+
+        return file;
+      });
+
+      const uploadedFiles = await Promise.all(uploadPromises);
+      updateFormData({ photos: [...formData.photos, ...uploadedFiles] });
+
+      toast({
+        title: "Photos uploaded! 📸",
+        description: `Successfully uploaded ${files.length} photo(s).`,
+      });
+
+    } catch (error: any) {
+      console.error('Error uploading photos:', error);
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload photos. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+      if (event.target) {
+        event.target.value = '';
+      }
+    }
+  };
+
+  const handleNFTUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    try {
+      const uploadedFiles = Array.from(files);
+      updateFormData({ nftImages: [...formData.nftImages, ...uploadedFiles] });
+      
+      toast({
+        title: "NFT images uploaded! 🎨",
+        description: `Successfully uploaded ${files.length} NFT image(s).`,
+      });
+    } catch (error: any) {
+      console.error('Error uploading NFT images:', error);
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload NFT images. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+      if (event.target) {
+        event.target.value = '';
+      }
+    }
+  };
+
+  const handleMemeUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    try {
+      const uploadedFiles = Array.from(files);
+      updateFormData({ favoriteMemesImages: [...formData.favoriteMemesImages, ...uploadedFiles] });
+      
+      toast({
+        title: "Meme images uploaded! 😂",
+        description: `Successfully uploaded ${files.length} meme image(s).`,
+      });
+    } catch (error: any) {
+      console.error('Error uploading meme images:', error);
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload meme images. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+      if (event.target) {
+        event.target.value = '';
+      }
+    }
   };
 
   const calculateProgress = () => {
@@ -383,8 +504,22 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 <div className="border-2 border-dashed border-muted rounded-xl p-12 text-center hover:border-primary/50 transition-colors">
                   <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground mb-4 text-lg">Drag and drop photos or click to browse</p>
-                  <Button variant="outline" className="h-12 px-6">
-                    Add Photos
+                  <Input
+                    id="photo-upload"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handlePhotoUpload}
+                    disabled={isUploading || formData.photos.length >= 6}
+                    className="hidden"
+                  />
+                  <Button 
+                    variant="outline" 
+                    className="h-12 px-6"
+                    onClick={() => document.getElementById('photo-upload')?.click()}
+                    disabled={isUploading || formData.photos.length >= 6}
+                  >
+                    {isUploading ? 'Uploading...' : 'Add Photos'}
                   </Button>
                   {formData.photos.length > 0 && (
                     <p className="text-sm text-muted-foreground mt-3">
@@ -482,8 +617,22 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                   <div className="border-2 border-dashed border-purple-300 rounded-xl p-8 text-center hover:border-purple-500 transition-colors">
                     <Upload className="w-8 h-8 mx-auto mb-3 text-purple-500" />
                     <p className="text-muted-foreground mb-3">Upload your favorite NFT images</p>
-                    <Button variant="outline" className="h-10 px-4 border-purple-300 text-purple-600 hover:bg-purple-50">
-                      Upload NFT Images
+                    <Input
+                      id="nft-upload"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleNFTUpload}
+                      disabled={isUploading}
+                      className="hidden"
+                    />
+                    <Button 
+                      variant="outline" 
+                      className="h-10 px-4 border-purple-300 text-purple-600 hover:bg-purple-50"
+                      onClick={() => document.getElementById('nft-upload')?.click()}
+                      disabled={isUploading}
+                    >
+                      {isUploading ? 'Uploading...' : 'Upload NFT Images'}
                     </Button>
                     {formData.nftImages?.length > 0 && (
                       <p className="text-sm text-muted-foreground mt-2">
@@ -516,8 +665,22 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                   <div className="border-2 border-dashed border-orange-300 rounded-xl p-8 text-center hover:border-orange-500 transition-colors">
                     <Upload className="w-8 h-8 mx-auto mb-3 text-orange-500" />
                     <p className="text-muted-foreground mb-3">Upload your favorite crypto meme images</p>
-                    <Button variant="outline" className="h-10 px-4 border-orange-300 text-orange-600 hover:bg-orange-50">
-                      Upload Meme Images
+                    <Input
+                      id="meme-upload"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleMemeUpload}
+                      disabled={isUploading}
+                      className="hidden"
+                    />
+                    <Button 
+                      variant="outline" 
+                      className="h-10 px-4 border-orange-300 text-orange-600 hover:bg-orange-50"
+                      onClick={() => document.getElementById('meme-upload')?.click()}
+                      disabled={isUploading}
+                    >
+                      {isUploading ? 'Uploading...' : 'Upload Meme Images'}
                     </Button>
                     {formData.favoriteMemesImages?.length > 0 && (
                       <p className="text-sm text-muted-foreground mt-2">
