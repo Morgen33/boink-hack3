@@ -63,6 +63,7 @@ interface FormData {
   skillsOffered: string[];
   skillsNeeded: string[];
   projects: Array<{name: string, description: string, link: string}>;
+  resume?: File;
   
   // Additional Preferences
   willingToRelocate: string;
@@ -270,6 +271,53 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
       toast({
         title: "Upload failed",
         description: error.message || "Failed to upload meme images. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+      if (event.target) {
+        event.target.value = '';
+      }
+    }
+  };
+
+  const handleResumeUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Check file type (PDF only)
+    if (file.type !== 'application/pdf') {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload a PDF file only.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Resume must be smaller than 5MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      updateFormData({ resume: file });
+      
+      toast({
+        title: "Resume uploaded! 📄",
+        description: "Your resume has been added to your profile.",
+      });
+    } catch (error: any) {
+      console.error('Error uploading resume:', error);
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload resume. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -1052,59 +1100,105 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                     />
                   </div>
 
-                  {/* Projects */}
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-lg font-semibold">Project Showcase</Label>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={addProject}
-                        className="flex items-center gap-2"
-                      >
-                        <Plus className="w-4 h-4" />
-                        Add Project
-                      </Button>
-                    </div>
-                    
-                    {formData.projects.map((project, index) => (
-                      <div key={index} className="border rounded-xl p-6 space-y-4">
-                        <div className="flex items-center justify-between">
-                          <Label className="text-base font-medium">Project {index + 1}</Label>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => removeProject(index)}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        </div>
-                        
-                        <div className="space-y-4">
-                          <Input
-                            placeholder="Project name"
-                            value={project.name}
-                            onChange={(e) => updateProject(index, { name: e.target.value })}
-                            className="text-base"
-                          />
-                          <Textarea
-                            placeholder="Project description"
-                            value={project.description}
-                            onChange={(e) => updateProject(index, { description: e.target.value })}
-                            rows={3}
-                            className="text-base"
-                          />
-                          <Input
-                            placeholder="Project link (optional)"
-                            value={project.link}
-                            onChange={(e) => updateProject(index, { link: e.target.value })}
-                            className="text-base"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                   {/* Resume Upload */}
+                   <div className="space-y-6">
+                     <div className="space-y-3">
+                       <Label className="text-lg font-semibold">Resume Upload</Label>
+                       <div className="border-2 border-dashed border-blue-200 dark:border-blue-800 rounded-xl p-8 text-center hover:border-blue-400 transition-colors">
+                         <input
+                           type="file"
+                           accept=".pdf"
+                           onChange={handleResumeUpload}
+                           className="hidden"
+                           id="resume-upload"
+                           disabled={isUploading}
+                         />
+                         <label
+                           htmlFor="resume-upload"
+                           className="cursor-pointer flex flex-col items-center gap-4"
+                         >
+                           <Upload className="w-12 h-12 text-blue-500" />
+                           <div className="space-y-2">
+                             <p className="text-lg font-medium text-blue-600">
+                               {formData.resume ? `📄 ${formData.resume.name}` : 'Upload Your Resume'}
+                             </p>
+                             <p className="text-sm text-muted-foreground">
+                               PDF only, max 5MB
+                             </p>
+                           </div>
+                         </label>
+                       </div>
+                       {formData.resume && (
+                         <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                           <span className="text-sm text-blue-700 dark:text-blue-300">
+                             📄 {formData.resume.name}
+                           </span>
+                           <Button
+                             type="button"
+                             variant="ghost"
+                             size="sm"
+                             onClick={() => updateFormData({ resume: undefined })}
+                           >
+                             <X className="w-4 h-4" />
+                           </Button>
+                         </div>
+                       )}
+                     </div>
+                   </div>
+
+                   {/* Projects */}
+                   <div className="space-y-6">
+                     <div className="flex items-center justify-between">
+                       <Label className="text-lg font-semibold">Project Showcase</Label>
+                       <Button
+                         type="button"
+                         variant="outline"
+                         onClick={addProject}
+                         className="flex items-center gap-2"
+                       >
+                         <Plus className="w-4 h-4" />
+                         Add Project
+                       </Button>
+                     </div>
+                     
+                     {formData.projects.map((project, index) => (
+                       <div key={index} className="border rounded-xl p-6 space-y-4">
+                         <div className="flex items-center justify-between">
+                           <Label className="text-base font-medium">Project {index + 1}</Label>
+                           <Button
+                             type="button"
+                             variant="ghost"
+                             size="sm"
+                             onClick={() => removeProject(index)}
+                           >
+                             <X className="w-4 h-4" />
+                           </Button>
+                         </div>
+                         
+                         <div className="space-y-4">
+                           <Input
+                             placeholder="Project name"
+                             value={project.name}
+                             onChange={(e) => updateProject(index, { name: e.target.value })}
+                             className="text-base"
+                           />
+                           <Textarea
+                             placeholder="Project description"
+                             value={project.description}
+                             onChange={(e) => updateProject(index, { description: e.target.value })}
+                             rows={3}
+                             className="text-base"
+                           />
+                           <Input
+                             placeholder="Project link (optional)"
+                             value={project.link}
+                             onChange={(e) => updateProject(index, { link: e.target.value })}
+                             className="text-base"
+                           />
+                         </div>
+                       </div>
+                     ))}
+                   </div>
                 </div>
               </section>
             </>
@@ -1171,7 +1265,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
             <Button
               onClick={handleSubmit}
               disabled={isSubmitting || formData.purposes.length === 0}
-              className="text-xl px-12 py-6 h-16 bg-gradient-to-r from-primary to-accent hover:scale-105 transition-all"
+              className="text-xl px-12 py-6 h-16 bg-gradient-web3 hover:scale-105 transition-all text-white font-bold shadow-lg"
             >
               {isSubmitting ? "Creating Profile..." : getSubmitButtonText()}
             </Button>
