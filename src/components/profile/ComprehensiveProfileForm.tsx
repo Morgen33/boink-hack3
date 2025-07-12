@@ -37,6 +37,14 @@ interface FormData {
   favoriteMemesCaptions: string[];
   investmentPhilosophy: string;
   
+  // New Crypto Fields
+  nftCollections?: string;
+  favoriteMemesText?: string;
+  yearsInCrypto?: string;
+  degenScore?: string;
+  defiProtocolsText?: string;
+  cryptoMotto?: string;
+  
   // Dating Section
   genderIdentity: string;
   sexualOrientation: string;
@@ -453,48 +461,246 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 />
               </div>
 
-              {/* Crypto Experience */}
-              <div className="grid md:grid-cols-2 gap-6">
+              {/* NFT Collection Showcase */}
+              <div className="space-y-6 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border border-purple-200 dark:border-purple-800">
+                <h3 className="text-xl font-bold text-purple-600">NFT Collection Showcase 🎨</h3>
+                <p className="text-muted-foreground">Show off your digital art collection</p>
+                
                 <div className="space-y-3">
-                  <Label className="text-lg font-semibold">Crypto Experience *</Label>
-                  <Select value={formData.cryptoExperience} onValueChange={(value) => updateFormData({ cryptoExperience: value })}>
-                    <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Select experience level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="beginner">Beginner</SelectItem>
-                      <SelectItem value="intermediate">Intermediate (1-3 years)</SelectItem>
-                      <SelectItem value="advanced">Advanced (3+ years)</SelectItem>
-                      <SelectItem value="expert">Expert (5+ years)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label className="text-lg font-semibold">NFT Collections Owned</Label>
+                  <Input
+                    placeholder="Bored Ape Yacht Club, CryptoPunks, Azuki, Art Blocks..."
+                    value={formData.nftCollections || ''}
+                    onChange={(e) => updateFormData({ nftCollections: e.target.value })}
+                    className="text-base h-12"
+                  />
+                  <p className="text-sm text-muted-foreground">Separate multiple collections with commas</p>
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-lg font-semibold">Favorite Crypto/Token</Label>
-                  <Select value={formData.favoriteCrypto} onValueChange={(value) => updateFormData({ favoriteCrypto: value })}>
-                    <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Select favorite crypto" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="bitcoin">Bitcoin (BTC)</SelectItem>
-                      <SelectItem value="ethereum">Ethereum (ETH)</SelectItem>
-                      <SelectItem value="solana">Solana (SOL)</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label className="text-lg font-semibold">Showcase NFT Images</Label>
+                  <div className="border-2 border-dashed border-purple-300 rounded-xl p-8 text-center hover:border-purple-500 transition-colors">
+                    <Upload className="w-8 h-8 mx-auto mb-3 text-purple-500" />
+                    <p className="text-muted-foreground mb-3">Upload your favorite NFT images</p>
+                    <Button variant="outline" className="h-10 px-4 border-purple-300 text-purple-600 hover:bg-purple-50">
+                      Upload NFT Images
+                    </Button>
+                    {formData.nftImages?.length > 0 && (
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {formData.nftImages.length} NFT image(s) added
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Investment Philosophy */}
-              <div className="space-y-3">
-                <Label className="text-lg font-semibold">Investment Philosophy</Label>
-                <Textarea
-                  placeholder="If you're not building at 2AM, you're not building."
-                  value={formData.investmentPhilosophy}
-                  onChange={(e) => updateFormData({ investmentPhilosophy: e.target.value })}
-                  className="min-h-[100px] text-base"
-                />
+              {/* Meme Collection */}
+              <div className="space-y-6 p-6 bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
+                <h3 className="text-xl font-bold text-orange-600">Meme Collection 😂</h3>
+                <p className="text-muted-foreground">Share your crypto sense of humor</p>
+                
+                <div className="space-y-3">
+                  <Label className="text-lg font-semibold">Favorite Crypto Memes</Label>
+                  <Textarea
+                    placeholder="Diamond hands 💎🙌, To the moon 🚀, This is fine 🔥, Number go up 📈, HODL..."
+                    value={formData.favoriteMemesText || ''}
+                    onChange={(e) => updateFormData({ favoriteMemesText: e.target.value })}
+                    className="min-h-[100px] text-base"
+                    rows={3}
+                  />
+                  <p className="text-sm text-muted-foreground">Describe your favorite crypto memes or inside jokes</p>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-lg font-semibold">Upload Funny Meme Pics</Label>
+                  <div className="border-2 border-dashed border-orange-300 rounded-xl p-8 text-center hover:border-orange-500 transition-colors">
+                    <Upload className="w-8 h-8 mx-auto mb-3 text-orange-500" />
+                    <p className="text-muted-foreground mb-3">Upload your favorite crypto meme images</p>
+                    <Button variant="outline" className="h-10 px-4 border-orange-300 text-orange-600 hover:bg-orange-50">
+                      Upload Meme Images
+                    </Button>
+                    {formData.favoriteMemesImages?.length > 0 && (
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {formData.favoriteMemesImages.length} meme image(s) added
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-lg font-semibold">Meme Coin Holdings</Label>
+                  <Input
+                    placeholder="DOGE, SHIB, PEPE, WIF, BONK, FLOKI..."
+                    value={formData.memeCoinHoldings}
+                    onChange={(e) => updateFormData({ memeCoinHoldings: e.target.value })}
+                    className="text-base h-12"
+                  />
+                </div>
+              </div>
+
+              {/* Comprehensive Crypto Profile */}
+              <div className="space-y-6">
+                <h3 className="text-xl font-bold">Crypto Profile</h3>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Crypto Experience *</Label>
+                    <Select value={formData.cryptoExperience} onValueChange={(value) => updateFormData({ cryptoExperience: value })}>
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="Select experience level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="newbie">Crypto Newbie (&lt; 6 months)</SelectItem>
+                        <SelectItem value="beginner">Beginner (6 months - 1 year)</SelectItem>
+                        <SelectItem value="intermediate">Intermediate (1-3 years)</SelectItem>
+                        <SelectItem value="experienced">Experienced (3-5 years)</SelectItem>
+                        <SelectItem value="veteran">Veteran (5+ years)</SelectItem>
+                        <SelectItem value="og">OG (Since 2017 or earlier)</SelectItem>
+                        <SelectItem value="degen">Full Degen (YOLO everything)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Years in Crypto</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="20"
+                      placeholder="5"
+                      value={formData.yearsInCrypto || ''}
+                      onChange={(e) => updateFormData({ yearsInCrypto: e.target.value })}
+                      className="text-base h-12"
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Favorite Crypto *</Label>
+                    <Select value={formData.favoriteCrypto} onValueChange={(value) => updateFormData({ favoriteCrypto: value })}>
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="Select favorite crypto" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Bitcoin (BTC)">Bitcoin (BTC)</SelectItem>
+                        <SelectItem value="Ethereum (ETH)">Ethereum (ETH)</SelectItem>
+                        <SelectItem value="Solana (SOL)">Solana (SOL)</SelectItem>
+                        <SelectItem value="Cardano (ADA)">Cardano (ADA)</SelectItem>
+                        <SelectItem value="Polygon (MATIC)">Polygon (MATIC)</SelectItem>
+                        <SelectItem value="Chainlink (LINK)">Chainlink (LINK)</SelectItem>
+                        <SelectItem value="Dogecoin (DOGE)">Dogecoin (DOGE)</SelectItem>
+                        <SelectItem value="Shiba Inu (SHIB)">Shiba Inu (SHIB)</SelectItem>
+                        <SelectItem value="Avalanche (AVAX)">Avalanche (AVAX)</SelectItem>
+                        <SelectItem value="Polkadot (DOT)">Polkadot (DOT)</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Portfolio Size</Label>
+                    <Select value={formData.portfolioSize} onValueChange={(value) => updateFormData({ portfolioSize: value })}>
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="Select portfolio size" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Shrimp (< $1k)">Shrimp (&lt; $1k)</SelectItem>
+                        <SelectItem value="Crab ($1k - $10k)">Crab ($1k - $10k)</SelectItem>
+                        <SelectItem value="Fish ($10k - $50k)">Fish ($10k - $50k)</SelectItem>
+                        <SelectItem value="Dolphin ($50k - $500k)">Dolphin ($50k - $500k)</SelectItem>
+                        <SelectItem value="Shark ($500k - $1M)">Shark ($500k - $1M)</SelectItem>
+                        <SelectItem value="Whale ($1M+) 🐋">Whale ($1M+) 🐋</SelectItem>
+                        <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Trading Style</Label>
+                    <Select value={formData.tradingStyle} onValueChange={(value) => updateFormData({ tradingStyle: value })}>
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="Select trading style" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="HODL only">HODL only</SelectItem>
+                        <SelectItem value="DCA (Dollar Cost Average)">DCA (Dollar Cost Average)</SelectItem>
+                        <SelectItem value="Swing Trading">Swing Trading</SelectItem>
+                        <SelectItem value="Day Trading">Day Trading</SelectItem>
+                        <SelectItem value="Scalping">Scalping</SelectItem>
+                        <SelectItem value="Copy Trading">Copy Trading</SelectItem>
+                        <SelectItem value="Ape into everything">Ape into everything</SelectItem>
+                        <SelectItem value="Research first, then invest">Research first, then invest</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Degen Score (1-10)</Label>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="10"
+                      placeholder="8"
+                      value={formData.degenScore || ''}
+                      onChange={(e) => updateFormData({ degenScore: e.target.value })}
+                      className="text-base h-12"
+                    />
+                    <p className="text-sm text-muted-foreground">1 = Conservative, 10 = Full Degen</p>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Biggest Crypto Win 🏆</Label>
+                    <Input
+                      placeholder="Got ETH at $200, 100x on SHIB..."
+                      value={formData.biggestWin}
+                      onChange={(e) => updateFormData({ biggestWin: e.target.value })}
+                      className="text-base h-12"
+                    />
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Biggest Crypto Loss 💸</Label>
+                    <Input
+                      placeholder="LUNA collapse, bought ICP at $700..."
+                      value={formData.biggestLoss}
+                      onChange={(e) => updateFormData({ biggestLoss: e.target.value })}
+                      className="text-base h-12"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-lg font-semibold">DeFi Protocols</Label>
+                  <Input
+                    placeholder="Uniswap, Compound, Aave, MakerDAO, Curve..."
+                    value={formData.defiProtocolsText || ''}
+                    onChange={(e) => updateFormData({ defiProtocolsText: e.target.value })}
+                    className="text-base h-12"
+                  />
+                  <p className="text-sm text-muted-foreground">List DeFi protocols you use, separated by commas</p>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-lg font-semibold">Crypto Motto</Label>
+                  <Textarea
+                    placeholder="Diamond hands forever, WAGMI, Not financial advice..."
+                    value={formData.cryptoMotto || ''}
+                    onChange={(e) => updateFormData({ cryptoMotto: e.target.value })}
+                    className="min-h-[80px] text-base"
+                    rows={2}
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-lg font-semibold">Investment Philosophy</Label>
+                  <Textarea
+                    placeholder="If you're not building at 2AM, you're not building. DeFi is the future..."
+                    value={formData.investmentPhilosophy}
+                    onChange={(e) => updateFormData({ investmentPhilosophy: e.target.value })}
+                    className="min-h-[100px] text-base"
+                  />
+                </div>
               </div>
             </div>
           </section>
