@@ -90,4 +90,18 @@ export interface ProfileFormData {
   biggest_crypto_loss: string;
   crypto_motto: string;
   favorite_memes: any[];
+  // New comprehensive form fields
+  show_birthdate: boolean;
+  investment_philosophy: string;
+  crypto_date_preference: string;
+  ideal_crypto_date: string;
+  crypto_deal_breaker: string;
+  willing_to_relocate: string;
+  preferred_meeting_type: string;
+  show_in_dating_pool: boolean;
+  show_in_networking_pool: boolean;
+  make_profile_public: boolean;
+  skills_offered: string[];
+  skills_needed: string[];
+  projects: Array<{name: string, description: string, link: string}>;
 }

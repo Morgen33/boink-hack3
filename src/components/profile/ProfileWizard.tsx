@@ -83,6 +83,20 @@ const ProfileWizard = ({ user, initialData, onComplete, onSave }: ProfileWizardP
     expertise_areas: initialData?.expertise_areas || [],
     linkedin_url: initialData?.linkedin_url || '',
     website_url: initialData?.website_url || '',
+    // New comprehensive form fields
+    show_birthdate: initialData?.show_birthdate || false,
+    investment_philosophy: initialData?.investment_philosophy || '',
+    crypto_date_preference: initialData?.crypto_date_preference || '',
+    ideal_crypto_date: initialData?.ideal_crypto_date || '',
+    crypto_deal_breaker: initialData?.crypto_deal_breaker || '',
+    willing_to_relocate: initialData?.willing_to_relocate || '',
+    preferred_meeting_type: initialData?.preferred_meeting_type || '',
+    show_in_dating_pool: initialData?.show_in_dating_pool !== undefined ? initialData.show_in_dating_pool : true,
+    show_in_networking_pool: initialData?.show_in_networking_pool !== undefined ? initialData.show_in_networking_pool : true,
+    make_profile_public: initialData?.make_profile_public !== undefined ? initialData.make_profile_public : true,
+    skills_offered: initialData?.skills_offered || [],
+    skills_needed: initialData?.skills_needed || [],
+    projects: initialData?.projects || [],
   });
 
   const updateFormData = (updates: Partial<ProfileFormData>) => {

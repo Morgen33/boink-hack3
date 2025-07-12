@@ -20,6 +20,7 @@ import WeSupport from "./pages/WeSupport";
 import NotFound from "./pages/NotFound";
 import PlatformIntent from "./pages/PlatformIntent";
 import Account from "./pages/Account";
+import ComprehensiveProfile from "./pages/ComprehensiveProfile";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/profile/setup" element={<Profile />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<Profile />} />
+            <Route path="/profile/comprehensive" element={<ComprehensiveProfile />} />
             <Route path="/profile/:profileId" element={<ProfileDetail />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/token" element={<Token />} />

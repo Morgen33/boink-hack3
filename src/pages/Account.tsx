@@ -241,12 +241,22 @@ const Account = () => {
                 </div>
               )}
               
-              <Button
-                onClick={() => navigate('/profile/setup')}
-                className="w-full bg-gradient-to-r from-web3-red to-web3-magenta hover:from-web3-red/90 hover:to-web3-magenta/90 text-white"
-              >
-                {isProfileComplete() ? 'Edit Profile' : 'Complete Profile'}
-              </Button>
+              <div className="space-y-3">
+                <Button
+                  onClick={() => navigate('/profile/setup')}
+                  className="w-full bg-gradient-to-r from-web3-red to-web3-magenta hover:from-web3-red/90 hover:to-web3-magenta/90 text-white"
+                >
+                  {isProfileComplete() ? 'Edit Profile' : 'Complete Profile'}
+                </Button>
+                
+                <Button
+                  onClick={() => navigate('/profile/comprehensive')}
+                  variant="outline"
+                  className="w-full border-web3-orange text-web3-orange hover:bg-web3-orange hover:text-white"
+                >
+                  🚀 Try New Comprehensive Profile Form
+                </Button>
+              </div>
             </CardContent>
           </Card>
 

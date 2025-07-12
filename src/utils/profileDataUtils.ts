@@ -44,6 +44,20 @@ export const convertProfileToFormData = (profile: Profile): ProfileFormData => {
     biggest_crypto_loss: profile.biggest_crypto_loss || '',
     crypto_motto: profile.crypto_motto || '',
     favorite_memes: [],
+    // New comprehensive form fields
+    show_birthdate: false,
+    investment_philosophy: '',
+    crypto_date_preference: '',
+    ideal_crypto_date: '',
+    crypto_deal_breaker: '',
+    willing_to_relocate: '',
+    preferred_meeting_type: '',
+    show_in_dating_pool: true,
+    show_in_networking_pool: true,
+    make_profile_public: true,
+    skills_offered: [],
+    skills_needed: [],
+    projects: [],
   };
 };
 

@@ -375,6 +375,8 @@ export type Database = {
           bio: string | null
           company_name: string | null
           created_at: string
+          crypto_date_preference: string | null
+          crypto_deal_breaker: string | null
           crypto_experience: string | null
           crypto_motto: string | null
           date_of_birth: string | null
@@ -388,8 +390,10 @@ export type Database = {
           full_name: string | null
           gender_identity: string | null
           id: string
+          ideal_crypto_date: string | null
           industry: string | null
           interests: string[] | null
+          investment_philosophy: string | null
           job_title: string | null
           linkedin_url: string | null
           location: string | null
@@ -397,6 +401,7 @@ export type Database = {
           looking_for_gender: string[] | null
           looking_for_networking: string[] | null
           main_photo_index: number | null
+          make_profile_public: boolean | null
           meme_coin_holdings: string[] | null
           networking_completed: boolean | null
           networking_goals: string[] | null
@@ -407,15 +412,23 @@ export type Database = {
             | Database["public"]["Enums"]["platform_intent_type"]
             | null
           portfolio_size: string | null
+          preferred_meeting_type: string | null
           professional_bio: string | null
           profile_completed: boolean | null
+          projects: Json | null
           relationship_type: string | null
           sexual_orientation: string | null
+          show_birthdate: boolean | null
+          show_in_dating_pool: boolean | null
+          show_in_networking_pool: boolean | null
+          skills_needed: string[] | null
+          skills_offered: string[] | null
           trading_style: string | null
           updated_at: string
           username: string | null
           wallet_address: string | null
           website_url: string | null
+          willing_to_relocate: string | null
           years_in_crypto: number | null
         }
         Insert: {
@@ -426,6 +439,8 @@ export type Database = {
           bio?: string | null
           company_name?: string | null
           created_at?: string
+          crypto_date_preference?: string | null
+          crypto_deal_breaker?: string | null
           crypto_experience?: string | null
           crypto_motto?: string | null
           date_of_birth?: string | null
@@ -439,8 +454,10 @@ export type Database = {
           full_name?: string | null
           gender_identity?: string | null
           id: string
+          ideal_crypto_date?: string | null
           industry?: string | null
           interests?: string[] | null
+          investment_philosophy?: string | null
           job_title?: string | null
           linkedin_url?: string | null
           location?: string | null
@@ -448,6 +465,7 @@ export type Database = {
           looking_for_gender?: string[] | null
           looking_for_networking?: string[] | null
           main_photo_index?: number | null
+          make_profile_public?: boolean | null
           meme_coin_holdings?: string[] | null
           networking_completed?: boolean | null
           networking_goals?: string[] | null
@@ -458,15 +476,23 @@ export type Database = {
             | Database["public"]["Enums"]["platform_intent_type"]
             | null
           portfolio_size?: string | null
+          preferred_meeting_type?: string | null
           professional_bio?: string | null
           profile_completed?: boolean | null
+          projects?: Json | null
           relationship_type?: string | null
           sexual_orientation?: string | null
+          show_birthdate?: boolean | null
+          show_in_dating_pool?: boolean | null
+          show_in_networking_pool?: boolean | null
+          skills_needed?: string[] | null
+          skills_offered?: string[] | null
           trading_style?: string | null
           updated_at?: string
           username?: string | null
           wallet_address?: string | null
           website_url?: string | null
+          willing_to_relocate?: string | null
           years_in_crypto?: number | null
         }
         Update: {
@@ -477,6 +503,8 @@ export type Database = {
           bio?: string | null
           company_name?: string | null
           created_at?: string
+          crypto_date_preference?: string | null
+          crypto_deal_breaker?: string | null
           crypto_experience?: string | null
           crypto_motto?: string | null
           date_of_birth?: string | null
@@ -490,8 +518,10 @@ export type Database = {
           full_name?: string | null
           gender_identity?: string | null
           id?: string
+          ideal_crypto_date?: string | null
           industry?: string | null
           interests?: string[] | null
+          investment_philosophy?: string | null
           job_title?: string | null
           linkedin_url?: string | null
           location?: string | null
@@ -499,6 +529,7 @@ export type Database = {
           looking_for_gender?: string[] | null
           looking_for_networking?: string[] | null
           main_photo_index?: number | null
+          make_profile_public?: boolean | null
           meme_coin_holdings?: string[] | null
           networking_completed?: boolean | null
           networking_goals?: string[] | null
@@ -509,15 +540,23 @@ export type Database = {
             | Database["public"]["Enums"]["platform_intent_type"]
             | null
           portfolio_size?: string | null
+          preferred_meeting_type?: string | null
           professional_bio?: string | null
           profile_completed?: boolean | null
+          projects?: Json | null
           relationship_type?: string | null
           sexual_orientation?: string | null
+          show_birthdate?: boolean | null
+          show_in_dating_pool?: boolean | null
+          show_in_networking_pool?: boolean | null
+          skills_needed?: string[] | null
+          skills_offered?: string[] | null
           trading_style?: string | null
           updated_at?: string
           username?: string | null
           wallet_address?: string | null
           website_url?: string | null
+          willing_to_relocate?: string | null
           years_in_crypto?: number | null
         }
         Relationships: []
