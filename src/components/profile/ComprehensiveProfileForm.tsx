@@ -64,6 +64,7 @@ interface FormData {
   skillsNeeded: string[];
   projects: Array<{name: string, description: string, link: string}>;
   resume?: File;
+  workStatus: string; // looking for work or looking to hire
   
   // Additional Preferences
   willingToRelocate: string;
@@ -114,6 +115,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
     skillsOffered: [],
     skillsNeeded: [],
     projects: [],
+    workStatus: '',
     willingToRelocate: '',
     preferredMeeting: '',
     showInDatingPool: true,
@@ -1088,6 +1090,21 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                         </SelectContent>
                       </Select>
                     </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-lg font-semibold">Work Status *</Label>
+                    <Select value={formData.workStatus} onValueChange={(value) => updateFormData({ workStatus: value })}>
+                      <SelectTrigger className="h-12">
+                        <SelectValue placeholder="What's your current focus?" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="looking-for-work">Looking for work</SelectItem>
+                        <SelectItem value="looking-to-hire">Looking to hire</SelectItem>
+                        <SelectItem value="both">Both - Open to opportunities and hiring</SelectItem>
+                        <SelectItem value="neither">Neither - Just networking</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-3">
