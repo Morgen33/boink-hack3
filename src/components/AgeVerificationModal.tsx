@@ -16,24 +16,36 @@ import {
 } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
-import { validateAge, getAgeVerificationError } from '@/utils/ageVerification';
+import { validateAge, getAgeVerificationError, calculateAge } from '@/utils/ageVerification';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AgeVerificationModalProps {
   isOpen: boolean;
-  onVerified: () => void;
+  onVerified: (birthDate: Date) => void;
 }
 
 const AgeVerificationModal = ({ isOpen, onVerified }: AgeVerificationModalProps) => {
   const [birthDate, setBirthDate] = useState<Date>();
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
-  const handleVerification = () => {
+  const handleVerification = async () => {
     if (!birthDate) {
       toast({
         title: "Date Required",
         description: "Please select your date of birth to verify your age.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!user) {
+      toast({
+        title: "Authentication Error",
+        description: "Please sign in to verify your age.",
         variant: "destructive",
       });
       return;
@@ -44,11 +56,41 @@ const AgeVerificationModal = ({ isOpen, onVerified }: AgeVerificationModalProps)
     const validation = validateAge(birthDate);
     
     if (validation.isValid) {
-      toast({
-        title: "Age Verified",
-        description: "Thank you for verifying your age. You may now proceed.",
-      });
-      onVerified();
+      try {
+        // Save birth date and age to profile
+        const age = calculateAge(birthDate);
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            date_of_birth: birthDate.toISOString().split('T')[0],
+            age: age
+          })
+          .eq('id', user.id);
+
+        if (error) {
+          console.error('Error saving birth date:', error);
+          toast({
+            title: "Save Error",
+            description: "Failed to save your birth date. Please try again.",
+            variant: "destructive",
+          });
+          setIsVerifying(false);
+          return;
+        }
+
+        toast({
+          title: "Age Verified",
+          description: "Thank you for verifying your age. You may now proceed.",
+        });
+        onVerified(birthDate);
+      } catch (error) {
+        console.error('Error during age verification:', error);
+        toast({
+          title: "Verification Error",
+          description: "An error occurred during verification. Please try again.",
+          variant: "destructive",
+        });
+      }
     } else {
       toast({
         title: "Age Verification Failed",

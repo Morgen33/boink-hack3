@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Users, Zap, Shield } from 'lucide-react';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface PlatformIntentStepProps {
   data: any;
@@ -11,6 +13,47 @@ interface PlatformIntentStepProps {
 
 const PlatformIntentStep = ({ data, onUpdate }: PlatformIntentStepProps) => {
   const [isAgeVerified, setIsAgeVerified] = useState(false);
+  const [showAgeModal, setShowAgeModal] = useState(false);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const checkAgeVerification = async () => {
+      if (!user) return;
+      
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('date_of_birth, age')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error('Error checking age verification:', error);
+          setShowAgeModal(true);
+          return;
+        }
+
+        // If user has date_of_birth and is 18+, they're verified
+        if (profile?.date_of_birth && profile?.age && profile.age >= 18) {
+          setIsAgeVerified(true);
+          setShowAgeModal(false);
+        } else {
+          // Need age verification
+          setShowAgeModal(true);
+        }
+      } catch (error) {
+        console.error('Error in age verification check:', error);
+        setShowAgeModal(true);
+      }
+    };
+
+    checkAgeVerification();
+  }, [user]);
+
+  const handleAgeVerified = (birthDate: Date) => {
+    setIsAgeVerified(true);
+    setShowAgeModal(false);
+  };
 
   const handleIntentSelection = (intent: 'dating' | 'networking' | 'both') => {
     if (!isAgeVerified) return;
@@ -20,8 +63,8 @@ const PlatformIntentStep = ({ data, onUpdate }: PlatformIntentStepProps) => {
   return (
     <>
       <AgeVerificationModal 
-        isOpen={!isAgeVerified} 
-        onVerified={() => setIsAgeVerified(true)} 
+        isOpen={showAgeModal} 
+        onVerified={handleAgeVerified} 
       />
       
       <div className="space-y-6">
