@@ -131,7 +131,7 @@ const Hero = () => {
             </div>
           </div>
           
-          <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-4 bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
             Where crypto culture meets human connection. Finally.
           </h2>
           

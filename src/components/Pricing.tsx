@@ -71,7 +71,7 @@ const Pricing = () => {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent mb-6">
             Choose Your Journey
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -144,7 +144,7 @@ const Pricing = () => {
         {/* Trust Banner */}
         <div className="mt-16 text-center">
           <div className="bg-gradient-to-r from-web3-yellow/10 to-web3-orange/10 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-web3-yellow to-web3-orange bg-clip-text text-transparent mb-4">
               30-Day Money-Back Guarantee
             </h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
