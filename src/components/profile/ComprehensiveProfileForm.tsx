@@ -276,6 +276,22 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
     const files = event.target.files;
     if (!files || files.length === 0) return;
 
+    // Show confirmation dialog for meme uploads
+    const confirmed = window.confirm(
+      "🚨 MEME IMAGES ONLY! 🚨\n\n" +
+      "Please confirm you're uploading:\n" +
+      "✅ Memes, GIFs, funny images, crypto jokes\n\n" +
+      "❌ NOT uploading:\n" +
+      "• Selfies or personal photos\n" +
+      "• Inappropriate content\n\n" +
+      "Click OK to proceed with meme images only!"
+    );
+
+    if (!confirmed) {
+      event.target.value = ''; // Reset file input
+      return;
+    }
+
     setIsUploading(true);
     try {
       const uploadedFiles = Array.from(files).map(file => ({
@@ -810,7 +826,10 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 <p className="text-muted-foreground">Share your favorite crypto meme images</p>
                 
                 <div className="space-y-3">
-                  <Label className="text-lg font-semibold">Upload Funny Meme Pics</Label>
+                  <Label className="text-lg font-semibold">Upload Funny Meme Pics 😂</Label>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Upload funny memes, crypto jokes, or reaction gifs - NOT personal photos! This helps show your sense of humor and crypto personality. 🚫 No selfies allowed here!
+                  </p>
                   
                   {/* Display uploaded meme images */}
                   {formData.favoriteMemesImages && formData.favoriteMemesImages.length > 0 && (
@@ -838,9 +857,13 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                     </div>
                   )}
                   
-                  <div className="border-2 border-dashed border-red-300 rounded-xl p-8 text-center hover:border-red-500 transition-colors">
+                  <div className="border-2 border-dashed border-red-300 rounded-xl p-8 text-center hover:border-red-500 transition-colors bg-gradient-to-br from-yellow-50 to-orange-50">
                     <Upload className="w-8 h-8 mx-auto mb-3 text-red-500" />
-                    <p className="text-muted-foreground mb-3">Upload your favorite crypto meme images</p>
+                    <p className="font-semibold text-red-700 mb-2">Upload Memes & Funny Images Only!</p>
+                    <div className="text-sm text-gray-600 mb-4 space-y-1">
+                      <p className="text-green-600">✅ Perfect: Crypto memes, reaction GIFs, funny tweets, wojaks, pepe memes</p>
+                      <p className="text-red-600">❌ Not allowed: Selfies, personal photos, inappropriate content</p>
+                    </div>
                     <Input
                       id="meme-upload"
                       type="file"
@@ -856,7 +879,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                       onClick={() => document.getElementById('meme-upload')?.click()}
                       disabled={isUploading}
                     >
-                      {isUploading ? 'Uploading...' : 'Upload Meme Images'}
+                      {isUploading ? 'Uploading...' : 'Upload Meme Images 😂'}
                     </Button>
                     {formData.favoriteMemesImages?.length > 0 && (
                       <p className="text-sm text-muted-foreground mt-2">
