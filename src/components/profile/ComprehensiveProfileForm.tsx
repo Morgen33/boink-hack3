@@ -89,7 +89,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
     purposes: [],
     photos: [],
     birthdate: undefined,
-    showBirthdate: false,
+    showBirthdate: true,
     bio: '',
     location: '',
     cryptoExperience: '',
@@ -609,18 +609,28 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                     />
                   </PopoverContent>
                 </Popover>
+                
+                {/* Age Display */}
+                {formData.birthdate && (
+                  <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
+                    <p className="text-sm font-medium text-green-700 dark:text-green-300">
+                      Age: {Math.floor((new Date().getTime() - formData.birthdate.getTime()) / (365.25 * 24 * 60 * 60 * 1000))} years old
+                    </p>
+                  </div>
+                )}
+                
                 <div className="flex items-center space-x-3">
                   <Checkbox 
-                    id="show-birthdate"
-                    checked={formData.showBirthdate}
-                    onCheckedChange={(checked) => updateFormData({ showBirthdate: !!checked })}
+                    id="hide-birthdate"
+                    checked={!formData.showBirthdate}
+                    onCheckedChange={(checked) => updateFormData({ showBirthdate: !checked })}
                   />
-                  <Label htmlFor="show-birthdate" className="text-sm">
-                    Show my birthdate on profile
+                  <Label htmlFor="hide-birthdate" className="text-sm">
+                    Hide my exact birthdate (only show age)
                   </Label>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Your age will always be displayed, but you can choose whether to show your exact birthdate
+                  Your age will always be displayed. Uncheck above to hide your exact birthdate from other users.
                 </p>
               </div>
 
