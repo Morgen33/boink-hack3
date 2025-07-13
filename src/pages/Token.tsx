@@ -89,24 +89,60 @@ const Token = () => {
 
           {/* DexScreener Chart */}
           <div className="mb-12">
-            <h3 className="text-xl font-semibold mb-4 text-center">Live $BOINK Chart</h3>
-            <style dangerouslySetInnerHTML={{
-              __html: `
-                #dexscreener-embed{position:relative;width:100%;padding-bottom:125%;border:1px solid #e2e8f0;border-radius:8px;background-color:#f8fafc;}@media(min-width:1400px){#dexscreener-embed{padding-bottom:65%;}}#dexscreener-embed iframe{position:absolute;width:100%;height:100%;top:0;left:0;border:0;border-radius:8px;}
-              `
-            }} />
-            <div id="dexscreener-embed">
-              <iframe 
-                src="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
-                title="BOINK Token Chart"
-                loading="lazy"
-                onLoad={() => console.log('DexScreener iframe loaded successfully')}
-                onError={() => console.error('DexScreener iframe failed to load')}
-              />
-              <div style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: '#64748b', fontSize: '14px'}}>
-                Loading chart...
-              </div>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>$BOINK Live Chart</span>
+                  <Button asChild variant="outline">
+                    <a 
+                      href="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      View on DexScreener
+                    </a>
+                  </Button>
+                </CardTitle>
+                <CardDescription>
+                  Real-time price and trading data for $BOINK token
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Try the iframe first, with fallback */}
+                <div className="relative w-full" style={{paddingBottom: '60%', minHeight: '400px'}}>
+                  <iframe 
+                    src="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+                    className="absolute top-0 left-0 w-full h-full border-0 rounded-lg"
+                    title="BOINK Token Chart"
+                    loading="lazy"
+                    sandbox="allow-scripts allow-same-origin"
+                    onLoad={() => console.log('Chart loaded')}
+                    onError={() => console.error('Chart failed to load')}
+                  />
+                  {/* Fallback content */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-muted/10 rounded-lg border-2 border-dashed border-muted">
+                    <div className="text-center p-8">
+                      <TrendingUp className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                      <h3 className="text-xl font-semibold mb-2">Chart Loading...</h3>
+                      <p className="text-muted-foreground mb-4">
+                        If the chart doesn't load, click the button above to view on DexScreener
+                      </p>
+                      <Button asChild size="sm">
+                        <a 
+                          href="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                        >
+                          Open Chart
+                        </a>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Token Details */}
