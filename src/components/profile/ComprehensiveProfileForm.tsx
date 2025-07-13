@@ -196,7 +196,58 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
         throw new Error('You must be logged in to upload photos');
       }
 
-      const uploadPromises = Array.from(files).map(async (file, index) => {
+      const approvedFiles: any[] = [];
+
+      for (let index = 0; index < files.length; index++) {
+        const file = files[index];
+        
+        // Convert image to base64 for AI moderation
+        const base64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        });
+
+        // Check with AI moderation for profile photos
+        try {
+          const { data: moderationResult, error: moderationError } = await supabase.functions.invoke('ai-image-moderation', {
+            body: {
+              imageBase64: base64,
+              context: 'profile_photos'
+            }
+          });
+
+          if (moderationError) {
+            console.error('Moderation error:', moderationError);
+            toast({
+              title: "Moderation unavailable",
+              description: `Could not verify ${file.name}. Uploading anyway.`,
+              variant: "default",
+            });
+          } else if (!moderationResult.approved) {
+            toast({
+              title: `❌ ${file.name} rejected`,
+              description: moderationResult.reason || 'Please upload a clear photo of yourself',
+              variant: "destructive",
+            });
+            continue;
+          } else {
+            toast({
+              title: `✅ ${file.name} approved`,
+              description: 'Photo looks great!',
+              variant: "default",
+            });
+          }
+        } catch (moderationError) {
+          console.error('AI moderation failed:', moderationError);
+          toast({
+            title: "Moderation unavailable",
+            description: `Could not verify ${file.name}. Uploading anyway.`,
+            variant: "default",
+          });
+        }
+
+        // Upload approved file
         const fileExt = file.name.split('.').pop();
         const fileName = `${user.id}/${Date.now()}_${index}.${fileExt}`;
         
@@ -204,26 +255,33 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
           .from('profile-photos')
           .upload(fileName, file);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          toast({
+            title: "Upload failed",
+            description: `Failed to upload ${file.name}`,
+            variant: "destructive",
+          });
+          continue;
+        }
 
         const { data: { publicUrl } } = supabase.storage
           .from('profile-photos')
           .getPublicUrl(fileName);
 
-        return {
+        approvedFiles.push({
           id: `${Date.now()}-${index}`,
           url: publicUrl,
           file
-        };
-      });
+        });
+      }
 
-      const uploadedFiles = await Promise.all(uploadPromises);
-      updateFormData({ photos: [...formData.photos, ...uploadedFiles] });
-
-      toast({
-        title: "Photos uploaded! 📸",
-        description: `Successfully uploaded ${files.length} photo(s).`,
-      });
+      if (approvedFiles.length > 0) {
+        updateFormData({ photos: [...formData.photos, ...approvedFiles] });
+        toast({
+          title: "Photos uploaded! 📸",
+          description: `Successfully uploaded ${approvedFiles.length} photo(s).`,
+        });
+      }
 
     } catch (error: any) {
       console.error('Error uploading photos:', error);
@@ -276,35 +334,107 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
     const files = event.target.files;
     if (!files || files.length === 0) return;
 
-    // Show confirmation dialog for meme uploads
-    const confirmed = window.confirm(
-      "🚨 MEME IMAGES ONLY! 🚨\n\n" +
-      "Please confirm you're uploading:\n" +
-      "✅ Memes, GIFs, funny images, crypto jokes\n\n" +
-      "❌ NOT uploading:\n" +
-      "• Selfies or personal photos\n" +
-      "• Inappropriate content\n\n" +
-      "Click OK to proceed with meme images only!"
-    );
-
-    if (!confirmed) {
-      event.target.value = ''; // Reset file input
-      return;
-    }
-
     setIsUploading(true);
     try {
-      const uploadedFiles = Array.from(files).map(file => ({
-        id: `${Date.now()}-${Math.random()}`,
-        url: URL.createObjectURL(file),
-        file
-      }));
-      updateFormData({ favoriteMemesImages: [...formData.favoriteMemesImages, ...uploadedFiles] });
+      const approvedFiles: any[] = [];
       
-      toast({
-        title: "Meme images uploaded! 😂",
-        description: `Successfully uploaded ${files.length} meme image(s).`,
-      });
+      for (const file of Array.from(files)) {
+        // Convert image to base64 for AI moderation
+        const base64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        });
+
+        // Check with AI moderation for meme images
+        try {
+          const { data: moderationResult, error: moderationError } = await supabase.functions.invoke('ai-image-moderation', {
+            body: {
+              imageBase64: base64,
+              context: 'meme_images'
+            }
+          });
+
+          if (moderationError) {
+            console.error('Moderation error:', moderationError);
+            // Fallback to manual confirmation
+            const confirmed = window.confirm(
+              `🚨 MODERATION UNAVAILABLE 🚨\n\n` +
+              `For ${file.name}, please confirm you're uploading:\n` +
+              "✅ Memes, GIFs, funny images, crypto jokes\n\n" +
+              "❌ NOT uploading:\n" +
+              "• Selfies or personal photos\n" +
+              "• Inappropriate content\n\n" +
+              "Click OK to proceed!"
+            );
+            
+            if (confirmed) {
+              approvedFiles.push({
+                id: `${Date.now()}-${Math.random()}`,
+                url: URL.createObjectURL(file),
+                file
+              });
+              toast({
+                title: "Upload without verification",
+                description: `${file.name} uploaded (moderation unavailable)`,
+                variant: "default",
+              });
+            }
+          } else if (!moderationResult.approved) {
+            toast({
+              title: `❌ ${file.name} rejected`,
+              description: moderationResult.reason || 'Please upload memes/funny images only, not personal photos',
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: `✅ ${file.name} approved`,
+              description: 'Great meme!',
+              variant: "default",
+            });
+            
+            approvedFiles.push({
+              id: `${Date.now()}-${Math.random()}`,
+              url: URL.createObjectURL(file),
+              file
+            });
+          }
+        } catch (moderationError) {
+          console.error('AI moderation failed:', moderationError);
+          // Fallback to manual confirmation
+          const confirmed = window.confirm(
+            `🚨 MODERATION UNAVAILABLE 🚨\n\n` +
+            `For ${file.name}, please confirm you're uploading:\n` +
+            "✅ Memes, GIFs, funny images, crypto jokes\n\n" +
+            "❌ NOT uploading:\n" +
+            "• Selfies or personal photos\n" +
+            "• Inappropriate content\n\n" +
+            "Click OK to proceed!"
+          );
+          
+          if (confirmed) {
+            approvedFiles.push({
+              id: `${Date.now()}-${Math.random()}`,
+              url: URL.createObjectURL(file),
+              file
+            });
+            toast({
+              title: "Upload without verification",
+              description: `${file.name} uploaded (moderation unavailable)`,
+              variant: "default",
+            });
+          }
+        }
+      }
+
+      if (approvedFiles.length > 0) {
+        updateFormData({ favoriteMemesImages: [...formData.favoriteMemesImages, ...approvedFiles] });
+        toast({
+          title: "Meme images uploaded! 😂",
+          description: `Successfully uploaded ${approvedFiles.length} approved meme image(s).`,
+        });
+      }
+      
     } catch (error: any) {
       console.error('Error uploading meme images:', error);
       toast({
