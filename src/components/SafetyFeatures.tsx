@@ -45,12 +45,12 @@ const SafetyFeatures = () => {
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Built with Trust & Safety in Mind
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-web3-magenta via-web3-red to-web3-orange bg-clip-text text-transparent mb-6 animate-scale-in">
+            🛡️ Built with Trust & Safety in Mind 🔐
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto font-medium">
             We prioritize authentic connections in Web3. Our comprehensive verification system ensures you're 
-            connecting with real people, whether for professional networking or romantic relationships.
+            connecting with real people, whether for professional networking or romantic relationships. ✨
           </p>
         </div>
 
