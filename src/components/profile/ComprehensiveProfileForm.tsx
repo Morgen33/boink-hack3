@@ -439,9 +439,9 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
   const isNetworkingEnabled = formData.purposes.includes('networking');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-web3-yellow/5 via-background to-web3-orange/10">
       {/* Sticky Progress Header */}
-      <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-web3-orange/10 to-web3-yellow/10 backdrop-blur-sm border-b border-web3-orange/20">
         <div className="max-w-4xl mx-auto p-4">
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
             <span>Profile Completion</span>
@@ -454,7 +454,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
       <div className="max-w-4xl mx-auto p-6">
         {/* Header Section */}
         <div className="text-center space-y-6 mb-16">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-web3-red via-web3-magenta to-web3-orange bg-clip-text text-transparent">
             Complete Your Boink Profile
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -466,8 +466,8 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
           {/* Purpose Selection Section */}
           <section className="space-y-8">
             <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold flex items-center justify-center gap-3">
-                <Rocket className="w-8 h-8 text-primary" />
+              <h2 className="text-3xl font-bold flex items-center justify-center gap-3 bg-gradient-to-r from-web3-orange to-web3-red bg-clip-text text-transparent">
+                <Rocket className="w-8 h-8 text-web3-orange" />
                 What brings you to Boink?
               </h2>
               <p className="text-muted-foreground text-lg">Choose what you're looking for to customize your experience</p>
@@ -478,13 +478,13 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 className={cn(
                   "border-2 rounded-xl p-8 cursor-pointer transition-all duration-300 hover:scale-105",
                   formData.purposes.includes('dating') 
-                    ? "border-pink-500 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-950 dark:to-pink-900 shadow-lg shadow-pink-500/20" 
-                    : "border-border hover:border-pink-300 hover:bg-pink-50/50 dark:hover:bg-pink-950/20"
+                    ? "border-web3-magenta bg-gradient-to-br from-web3-magenta/10 to-web3-red/20 shadow-lg shadow-web3-magenta/20" 
+                    : "border-border hover:border-web3-magenta hover:bg-web3-magenta/5"
                 )}
                 onClick={() => togglePurpose('dating')}
               >
                 <div className="text-center space-y-4">
-                  <Heart className={cn("w-12 h-12 mx-auto", formData.purposes.includes('dating') ? "text-pink-500" : "text-muted-foreground")} />
+                  <Heart className={cn("w-12 h-12 mx-auto", formData.purposes.includes('dating') ? "text-web3-magenta" : "text-muted-foreground")} />
                   <h3 className="text-lg font-semibold">Dating</h3>
                   <p className="text-sm text-muted-foreground">Find romantic connections in crypto</p>
                 </div>
@@ -494,13 +494,13 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 className={cn(
                   "border-2 rounded-xl p-8 cursor-pointer transition-all duration-300 hover:scale-105",
                   formData.purposes.includes('networking') 
-                    ? "border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 shadow-lg shadow-blue-500/20" 
-                    : "border-border hover:border-blue-300 hover:bg-blue-50/50 dark:hover:bg-blue-950/20"
+                    ? "border-web3-orange bg-gradient-to-br from-web3-orange/10 to-web3-yellow/20 shadow-lg shadow-web3-orange/20" 
+                    : "border-border hover:border-web3-orange hover:bg-web3-orange/5"
                 )}
                 onClick={() => togglePurpose('networking')}
               >
                 <div className="text-center space-y-4">
-                  <Users className={cn("w-12 h-12 mx-auto", formData.purposes.includes('networking') ? "text-blue-500" : "text-muted-foreground")} />
+                  <Users className={cn("w-12 h-12 mx-auto", formData.purposes.includes('networking') ? "text-web3-orange" : "text-muted-foreground")} />
                   <h3 className="text-lg font-semibold">Networking</h3>
                   <p className="text-sm text-muted-foreground">Build professional relationships</p>
                 </div>
@@ -510,8 +510,8 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 className={cn(
                   "border-2 rounded-xl p-8 cursor-pointer transition-all duration-300 hover:scale-105",
                   (formData.purposes.includes('dating') && formData.purposes.includes('networking'))
-                    ? "border-primary bg-gradient-to-br from-primary/10 to-primary/20 shadow-lg shadow-primary/20" 
-                    : "border-border hover:border-primary hover:bg-primary/5"
+                    ? "border-web3-red bg-gradient-to-br from-web3-red/10 to-web3-magenta/20 shadow-lg shadow-web3-red/20" 
+                    : "border-border hover:border-web3-red hover:bg-web3-red/5"
                 )}
                 onClick={() => {
                   if (formData.purposes.includes('dating') && formData.purposes.includes('networking')) {
@@ -523,8 +523,8 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
               >
                 <div className="text-center space-y-4">
                   <div className="flex justify-center gap-1">
-                    <Heart className={cn("w-10 h-10", (formData.purposes.includes('dating') && formData.purposes.includes('networking')) ? "text-primary" : "text-muted-foreground")} />
-                    <Users className={cn("w-10 h-10", (formData.purposes.includes('dating') && formData.purposes.includes('networking')) ? "text-primary" : "text-muted-foreground")} />
+                    <Heart className={cn("w-10 h-10", (formData.purposes.includes('dating') && formData.purposes.includes('networking')) ? "text-web3-red" : "text-muted-foreground")} />
+                    <Users className={cn("w-10 h-10", (formData.purposes.includes('dating') && formData.purposes.includes('networking')) ? "text-web3-red" : "text-muted-foreground")} />
                   </div>
                   <h3 className="text-lg font-semibold">Both</h3>
                   <p className="text-sm text-muted-foreground">Open to dating and networking</p>
@@ -539,14 +539,14 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-6 py-2 text-muted-foreground font-medium rounded-full border">Profile Information</span>
+              <span className="bg-gradient-to-r from-web3-yellow to-web3-orange px-6 py-2 text-white font-medium rounded-full border border-web3-orange">Profile Information</span>
             </div>
           </div>
 
           {/* Base Profile Section */}
           <section className="space-y-10">
             <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold">Tell Us About Yourself</h2>
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-web3-magenta to-web3-orange bg-clip-text text-transparent">Tell Us About Yourself</h2>
               <p className="text-muted-foreground text-lg">Share your story and crypto journey</p>
             </div>
             
