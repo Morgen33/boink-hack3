@@ -17,12 +17,18 @@ import { supabase } from '@/integrations/supabase/client';
 import SocialMediaConnections from '@/components/SocialMediaConnections';
 import { useAuth } from '@/contexts/AuthContext';
 
+interface PhotoObject {
+  id: string;
+  url: string;
+  file: File;
+}
+
 interface FormData {
   // Purpose Selection
   purposes: string[];
   
   // Base Profile
-  photos: File[];
+  photos: PhotoObject[];
   birthdate: Date | undefined;
   showBirthdate: boolean;
   bio: string;
@@ -34,9 +40,9 @@ interface FormData {
   defiProtocols: string[];
   biggestWin: string;
   biggestLoss: string;
-  nftImages: File[];
+  nftImages: PhotoObject[];
   memeCoinHoldings: string;
-  favoriteMemesImages: File[];
+  favoriteMemesImages: PhotoObject[];
   favoriteMemesCaptions: string[];
   investmentPhilosophy: string;
   
@@ -204,7 +210,11 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
           .from('profile-photos')
           .getPublicUrl(fileName);
 
-        return file;
+        return {
+          id: `${Date.now()}-${index}`,
+          url: publicUrl,
+          file
+        };
       });
 
       const uploadedFiles = await Promise.all(uploadPromises);
@@ -236,7 +246,11 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
 
     setIsUploading(true);
     try {
-      const uploadedFiles = Array.from(files);
+      const uploadedFiles = Array.from(files).map(file => ({
+        id: `${Date.now()}-${Math.random()}`,
+        url: URL.createObjectURL(file),
+        file
+      }));
       updateFormData({ nftImages: [...formData.nftImages, ...uploadedFiles] });
       
       toast({
@@ -264,7 +278,11 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
 
     setIsUploading(true);
     try {
-      const uploadedFiles = Array.from(files);
+      const uploadedFiles = Array.from(files).map(file => ({
+        id: `${Date.now()}-${Math.random()}`,
+        url: URL.createObjectURL(file),
+        file
+      }));
       updateFormData({ favoriteMemesImages: [...formData.favoriteMemesImages, ...uploadedFiles] });
       
       toast({
@@ -561,7 +579,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                     {formData.photos.map((photo, index) => (
                       <div key={index} className="relative">
                         <img 
-                          src={URL.createObjectURL(photo)} 
+                          src={photo.url} 
                           alt={`Profile photo ${index + 1}`}
                           className="w-full h-32 object-cover rounded-lg border"
                         />
@@ -720,7 +738,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                       {formData.nftImages.map((image, index) => (
                         <div key={index} className="relative">
                           <img 
-                            src={URL.createObjectURL(image)} 
+                            src={image.url} 
                             alt={`NFT image ${index + 1}`}
                             className="w-full h-32 object-cover rounded-lg border border-purple-200"
                           />
@@ -800,7 +818,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                       {formData.favoriteMemesImages.map((image, index) => (
                         <div key={index} className="relative">
                           <img 
-                            src={URL.createObjectURL(image)} 
+                            src={image.url} 
                             alt={`Meme image ${index + 1}`}
                             className="w-full h-32 object-cover rounded-lg border border-red-200"
                           />
