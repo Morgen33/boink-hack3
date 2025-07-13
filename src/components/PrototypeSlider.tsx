@@ -76,11 +76,11 @@ const PrototypeSlider = () => {
         </div>
 
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            The Future of Web3 Dating
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent mb-4 animate-fade-in">
+            💎 The Future of Web3 Dating ✨
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Experience the next generation of crypto-native dating features
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto font-medium">
+            Experience the next generation of crypto-native dating features 🚀
           </p>
         </div>
 
