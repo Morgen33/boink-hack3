@@ -40,13 +40,13 @@ const PrototypeSlider = () => {
       <div className="max-w-7xl mx-auto px-4">
         {/* Meme Generator Promotion */}
         <div className="text-center mb-8">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+          <div className="flex flex-col items-center justify-center gap-6 mb-6">
             <img 
               src="/lovable-uploads/0305be12-86be-4648-ae9b-6adb9e4ccd47.png" 
               alt="Boink Meme Generator" 
-              className="w-20 h-20 rounded-lg shadow-lg"
+              className="w-48 h-48 rounded-lg shadow-lg mx-auto"
             />
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-gray-700 max-w-2xl">
               Try Our Brand New Meme Generator{" "}
               <a 
                 href="https://www.cryptofightclub.wtf/boink/memegenerator.html"
