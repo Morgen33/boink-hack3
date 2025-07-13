@@ -88,59 +88,32 @@ const Token = () => {
           </Card>
 
           {/* DexScreener Chart */}
-          <div className="mb-12">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>$BOINK Live Chart</span>
-                  <Button asChild variant="outline">
-                    <a 
-                      href="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      View on DexScreener
-                    </a>
-                  </Button>
-                </CardTitle>
-                <CardDescription>
-                  Real-time price and trading data for $BOINK token
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {/* Try the iframe first, with fallback */}
-                <div className="relative w-full" style={{paddingBottom: '60%', minHeight: '400px'}}>
-                  <iframe 
-                    src="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
-                    className="absolute top-0 left-0 w-full h-full border-0 rounded-lg"
-                    title="BOINK Token Chart"
-                    loading="lazy"
-                    sandbox="allow-scripts allow-same-origin"
-                    onLoad={() => console.log('Chart loaded')}
-                    onError={() => console.error('Chart failed to load')}
-                  />
-                  {/* Fallback content */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-muted/10 rounded-lg border-2 border-dashed border-muted">
-                    <div className="text-center p-8">
-                      <TrendingUp className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                      <h3 className="text-xl font-semibold mb-2">Chart Loading...</h3>
-                      <p className="text-muted-foreground mb-4">
-                        If the chart doesn't load, click the button above to view on DexScreener
-                      </p>
-                      <Button asChild size="sm">
-                        <a 
-                          href="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                        >
-                          Open Chart
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
+          {/* Chart Link Button */}
+          <div className="mb-12 text-center">
+            <Card className="p-8">
+              <CardContent className="space-y-6">
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">View Live $BOINK Chart</h3>
+                  <p className="text-muted-foreground">
+                    See real-time price, trading volume, and market data
+                  </p>
                 </div>
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="bg-gradient-to-r from-web3-red to-web3-magenta hover:from-web3-red/90 hover:to-web3-magenta/90 text-white px-12 py-4 text-xl font-bold"
+                >
+                  <a 
+                    href="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3"
+                  >
+                    <TrendingUp className="w-6 h-6" />
+                    View Chart on DexScreener
+                    <ExternalLink className="w-5 h-5" />
+                  </a>
+                </Button>
               </CardContent>
             </Card>
           </div>
