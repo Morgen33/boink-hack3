@@ -38,6 +38,37 @@ const PrototypeSlider = () => {
   return (
     <section className="py-16 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
+        {/* Meme Generator Promotion */}
+        <div className="text-center mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+            <img 
+              src="/lovable-uploads/0305be12-86be-4648-ae9b-6adb9e4ccd47.png" 
+              alt="Boink Meme Generator" 
+              className="w-20 h-20 rounded-lg shadow-lg"
+            />
+            <p className="text-lg text-gray-700">
+              Try Our Brand New Meme Generator{" "}
+              <a 
+                href="https://www.cryptofightclub.wtf/boink/memegenerator.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-web3-red hover:text-web3-magenta font-bold underline transition-colors"
+              >
+                HERE
+              </a>
+              {" "}made by our friends over at{" "}
+              <a 
+                href="https://www.cryptofightclub.wtf/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-web3-orange hover:text-web3-yellow font-medium underline transition-colors"
+              >
+                Crypto Fight Club
+              </a>
+            </p>
+          </div>
+        </div>
+
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             The Future of Web3 Dating
