@@ -723,7 +723,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 <div className="space-y-3">
                   <Label className="text-lg font-semibold">Meme Coin Holdings</Label>
                   <Input
-                    placeholder="DOGE, SHIB, PEPE, WIF, BONK, FLOKI..."
+                    placeholder="BOINK, DOGE, SHIB, PEPE, WIF, BONK, FLOKI..."
                     value={formData.memeCoinHoldings}
                     onChange={(e) => updateFormData({ memeCoinHoldings: e.target.value })}
                     className="text-base h-12"
