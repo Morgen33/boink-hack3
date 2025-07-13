@@ -89,13 +89,23 @@ const Token = () => {
 
           {/* DexScreener Chart */}
           <div className="mb-12">
+            <h3 className="text-xl font-semibold mb-4 text-center">Live $BOINK Chart</h3>
             <style dangerouslySetInnerHTML={{
               __html: `
-                #dexscreener-embed{position:relative;width:100%;padding-bottom:125%;}@media(min-width:1400px){#dexscreener-embed{padding-bottom:65%;}}#dexscreener-embed iframe{position:absolute;width:100%;height:100%;top:0;left:0;border:0;}
+                #dexscreener-embed{position:relative;width:100%;padding-bottom:125%;border:1px solid #e2e8f0;border-radius:8px;background-color:#f8fafc;}@media(min-width:1400px){#dexscreener-embed{padding-bottom:65%;}}#dexscreener-embed iframe{position:absolute;width:100%;height:100%;top:0;left:0;border:0;border-radius:8px;}
               `
             }} />
             <div id="dexscreener-embed">
-              <iframe src="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"></iframe>
+              <iframe 
+                src="https://dexscreener.com/solana/8Pchwo7zWk2YSdoKZ8h7HX4GNQH8hSo8jVopJkb5sjcp?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+                title="BOINK Token Chart"
+                loading="lazy"
+                onLoad={() => console.log('DexScreener iframe loaded successfully')}
+                onError={() => console.error('DexScreener iframe failed to load')}
+              />
+              <div style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: '#64748b', fontSize: '14px'}}>
+                Loading chart...
+              </div>
             </div>
           </div>
 
