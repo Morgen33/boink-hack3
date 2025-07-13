@@ -14,6 +14,8 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import SocialMediaConnections from '@/components/SocialMediaConnections';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface FormData {
   // Purpose Selection
@@ -81,6 +83,7 @@ interface ComprehensiveProfileFormProps {
 
 const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfileFormProps) => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     purposes: [],
@@ -644,6 +647,15 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                   onChange={(e) => updateFormData({ location: e.target.value })}
                   className="text-base h-12"
                 />
+              </div>
+
+              {/* Social Media Verification Section */}
+              <div className="space-y-4">
+                <div className="text-center space-y-2">
+                  <h3 className="text-xl font-bold">Social Media Verification</h3>
+                  <p className="text-muted-foreground">Connect your social accounts to build trust and verify your identity</p>
+                </div>
+                <SocialMediaConnections user={user} />
               </div>
 
               {/* NFT Collection Showcase */}
