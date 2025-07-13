@@ -41,11 +41,6 @@ const PrototypeSlider = () => {
         {/* Meme Generator Promotion */}
         <div className="text-center mb-8">
           <div className="flex flex-col items-center justify-center gap-6 mb-6">
-            <img 
-              src="/lovable-uploads/0305be12-86be-4648-ae9b-6adb9e4ccd47.png" 
-              alt="Boink Meme Generator" 
-              className="w-96 h-96 rounded-lg shadow-lg mx-auto"
-            />
             <div className="space-y-4">
               <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-web3-red via-web3-magenta to-web3-orange bg-clip-text text-transparent animate-pulse">
                 🔥 TRY OUR BRAND NEW MEME GENERATOR! 🚀
@@ -55,7 +50,7 @@ const PrototypeSlider = () => {
                   href="https://www.cryptofightclub.wtf/boink/memegenerator.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block px-8 py-4 bg-gradient-to-r from-web3-red to-web3-magenta text-white font-bold text-2xl rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-bounce"
+                  className="inline-block px-8 py-4 bg-gradient-to-r from-web3-red to-web3-magenta text-white font-bold text-2xl rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
                   ✨ CREATE MEMES HERE ✨
                 </a>
@@ -72,6 +67,11 @@ const PrototypeSlider = () => {
                 </a>
               </p>
             </div>
+            <img 
+              src="/lovable-uploads/0305be12-86be-4648-ae9b-6adb9e4ccd47.png" 
+              alt="Boink Meme Generator" 
+              className="w-96 h-96 rounded-lg shadow-lg mx-auto"
+            />
           </div>
         </div>
 
