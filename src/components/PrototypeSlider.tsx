@@ -44,7 +44,7 @@ const PrototypeSlider = () => {
             <img 
               src="/lovable-uploads/0305be12-86be-4648-ae9b-6adb9e4ccd47.png" 
               alt="Boink Meme Generator" 
-              className="w-48 h-48 rounded-lg shadow-lg mx-auto"
+              className="w-96 h-96 rounded-lg shadow-lg mx-auto"
             />
             <p className="text-lg text-gray-700 max-w-2xl">
               Try Our Brand New Meme Generator{" "}
