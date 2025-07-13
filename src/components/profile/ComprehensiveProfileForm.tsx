@@ -554,6 +554,33 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
               {/* Profile Photos */}
               <div className="space-y-3">
                 <Label className="text-lg font-semibold">Profile Photos (2-6 photos) *</Label>
+                
+                {/* Display uploaded photos */}
+                {formData.photos.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                    {formData.photos.map((photo, index) => (
+                      <div key={index} className="relative">
+                        <img 
+                          src={URL.createObjectURL(photo)} 
+                          alt={`Profile photo ${index + 1}`}
+                          className="w-full h-32 object-cover rounded-lg border"
+                        />
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2 w-6 h-6 p-0"
+                          onClick={() => {
+                            const newPhotos = formData.photos.filter((_, i) => i !== index);
+                            updateFormData({ photos: newPhotos });
+                          }}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
                 <div className="border-2 border-dashed border-muted rounded-xl p-12 text-center hover:border-primary/50 transition-colors">
                   <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground mb-4 text-lg">Drag and drop photos or click to browse</p>
@@ -686,6 +713,33 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
 
                 <div className="space-y-3">
                   <Label className="text-lg font-semibold">Showcase NFT Images</Label>
+                  
+                  {/* Display uploaded NFT images */}
+                  {formData.nftImages && formData.nftImages.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                      {formData.nftImages.map((image, index) => (
+                        <div key={index} className="relative">
+                          <img 
+                            src={URL.createObjectURL(image)} 
+                            alt={`NFT image ${index + 1}`}
+                            className="w-full h-32 object-cover rounded-lg border border-purple-200"
+                          />
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="absolute top-2 right-2 w-6 h-6 p-0"
+                            onClick={() => {
+                              const newImages = formData.nftImages?.filter((_, i) => i !== index) || [];
+                              updateFormData({ nftImages: newImages });
+                            }}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
                   <div className="border-2 border-dashed border-purple-300 rounded-xl p-8 text-center hover:border-purple-500 transition-colors">
                     <Upload className="w-8 h-8 mx-auto mb-3 text-purple-500" />
                     <p className="text-muted-foreground mb-3">Upload your favorite NFT images</p>
@@ -739,6 +793,33 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 
                 <div className="space-y-3">
                   <Label className="text-lg font-semibold">Upload Funny Meme Pics</Label>
+                  
+                  {/* Display uploaded meme images */}
+                  {formData.favoriteMemesImages && formData.favoriteMemesImages.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                      {formData.favoriteMemesImages.map((image, index) => (
+                        <div key={index} className="relative">
+                          <img 
+                            src={URL.createObjectURL(image)} 
+                            alt={`Meme image ${index + 1}`}
+                            className="w-full h-32 object-cover rounded-lg border border-red-200"
+                          />
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="absolute top-2 right-2 w-6 h-6 p-0"
+                            onClick={() => {
+                              const newImages = formData.favoriteMemesImages?.filter((_, i) => i !== index) || [];
+                              updateFormData({ favoriteMemesImages: newImages });
+                            }}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
                   <div className="border-2 border-dashed border-red-300 rounded-xl p-8 text-center hover:border-red-500 transition-colors">
                     <Upload className="w-8 h-8 mx-auto mb-3 text-red-500" />
                     <p className="text-muted-foreground mb-3">Upload your favorite crypto meme images</p>
