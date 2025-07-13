@@ -715,27 +715,32 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 </div>
               </div>
 
-              {/* Meme Collection */}
+              {/* Meme Coin Holdings */}
               <div className="space-y-6 p-6 bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
-                <h3 className="text-xl font-bold text-orange-600">Meme Collection 😂</h3>
-                <p className="text-muted-foreground">Share your crypto sense of humor</p>
+                <h3 className="text-xl font-bold text-orange-600">Meme Coin Holdings 😂</h3>
+                <p className="text-muted-foreground">What meme coins are you holding?</p>
                 
                 <div className="space-y-3">
-                  <Label className="text-lg font-semibold">Favorite Crypto Memes</Label>
-                  <Textarea
-                    placeholder="Diamond hands 💎🙌, To the moon 🚀, This is fine 🔥, Number go up 📈, HODL..."
-                    value={formData.favoriteMemesText || ''}
-                    onChange={(e) => updateFormData({ favoriteMemesText: e.target.value })}
-                    className="min-h-[100px] text-base"
-                    rows={3}
+                  <Label className="text-lg font-semibold">Meme Coin Holdings</Label>
+                  <Input
+                    placeholder="DOGE, SHIB, PEPE, WIF, BONK, FLOKI..."
+                    value={formData.memeCoinHoldings}
+                    onChange={(e) => updateFormData({ memeCoinHoldings: e.target.value })}
+                    className="text-base h-12"
                   />
-                  <p className="text-sm text-muted-foreground">Describe your favorite crypto memes or inside jokes</p>
+                  <p className="text-sm text-muted-foreground">List your meme coin holdings (separate with commas)</p>
                 </div>
+              </div>
 
+              {/* Meme Images */}
+              <div className="space-y-6 p-6 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20 rounded-xl border border-orange-200 dark:border-orange-800">
+                <h3 className="text-xl font-bold text-red-600">Funny Meme Images 🤣</h3>
+                <p className="text-muted-foreground">Share your favorite crypto meme images</p>
+                
                 <div className="space-y-3">
                   <Label className="text-lg font-semibold">Upload Funny Meme Pics</Label>
-                  <div className="border-2 border-dashed border-orange-300 rounded-xl p-8 text-center hover:border-orange-500 transition-colors">
-                    <Upload className="w-8 h-8 mx-auto mb-3 text-orange-500" />
+                  <div className="border-2 border-dashed border-red-300 rounded-xl p-8 text-center hover:border-red-500 transition-colors">
+                    <Upload className="w-8 h-8 mx-auto mb-3 text-red-500" />
                     <p className="text-muted-foreground mb-3">Upload your favorite crypto meme images</p>
                     <Input
                       id="meme-upload"
@@ -748,7 +753,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                     />
                     <Button 
                       variant="outline" 
-                      className="h-10 px-4 border-orange-300 text-orange-600 hover:bg-orange-50"
+                      className="h-10 px-4 border-red-300 text-red-600 hover:bg-red-50"
                       onClick={() => document.getElementById('meme-upload')?.click()}
                       disabled={isUploading}
                     >
@@ -760,16 +765,6 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                       </p>
                     )}
                   </div>
-                </div>
-
-                <div className="space-y-3">
-                  <Label className="text-lg font-semibold">Meme Coin Holdings</Label>
-                  <Input
-                    placeholder="DOGE, SHIB, PEPE, WIF, BONK, FLOKI..."
-                    value={formData.memeCoinHoldings}
-                    onChange={(e) => updateFormData({ memeCoinHoldings: e.target.value })}
-                    className="text-base h-12"
-                  />
                 </div>
               </div>
 
