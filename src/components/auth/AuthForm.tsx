@@ -6,6 +6,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { calculateAge, isUserAdult, getAgeVerificationError, MINIMUM_AGE } from '@/utils/ageVerification';
 import { AgeVerification } from './AgeVerification';
+import { useEnhancedSecurity } from '@/hooks/useEnhancedSecurity';
+import { sanitizeInput } from '@/utils/securityUtils';
 
 interface AuthFormProps {
   isLogin: boolean;
@@ -21,6 +23,7 @@ export const AuthForm = ({ isLogin, onToggleMode, loading, setLoading }: AuthFor
   const [fullName, setFullName] = useState('');
   const [location, setLocation] = useState('');
   const { toast } = useToast();
+  const { validateInput, checkRateLimit, secureFormSubmit, csrfToken } = useEnhancedSecurity();
 
   // STRICT age check - must be exactly 18+ or signup is blocked
   const calculatedAge = dateOfBirth ? calculateAge(dateOfBirth) : 0;
@@ -28,61 +31,81 @@ export const AuthForm = ({ isLogin, onToggleMode, loading, setLoading }: AuthFor
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    
+    // Rate limiting check
+    const action = isLogin ? 'login' : 'signup';
+    if (!checkRateLimit(action, 5)) {
+      return;
+    }
 
-    try {
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        toast({
-          title: "Welcome back!",
-          description: "You've been signed in successfully.",
-        });
-      } else {
-        // STRICT age validation before signup
-        if (!dateOfBirth) {
-          throw new Error('Date of birth is required for registration');
-        }
-        
-        const validatedAge = calculateAge(dateOfBirth);
-        
-        // Multiple validation layers
-        if (!isUserAdult(dateOfBirth) || validatedAge < MINIMUM_AGE || validatedAge <= 0) {
-          throw new Error(`REGISTRATION BLOCKED: ${getAgeVerificationError()}`);
-        }
+    const formData = {
+      email: email.trim(),
+      password,
+      fullName: fullName.trim(),
+      location: location.trim(),
+      dateOfBirth,
+      csrf_token: csrfToken
+    };
 
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/platform-intent`,
-            data: {
-              full_name: fullName.trim(),
-              location: location.trim(),
-              date_of_birth: dateOfBirth,
-              age: validatedAge.toString()
-            }
+    await secureFormSubmit(
+      formData,
+      async (data) => {
+        if (isLogin) {
+          const { error } = await supabase.auth.signInWithPassword({
+            email: data.email,
+            password: data.password,
+          });
+          if (error) throw error;
+          toast({
+            title: "Welcome back!",
+            description: "You've been signed in successfully.",
+          });
+        } else {
+          // STRICT age validation before signup
+          if (!data.dateOfBirth) {
+            throw new Error('Date of birth is required for registration');
           }
-        });
-        if (error) throw error;
-        toast({
-          title: "Check your email",
-          description: "We've sent you a confirmation link.",
-        });
+          
+          const validatedAge = calculateAge(data.dateOfBirth);
+          
+          // Multiple validation layers
+          if (!isUserAdult(data.dateOfBirth) || validatedAge < MINIMUM_AGE || validatedAge <= 0) {
+            throw new Error(`REGISTRATION BLOCKED: ${getAgeVerificationError()}`);
+          }
+
+          const { error } = await supabase.auth.signUp({
+            email: data.email,
+            password: data.password,
+            options: {
+              emailRedirectTo: `${window.location.origin}/platform-intent`,
+              data: {
+                full_name: sanitizeInput(data.fullName),
+                location: sanitizeInput(data.location),
+                date_of_birth: data.dateOfBirth,
+                age: validatedAge.toString()
+              }
+            }
+          });
+          if (error) throw error;
+          toast({
+            title: "Check your email",
+            description: "We've sent you a confirmation link.",
+          });
+        }
+      },
+      {
+        requireCSRF: true,
+        rateLimit: { action, maxAttempts: 5 },
+        validateFields: isLogin ? ['email'] : ['email', 'fullName', 'location']
       }
-    } catch (error: any) {
+    ).catch((error: any) => {
       console.error('Email auth error:', error);
       toast({
         title: "Authentication Error",
         description: error.message,
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return (

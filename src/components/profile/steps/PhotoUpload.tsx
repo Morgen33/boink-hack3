@@ -52,14 +52,27 @@ const PhotoUpload = ({
       return;
     }
 
-    // Validate each file
+    // Enhanced file validation with security checks
     for (const file of newFiles) {
-      const { validateFileUpload } = await import('@/utils/securityUtils');
+      const { validateFileUpload, validateFileContent } = await import('@/utils/securityUtils');
+      
+      // Basic validation
       const validation = validateFileUpload(file);
       if (!validation.valid) {
         toast({
           title: "Invalid file",
           description: validation.error,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Content validation (magic number check)
+      const contentValidation = await validateFileContent(file);
+      if (!contentValidation.valid) {
+        toast({
+          title: "Security Error",
+          description: contentValidation.error || "File content validation failed",
           variant: "destructive",
         });
         return;
