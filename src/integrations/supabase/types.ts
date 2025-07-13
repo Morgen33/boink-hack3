@@ -564,20 +564,35 @@ export type Database = {
       rate_limit_log: {
         Row: {
           action_type: string
+          additional_data: Json | null
+          client_ip: string | null
           created_at: string
           id: string
+          request_origin: string | null
+          security_level: string | null
+          user_agent: string | null
           user_id: string
         }
         Insert: {
           action_type: string
+          additional_data?: Json | null
+          client_ip?: string | null
           created_at?: string
           id?: string
+          request_origin?: string | null
+          security_level?: string | null
+          user_agent?: string | null
           user_id: string
         }
         Update: {
           action_type?: string
+          additional_data?: Json | null
+          client_ip?: string | null
           created_at?: string
           id?: string
+          request_origin?: string | null
+          security_level?: string | null
+          user_agent?: string | null
           user_id?: string
         }
         Relationships: []
@@ -723,6 +738,10 @@ export type Database = {
         Returns: boolean
       }
       cleanup_expired_matches: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_old_security_logs: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
