@@ -12,6 +12,7 @@ import {
   Facebook, 
   Linkedin, 
   Music, 
+  Camera,
   Plus, 
   ExternalLink, 
   Trash2,
@@ -32,6 +33,7 @@ const platformIcons = {
   facebook: Facebook,
   linkedin: Linkedin,
   tiktok: Music,
+  snapchat: Camera,
 };
 
 const platformColors = {
@@ -40,6 +42,7 @@ const platformColors = {
   facebook: 'bg-blue-600',
   linkedin: 'bg-blue-700',
   tiktok: 'bg-black',
+  snapchat: 'bg-yellow-400',
 };
 
 const platformNames = {
@@ -48,6 +51,7 @@ const platformNames = {
   facebook: 'Facebook',
   linkedin: 'LinkedIn',
   tiktok: 'TikTok',
+  snapchat: 'Snapchat',
 };
 
 const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
