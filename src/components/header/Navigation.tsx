@@ -21,13 +21,25 @@ const Navigation = ({ onNavClick }: NavigationProps) => {
   return (
     <nav className="hidden md:flex items-center space-x-8">
       {filteredItems.map((item) => (
-        <button
-          key={item.name}
-          onClick={() => onNavClick(item.href)}
-          className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium bg-transparent border-none cursor-pointer"
-        >
-          {item.name}
-        </button>
+        item.external ? (
+          <a
+            key={item.name}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium"
+          >
+            {item.name}
+          </a>
+        ) : (
+          <button
+            key={item.name}
+            onClick={() => onNavClick(item.href)}
+            className="text-foreground/70 hover:text-foreground transition-colors duration-200 font-medium bg-transparent border-none cursor-pointer"
+          >
+            {item.name}
+          </button>
+        )
       ))}
     </nav>
   );
