@@ -727,7 +727,6 @@ export type Database = {
       }
       check_rate_limit: {
         Args:
-          | Record<PropertyKey, never>
           | { resource_name: string; max_count: number; window_size: unknown }
           | {
               user_id: string
