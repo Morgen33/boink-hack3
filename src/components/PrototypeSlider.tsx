@@ -46,26 +46,32 @@ const PrototypeSlider = () => {
               alt="Boink Meme Generator" 
               className="w-96 h-96 rounded-lg shadow-lg mx-auto"
             />
-            <p className="text-lg text-gray-700 max-w-2xl">
-              Try Our Brand New Meme Generator{" "}
-              <a 
-                href="https://www.cryptofightclub.wtf/boink/memegenerator.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-web3-red hover:text-web3-magenta font-bold underline transition-colors"
-              >
-                HERE
-              </a>
-              {" "}made by our friends over at{" "}
-              <a 
-                href="https://www.cryptofightclub.wtf/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-web3-orange hover:text-web3-yellow font-medium underline transition-colors"
-              >
-                Crypto Fight Club
-              </a>
-            </p>
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-web3-red via-web3-magenta to-web3-orange bg-clip-text text-transparent animate-pulse">
+                🔥 TRY OUR BRAND NEW MEME GENERATOR! 🚀
+              </h2>
+              <div className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto">
+                <a 
+                  href="https://www.cryptofightclub.wtf/boink/memegenerator.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-4 bg-gradient-to-r from-web3-red to-web3-magenta text-white font-bold text-2xl rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-bounce"
+                >
+                  ✨ CREATE MEMES HERE ✨
+                </a>
+              </div>
+              <p className="text-lg text-gray-600">
+                Made with 💎 by our friends at{" "}
+                <a 
+                  href="https://www.cryptofightclub.wtf/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-web3-orange hover:text-web3-yellow font-bold underline transition-colors hover:scale-105 inline-block"
+                >
+                  Crypto Fight Club
+                </a>
+              </p>
+            </div>
           </div>
         </div>
 
