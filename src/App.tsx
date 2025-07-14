@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SimpleAuthProvider } from "@/contexts/SimpleAuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/contexts/SecurityContext";
 import Index from "./pages/Index";
 import EventsPage from "./pages/Events";
@@ -20,7 +20,7 @@ import Token from "./pages/Token";
 import WeSupport from "./pages/WeSupport";
 import NotFound from "./pages/NotFound";
 import PlatformIntent from "./pages/PlatformIntent";
-import SimpleAccount from "./pages/SimpleAccount";
+import Account from "./pages/Account";
 import ComprehensiveProfile from "./pages/ComprehensiveProfile";
 import WhaleRegistration from "./pages/WhaleRegistration";
 
@@ -28,7 +28,7 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <SimpleAuthProvider>
+    <AuthProvider>
       <SecurityProvider>
         <TooltipProvider>
           <Toaster />
@@ -43,7 +43,7 @@ const App = () => (
               <Route path="/games" element={<Games />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/platform-intent" element={<PlatformIntent />} />
-              <Route path="/account" element={<SimpleAccount />} />
+              <Route path="/account" element={<Account />} />
               <Route path="/profile/setup" element={<Profile />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/edit" element={<Profile />} />
@@ -59,7 +59,7 @@ const App = () => (
           </BrowserRouter>
         </TooltipProvider>
       </SecurityProvider>
-    </SimpleAuthProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
