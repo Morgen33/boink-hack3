@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useEnhancedMatching } from '@/hooks/useEnhancedMatching';
 import ProfileCard from '@/components/ProfileCard';
 import MatchScore from '@/components/MatchScore';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const DiscoverEnhanced = () => {
-  const { user, loading: authLoading } = useSimpleAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [showMatchScore, setShowMatchScore] = useState(false);
   const { 

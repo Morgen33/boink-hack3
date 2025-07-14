@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useProfileFlow } from '@/hooks/useProfileFlow';
 import Header from "@/components/Header";
@@ -16,12 +16,11 @@ import MVPOverlay from "@/components/MVPOverlay";
 import GMGNLink from "@/components/header/GMGNLink";
 import ProfileCompletionPrompt from "@/components/ProfileCompletionPrompt";
 import IncompleteProfileWarning from "@/components/profile/IncompleteProfileWarning";
-import ErrorBoundary from "@/components/ErrorBoundary";
 
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showProfilePrompt, setShowProfilePrompt] = useState(false);
-  const { user, loading: authLoading } = useSimpleAuth();
+  const { user, loading: authLoading } = useAuth();
   const { profile, loading: profileLoading } = useProfileData();
   const navigate = useNavigate();
   
@@ -37,13 +36,11 @@ const Index = () => {
   }, []);
 
   // Smart routing for authenticated users - redirect to daily matches
-  // Only if they have completed profile setup
   useEffect(() => {
     if (authLoading || profileLoading) return;
 
-    // Only redirect if user has completed profile setup
-    // useProfileFlow will handle redirecting incomplete profiles
-    if (user && profile && profile.profile_completed && profile.platform_intent) {
+    // Redirect authenticated users to daily matches after seeing landing page briefly
+    if (user && profile) {
       const timer = setTimeout(() => {
         navigate('/daily-matches');
       }, 1500);
@@ -86,43 +83,27 @@ const Index = () => {
         />
       )}
       
-      <ErrorBoundary fallback={({ error, resetError }) => (
-        <div className="min-h-screen bg-background flex items-center justify-center p-4">
-          <div className="text-center space-y-4">
-            <h2 className="text-xl font-semibold text-destructive">Authentication Issue</h2>
-            <p className="text-muted-foreground">
-              There was a problem after signing in. This is common on mobile browsers.
-            </p>
-            <button 
-              onClick={() => window.location.href = '/account'} 
-              className="px-4 py-2 bg-gradient-to-r from-web3-red to-web3-magenta text-white rounded hover:opacity-90"
-            >
-              Continue to Account
-            </button>
-          </div>
-        </div>
-      )}>
-        <Header />
-        <GMGNLink />
-        
-        <main>
-          <Hero />
-          <PrototypeSlider />
-          <section id="safety">
-            <SafetyFeatures />
-          </section>
-          <section id="features">
-            <Web3Features />
-          </section>
-          <section id="pricing">
-            <Pricing />
-          </section>
-          <section id="testimonials">
-            <Testimonials />
-          </section>
-        </main>
-        <Footer />
-      </ErrorBoundary>
+      <Header />
+      <GMGNLink />
+      
+      
+      <main>
+        <Hero />
+        <PrototypeSlider />
+        <section id="safety">
+          <SafetyFeatures />
+        </section>
+        <section id="features">
+          <Web3Features />
+        </section>
+        <section id="pricing">
+          <Pricing />
+        </section>
+        <section id="testimonials">
+          <Testimonials />
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 };

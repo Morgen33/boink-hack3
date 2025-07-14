@@ -1,7 +1,7 @@
 
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useDailyMatches } from '@/hooks/useDailyMatches';
 import Header from '@/components/Header';
@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Heart, Sparkles, Users, Clock, Target } from 'lucide-react';
 
 const DailyMatches = () => {
-  const { user } = useSimpleAuth();
+  const { user } = useAuth();
   const { profile, loading } = useProfileData();
   const { matches, loading: matchesLoading, error, currentMatch, hasMoreMatches, nextMatch, markAsLiked } = useDailyMatches(user);
   const navigate = useNavigate();

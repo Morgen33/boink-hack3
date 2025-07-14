@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, Loader2 } from 'lucide-react';
-import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useConversations } from '@/hooks/useConversations';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -14,7 +14,7 @@ interface MessageButtonProps {
 }
 
 const MessageButton = ({ targetUserId, variant = 'outline', size = 'default', className }: MessageButtonProps) => {
-  const { user } = useSimpleAuth();
+  const { user } = useAuth();
   const { createConversation } = useConversations(user);
   const navigate = useNavigate();
   const { toast } = useToast();

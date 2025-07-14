@@ -1,4 +1,4 @@
-import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import ComprehensiveProfileForm from '@/components/profile/ComprehensiveProfileForm';
@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
 const ComprehensiveProfile = () => {
-  const { user, loading } = useSimpleAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 

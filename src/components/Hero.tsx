@@ -4,13 +4,13 @@ import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSimpleAuth } from "@/contexts/SimpleAuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useProfileData } from "@/hooks/useProfileData";
 
 const Hero = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useSimpleAuth();
+  const { user, loading: authLoading } = useAuth();
   const { profile, loading: profileLoading } = useProfileData();
 
   // Check for saved theme preference or default to light mode

@@ -9,7 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bitcoin, Wallet, TrendingUp, Coins, Zap, Trophy, Plus, ExternalLink, Trash2, User, Copy, Check, Briefcase } from 'lucide-react';
-import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -38,7 +38,7 @@ interface FavoriteMeme {
 }
 
 const NetworkingCryptoStep = ({ data, onUpdate }: NetworkingCryptoStepProps) => {
-  const { user } = useSimpleAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
   const [existingCryptoData, setExistingCryptoData] = useState<any>(null);
   const [showAutoPopulateCard, setShowAutoPopulateCard] = useState(false);

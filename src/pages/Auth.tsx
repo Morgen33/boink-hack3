@@ -4,19 +4,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Heart } from 'lucide-react';
 import { MINIMUM_AGE } from '@/utils/ageVerification';
 import { AuthForm } from '@/components/auth/AuthForm';
-import { SimpleGoogleSignIn } from '@/components/auth/SimpleGoogleSignIn';
-import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
+import { GoogleSignIn } from '@/components/auth/GoogleSignIn';
+import { useAuthRedirect } from '@/hooks/useAuthRedirect';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
-  const { user } = useSimpleAuth();
   
-  // Simple redirect for authenticated users
-  if (user) {
-    window.location.href = '/account';
-    return null;
-  }
+  useAuthRedirect();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-web3-red/10 via-background to-web3-magenta/10 flex items-center justify-center p-4">
@@ -40,7 +35,7 @@ const Auth = () => {
           )}
         </CardHeader>
         <CardContent className="space-y-4">
-          <SimpleGoogleSignIn loading={loading} setLoading={setLoading} />
+          <GoogleSignIn loading={loading} setLoading={setLoading} />
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">

@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Sparkles, MessageCircle, Heart, TrendingUp } from 'lucide-react';
 import { useAIMatching } from '@/hooks/useAIMatching';
-import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AIMatchInsightsProps {
   targetUserId: string;
@@ -17,7 +17,7 @@ const AIMatchInsights: React.FC<AIMatchInsightsProps> = ({
   compatibilityScore,
   onStartConversation 
 }) => {
-  const { user } = useSimpleAuth();
+  const { user } = useAuth();
   const { getMatchInsights, calculateCompatibility, loading } = useAIMatching();
   const [insights, setInsights] = useState<any>(null);
   const [aiScore, setAiScore] = useState<number | null>(compatibilityScore || null);
