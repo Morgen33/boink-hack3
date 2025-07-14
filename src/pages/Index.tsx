@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useProfileFlow } from '@/hooks/useProfileFlow';
 import Header from "@/components/Header";
@@ -21,7 +21,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 const Index = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showProfilePrompt, setShowProfilePrompt] = useState(false);
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useSimpleAuth();
   const { profile, loading: profileLoading } = useProfileData();
   const navigate = useNavigate();
   

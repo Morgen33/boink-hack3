@@ -2,7 +2,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useSimpleAuth } from "@/contexts/SimpleAuthContext";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
 import UserMenu from "./UserMenu";
@@ -11,7 +11,7 @@ import MobileMenu from "./MobileMenu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut, loading } = useAuth();
+  const { user, signOut, loading } = useSimpleAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
