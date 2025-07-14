@@ -70,7 +70,7 @@ export const WhaleForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4">
+    <div className="min-h-screen bg-background pt-24 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <p className="text-lg text-foreground font-medium mb-2">
