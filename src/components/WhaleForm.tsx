@@ -72,6 +72,15 @@ export const WhaleForm: React.FC = () => {
   return (
     <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-2xl mx-auto">
+        <div className="text-center mb-8">
+          <p className="text-lg text-foreground font-medium mb-2">
+            If you hold 1% or more of the $BOINK supply, we want to connect. We're offering exclusive perks.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            All submissions are private.
+          </p>
+        </div>
+        
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
