@@ -36,11 +36,13 @@ const Index = () => {
   }, []);
 
   // Smart routing for authenticated users - redirect to daily matches
+  // Only if they have completed profile setup
   useEffect(() => {
     if (authLoading || profileLoading) return;
 
-    // Redirect authenticated users to daily matches after seeing landing page briefly
-    if (user && profile) {
+    // Only redirect if user has completed profile setup
+    // useProfileFlow will handle redirecting incomplete profiles
+    if (user && profile && profile.profile_completed && profile.platform_intent) {
       const timer = setTimeout(() => {
         navigate('/daily-matches');
       }, 1500);
