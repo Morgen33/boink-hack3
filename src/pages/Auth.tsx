@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Heart } from 'lucide-react';
 import { MINIMUM_AGE } from '@/utils/ageVerification';
 import { AuthForm } from '@/components/auth/AuthForm';
-import { GoogleSignIn } from '@/components/auth/GoogleSignIn';
+import { SimpleGoogleSignIn } from '@/components/auth/SimpleGoogleSignIn';
 import { useAuthRedirect } from '@/hooks/useAuthRedirect';
 
 const Auth = () => {
@@ -35,7 +35,7 @@ const Auth = () => {
           )}
         </CardHeader>
         <CardContent className="space-y-4">
-          <GoogleSignIn loading={loading} setLoading={setLoading} />
+          <SimpleGoogleSignIn loading={loading} setLoading={setLoading} />
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
