@@ -35,7 +35,19 @@ const Index = () => {
     }
   }, []);
 
-  // Remove automatic redirect - let users stay on landing page
+  // Smart routing for authenticated users - redirect to daily matches
+  useEffect(() => {
+    if (authLoading || profileLoading) return;
+
+    // Redirect authenticated users to daily matches after seeing landing page briefly
+    if (user && profile) {
+      const timer = setTimeout(() => {
+        navigate('/daily-matches');
+      }, 1500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [user, profile, authLoading, profileLoading, navigate]);
 
   const handleEnterApp = () => {
     // Mark as seen and hide overlay

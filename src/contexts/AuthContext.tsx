@@ -65,7 +65,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    // Set up auth listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('🔄 Auth state changed:', event, session?.user?.email);
@@ -74,19 +73,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(false);
 
         if (event === 'SIGNED_IN' && session?.user) {
-          console.log('✅ User signed in');
+          console.log('✅ User signed in, checking profile status...');
           
           setTimeout(async () => {
             try {
               const { completed, error } = await checkProfileCompletion(session.user.id);
               
               if (error) {
-                console.log('⚠️ Error occurred during profile check');
+                console.log('⚠️ Error occurred during profile check, not changing isNewUser flag');
               } else if (completed) {
-                console.log('✅ Profile is completed');
+                console.log('✅ Profile is completed - clearing new user flag');
                 setIsNewUser(false);
               } else {
-                console.log('⚠️ Profile is not completed');
+                console.log('⚠️ Profile is not completed - setting new user flag');
                 setIsNewUser(true);
               }
 
@@ -99,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
           }, 0);
         } else if (event === 'SIGNED_OUT') {
-          console.log('👋 User signed out');
+          console.log('👋 User signed out - clearing new user flag');
           setIsNewUser(false);
         }
       }
@@ -168,7 +167,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/account`
+        redirectTo: `${window.location.origin}/`
       }
     });
     if (error) {
