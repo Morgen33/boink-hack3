@@ -67,8 +67,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     let mounted = true;
     
+    // Simplified auth state handler for mobile compatibility
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         try {
           console.log('🔄 Auth state changed:', event, session?.user?.email);
           
@@ -78,43 +79,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(session?.user ?? null);
           setLoading(false);
 
+          // Simple new user detection without complex async operations
           if (event === 'SIGNED_IN' && session?.user) {
-            console.log('✅ User signed in, checking profile status...');
-            
-            setTimeout(async () => {
-              try {
-                if (!mounted) return;
-                
-                const { completed, error } = await checkProfileCompletion(session.user.id);
-                
-                if (!mounted) return;
-                
-                if (error) {
-                  console.log('⚠️ Error occurred during profile check, not changing isNewUser flag');
-                } else if (completed) {
-                  console.log('✅ Profile is completed - clearing new user flag');
-                  setIsNewUser(false);
-                } else {
-                  console.log('⚠️ Profile is not completed - setting new user flag');
-                  setIsNewUser(true);
-                }
-
-                const provider = session.user.app_metadata?.provider;
-                if (provider === 'twitter') {
-                  handleTwitterConnection(session.user);
-                }
-              } catch (error) {
-                console.error('❌ Error checking profile after sign in:', error);
-                if (mounted) {
-                  setIsNewUser(true); // Safe fallback
-                }
-              }
-            }, 100);
+            console.log('✅ User signed in');
+            setIsNewUser(true); // Default to new user, will be updated later
           } else if (event === 'SIGNED_OUT') {
-            console.log('👋 User signed out - clearing new user flag');
-            if (mounted) {
-              setIsNewUser(false);
-            }
+            console.log('👋 User signed out');
+            setIsNewUser(false);
           }
         } catch (error) {
           console.error('❌ Auth state change error:', error);
@@ -125,8 +96,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Simple initial session check
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
       try {
+        if (error) {
+          console.error('❌ Session error:', error);
+          if (mounted) {
+            setLoading(false);
+          }
+          return;
+        }
+
         console.log('🚀 Initial session check:', session?.user?.email || 'No user');
         
         if (!mounted) return;
@@ -136,27 +116,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(false);
 
         if (session?.user) {
-          setTimeout(async () => {
-            try {
-              if (!mounted) return;
-              
-              const { completed, error } = await checkProfileCompletion(session.user.id);
-              
-              if (!mounted) return;
-              
-              if (!error && completed) {
-                setIsNewUser(false);
-              } else {
-                setIsNewUser(true);
-              }
-              console.log('📊 Initial profile check - isNewUser:', !completed);
-            } catch (error) {
-              console.error('❌ Error in initial profile check:', error);
-              if (mounted) {
-                setIsNewUser(true);
-              }
-            }
-          }, 100);
+          setIsNewUser(true); // Will be updated by profile check later
         }
       } catch (error) {
         console.error('❌ Initial session check error:', error);
@@ -165,7 +125,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
     }).catch(error => {
-      console.error('❌ Get session error:', error);
+      console.error('❌ Get session promise error:', error);
       if (mounted) {
         setLoading(false);
       }
@@ -211,39 +171,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithGoogle = async () => {
     try {
-      // For mobile, use a simpler redirect approach
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      // Force a page reload after OAuth for mobile compatibility
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin
+        }
+      });
       
-      if (isMobile) {
-        // On mobile, redirect to current page to avoid cross-origin issues
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: window.location.origin
-          }
-        });
-        
-        if (error) {
-          console.error('Mobile Google sign-in error:', error);
-          throw error;
-        }
-      } else {
-        // Desktop flow with more options
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: `${window.location.origin}/`,
-            queryParams: {
-              access_type: 'offline',
-              prompt: 'consent',
-            },
-          }
-        });
-        
-        if (error) {
-          console.error('Desktop Google sign-in error:', error);
-          throw error;
-        }
+      if (error) {
+        console.error('Google sign-in error:', error);
+        throw error;
       }
     } catch (error) {
       console.error('❌ Google sign-in error:', error);
