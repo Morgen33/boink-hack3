@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { useConversations, getConversationContextInfo, getContextSpecificInfo, ConversationFilter } from '@/hooks/useConversations';
 import { useMessages } from '@/hooks/useMessages';
 import { useUserBlocks } from '@/hooks/useUserBlocks';
@@ -17,7 +17,7 @@ import { formatDistanceToNow } from 'date-fns';
 import BlockConfirmationModal from '@/components/BlockConfirmationModal';
 
 const Messages = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useSimpleAuth();
   const navigate = useNavigate();
   const { 
     conversations, 

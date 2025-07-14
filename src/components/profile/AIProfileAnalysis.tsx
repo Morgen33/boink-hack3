@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Sparkles, Brain, TrendingUp, MessageSquare, Loader2 } from 'lucide-react';
 import { useAIMatching } from '@/hooks/useAIMatching';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 interface AIProfileAnalysisProps {
@@ -17,7 +17,7 @@ const AIProfileAnalysis: React.FC<AIProfileAnalysisProps> = ({
   profileData,
   onAnalysisComplete 
 }) => {
-  const { user } = useAuth();
+  const { user } = useSimpleAuth();
   const { analyzeProfile, loading } = useAIMatching();
   const [analysisData, setAnalysisData] = useState<any>(null);
   const [hasAnalysis, setHasAnalysis] = useState(false);

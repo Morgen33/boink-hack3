@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { useUserLikes } from '@/hooks/useUserLikes';
 import ProfileCard from '@/components/ProfileCard';
 import MessageButton from '@/components/MessageButton';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const MyMatches = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useSimpleAuth();
   const navigate = useNavigate();
   
   const { likedProfiles, mutualMatches, loading } = useUserLikes();

@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Header from '@/components/Header';
 import { Heart, Users, CheckCircle, Circle, User, MapPin, Calendar, MessageCircle, Send } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useConversations } from '@/hooks/useConversations';
@@ -26,7 +26,7 @@ interface ProfileStats {
 const Account = () => {
   const [profileStats, setProfileStats] = useState<ProfileStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  const { user } = useSimpleAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { conversations, loading: conversationsLoading, getUnreadCount } = useConversations(user);

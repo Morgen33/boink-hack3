@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import SocialMediaConnections from '@/components/SocialMediaConnections';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 
 interface PhotoObject {
   id: string;
@@ -89,7 +89,7 @@ interface ComprehensiveProfileFormProps {
 
 const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfileFormProps) => {
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user } = useSimpleAuth();
   const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     purposes: [],

@@ -1,13 +1,13 @@
 
 import { navigationItems } from "@/constants/navigation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useSimpleAuth } from "@/contexts/SimpleAuthContext";
 
 interface NavigationProps {
   onNavClick: (href: string) => void;
 }
 
 const Navigation = ({ onNavClick }: NavigationProps) => {
-  const { user } = useAuth();
+  const { user } = useSimpleAuth();
   
   const authRequiredItems = ['Daily Matches', 'My Matches', 'Discover'];
   

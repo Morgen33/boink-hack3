@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils';
 import { validateAge, getAgeVerificationError, calculateAge } from '@/utils/ageVerification';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 
 interface AgeVerificationModalProps {
   isOpen: boolean;
@@ -30,7 +30,7 @@ const AgeVerificationModal = ({ isOpen, onVerified }: AgeVerificationModalProps)
   const [birthDate, setBirthDate] = useState<Date>();
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user } = useSimpleAuth();
 
   const handleVerification = async () => {
     if (!birthDate) {

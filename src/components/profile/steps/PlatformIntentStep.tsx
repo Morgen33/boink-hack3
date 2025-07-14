@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Heart, Users, Zap, Shield } from 'lucide-react';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 interface PlatformIntentStepProps {
@@ -14,7 +14,7 @@ interface PlatformIntentStepProps {
 const PlatformIntentStep = ({ data, onUpdate }: PlatformIntentStepProps) => {
   const [isAgeVerified, setIsAgeVerified] = useState(false);
   const [showAgeModal, setShowAgeModal] = useState(false);
-  const { user } = useAuth();
+  const { user } = useSimpleAuth();
 
   useEffect(() => {
     const checkAgeVerification = async () => {

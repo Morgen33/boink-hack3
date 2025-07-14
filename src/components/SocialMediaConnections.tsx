@@ -20,7 +20,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { useSocialMediaConnections } from '@/hooks/useSocialMediaConnections';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { User } from '@supabase/supabase-js';
 
 interface SocialMediaConnectionsProps {
@@ -55,7 +55,6 @@ const platformNames = {
 };
 
 const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
-  const { signInWithTwitter } = useAuth();
   const { connections, loading, addConnection, removeConnection } = useSocialMediaConnections(user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<string>('');
@@ -82,9 +81,11 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
   const handleTwitterOAuth = async () => {
     setIsConnectingTwitter(true);
     try {
-      await signInWithTwitter();
+      // Twitter OAuth functionality would be implemented here
+      console.log('Twitter OAuth not implemented yet');
     } catch (error) {
       console.error('Error connecting Twitter:', error);
+    } finally {
       setIsConnectingTwitter(false);
     }
   };

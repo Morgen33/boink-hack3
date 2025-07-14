@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { useUserBlocks } from '@/hooks/useUserBlocks';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -39,7 +39,7 @@ interface ExtendedProfile extends ProfileCardType {
 const ProfileDetail = () => {
   const { profileId } = useParams<{ profileId: string }>();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user } = useSimpleAuth();
   const { blockUser } = useUserBlocks();
   const [profile, setProfile] = useState<ExtendedProfile | null>(null);
   const [loading, setLoading] = useState(true);

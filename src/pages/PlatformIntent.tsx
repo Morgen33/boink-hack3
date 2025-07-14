@@ -4,14 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, Users, Zap, Shield } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSimpleAuth } from '@/contexts/SimpleAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import AgeVerificationModal from '@/components/AgeVerificationModal';
 
 const PlatformIntent = () => {
   const [loading, setLoading] = useState(false);
   const [isAgeVerified, setIsAgeVerified] = useState(false);
-  const { user } = useAuth();
+  const { user } = useSimpleAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
