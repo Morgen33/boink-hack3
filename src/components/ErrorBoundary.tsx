@@ -39,6 +39,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
         return <FallbackComponent error={this.state.error} resetError={this.resetError} />;
       }
 
+      const isSecurityError = this.state.error?.message?.includes('insecure') || 
+                             this.state.error?.message?.includes('CORS') ||
+                             this.state.error?.message?.includes('network');
+
       return (
         <div className="min-h-screen bg-background flex items-center justify-center p-4">
           <Card className="w-full max-w-md">
@@ -46,11 +50,16 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
               <div className="w-16 h-16 bg-destructive/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-destructive" />
               </div>
-              <CardTitle className="text-xl text-destructive">Something went wrong</CardTitle>
+              <CardTitle className="text-xl text-destructive">
+                {isSecurityError ? 'Connection Issue' : 'Something went wrong'}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-center">
               <p className="text-muted-foreground">
-                We encountered an unexpected error. Please try refreshing the page.
+                {isSecurityError 
+                  ? 'There was a security or network issue. This can happen after signing in on mobile. Please try refreshing or going back to the home page.'
+                  : 'We encountered an unexpected error. Please try refreshing the page.'
+                }
               </p>
               {this.state.error && (
                 <details className="text-left text-sm bg-muted p-3 rounded">
@@ -61,15 +70,15 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                 </details>
               )}
               <div className="flex gap-2 justify-center">
-                <Button onClick={this.resetError} variant="outline">
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Try Again
-                </Button>
                 <Button 
                   onClick={() => window.location.href = '/'}
                   className="bg-gradient-to-r from-web3-red to-web3-magenta hover:opacity-90"
                 >
                   Go Home
+                </Button>
+                <Button onClick={this.resetError} variant="outline">
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Try Again
                 </Button>
               </div>
             </CardContent>
