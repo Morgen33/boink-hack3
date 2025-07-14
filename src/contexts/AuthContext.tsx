@@ -211,23 +211,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithGoogle = async () => {
     try {
-      const redirectUrl = window.location.origin + '/';
-      console.log('🔗 Google sign-in redirect URL:', redirectUrl);
+      // For mobile, use a simpler redirect approach
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: redirectUrl,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
+      if (isMobile) {
+        // On mobile, redirect to current page to avoid cross-origin issues
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: window.location.origin
+          }
+        });
+        
+        if (error) {
+          console.error('Mobile Google sign-in error:', error);
+          throw error;
         }
-      });
-      
-      if (error) {
-        console.error('Error signing in with Google:', error);
-        throw error;
+      } else {
+        // Desktop flow with more options
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: `${window.location.origin}/`,
+            queryParams: {
+              access_type: 'offline',
+              prompt: 'consent',
+            },
+          }
+        });
+        
+        if (error) {
+          console.error('Desktop Google sign-in error:', error);
+          throw error;
+        }
       }
     } catch (error) {
       console.error('❌ Google sign-in error:', error);

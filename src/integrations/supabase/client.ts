@@ -13,11 +13,7 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    flowType: 'pkce'
-  },
-  global: {
-    headers: {
-      'X-Client-Info': 'boink-mobile-app'
-    }
+    flowType: 'implicit', // Use implicit flow for mobile compatibility
+    storage: typeof window !== 'undefined' ? window.localStorage : undefined,
   }
 });
