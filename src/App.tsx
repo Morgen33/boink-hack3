@@ -23,6 +23,7 @@ import PlatformIntent from "./pages/PlatformIntent";
 import Account from "./pages/Account";
 import ComprehensiveProfile from "./pages/ComprehensiveProfile";
 import WhaleRegistration from "./pages/WhaleRegistration";
+import MobileAuthError from "./components/MobileAuthError";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="/token" element={<Token />} />
               <Route path="/we-support" element={<WeSupport />} />
               <Route path="/whale-registration" element={<WhaleRegistration />} />
+              <Route path="/auth-error" element={<MobileAuthError />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -65,6 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
+    // Set up auth listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('🔄 Auth state changed:', event, session?.user?.email);
@@ -73,19 +74,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(false);
 
         if (event === 'SIGNED_IN' && session?.user) {
-          console.log('✅ User signed in, checking profile status...');
+          console.log('✅ User signed in, redirecting to account...');
+          
+          // For mobile OAuth, redirect immediately to account page
+          if (session.user.app_metadata?.provider === 'google') {
+            window.location.href = '/account';
+            return;
+          }
           
           setTimeout(async () => {
             try {
               const { completed, error } = await checkProfileCompletion(session.user.id);
               
               if (error) {
-                console.log('⚠️ Error occurred during profile check, not changing isNewUser flag');
+                console.log('⚠️ Error occurred during profile check');
               } else if (completed) {
-                console.log('✅ Profile is completed - clearing new user flag');
+                console.log('✅ Profile is completed');
                 setIsNewUser(false);
               } else {
-                console.log('⚠️ Profile is not completed - setting new user flag');
+                console.log('⚠️ Profile is not completed');
                 setIsNewUser(true);
               }
 
@@ -98,7 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
           }, 0);
         } else if (event === 'SIGNED_OUT') {
-          console.log('👋 User signed out - clearing new user flag');
+          console.log('👋 User signed out');
           setIsNewUser(false);
         }
       }
