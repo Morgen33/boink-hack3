@@ -74,13 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(false);
 
         if (event === 'SIGNED_IN' && session?.user) {
-          console.log('✅ User signed in, redirecting to account...');
-          
-          // For mobile OAuth, redirect immediately to account page
-          if (session.user.app_metadata?.provider === 'google') {
-            window.location.href = '/account';
-            return;
-          }
+          console.log('✅ User signed in');
           
           setTimeout(async () => {
             try {
@@ -174,7 +168,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/`
+        redirectTo: `${window.location.origin}/account`
       }
     });
     if (error) {
