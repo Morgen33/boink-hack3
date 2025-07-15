@@ -24,10 +24,10 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const interestOptions = [
-  { id: 'whale-advisory', label: 'Whale Advisory Circle', icon: Crown },
-  { id: 'nft-access', label: 'NFT Access / Pre-Mints', icon: Shield },
-  { id: 'revenue-share', label: 'Revenue Share / Vesting Deals', icon: Coins },
-  { id: 'lockups-lp', label: 'Lockups / LP Incentives', icon: Users },
+  { id: 'whale-advisory', label: 'Community Advisory', icon: Crown },
+  { id: 'early-access', label: 'Early Access Opportunities', icon: Shield },
+  { id: 'special-initiatives', label: 'Special Project Initiatives', icon: Coins },
+  { id: 'community-events', label: 'Exclusive Community Events', icon: Users },
   { id: 'collaboration', label: 'General Collaboration', icon: MessageSquare },
 ];
 
@@ -96,8 +96,8 @@ const WhaleConnect = () => {
               Whale Connect Program
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              If you hold 1% or more of the $BOINK supply, we want to connect. We're offering exclusive perlks including 
-              NFT access, governance roles, revenue opportunities, and more. All submissions are private.
+              If you hold 1% or more of the $BOINK supply, we want to connect. We're offering exclusive perlks and 
+              opportunities for major holders. All submissions are private.
             </p>
           </div>
 
@@ -106,11 +106,11 @@ const WhaleConnect = () => {
             <Card className="border-web3-orange/20 hover:border-web3-orange/40 transition-colors">
               <CardHeader className="text-center">
                 <Crown className="w-8 h-8 mx-auto text-web3-orange mb-2" />
-                <CardTitle className="text-lg">Exclusive Access</CardTitle>
+                <CardTitle className="text-lg">Community Access</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground text-center">
-                  Join the Whale Advisory Circle and get early access to major decisions
+                  Connect with other major holders and participate in community discussions
                 </p>
               </CardContent>
             </Card>
@@ -118,11 +118,11 @@ const WhaleConnect = () => {
             <Card className="border-web3-orange/20 hover:border-web3-orange/40 transition-colors">
               <CardHeader className="text-center">
                 <Coins className="w-8 h-8 mx-auto text-web3-orange mb-2" />
-                <CardTitle className="text-lg">Revenue Share</CardTitle>
+                <CardTitle className="text-lg">Special Opportunities</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground text-center">
-                  Participate in revenue sharing and vesting deals
+                  Get early notification about potential opportunities
                 </p>
               </CardContent>
             </Card>
@@ -130,11 +130,11 @@ const WhaleConnect = () => {
             <Card className="border-web3-orange/20 hover:border-web3-orange/40 transition-colors">
               <CardHeader className="text-center">
                 <Shield className="w-8 h-8 mx-auto text-web3-orange mb-2" />
-                <CardTitle className="text-lg">Premium NFTs</CardTitle>
+                <CardTitle className="text-lg">Premium Access</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground text-center">
-                  Priority access to NFT drops and pre-mint opportunities
+                  Potential early access to various project initiatives
                 </p>
               </CardContent>
             </Card>
