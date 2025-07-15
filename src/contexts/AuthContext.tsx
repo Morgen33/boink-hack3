@@ -73,31 +73,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(false);
 
         if (event === 'SIGNED_IN' && session?.user) {
-          console.log('✅ User signed in, checking profile status...');
-          
-          setTimeout(async () => {
-            try {
-              const { completed, error } = await checkProfileCompletion(session.user.id);
-              
-              if (error) {
-                console.log('⚠️ Error occurred during profile check, not changing isNewUser flag');
-              } else if (completed) {
-                console.log('✅ Profile is completed - clearing new user flag');
-                setIsNewUser(false);
-              } else {
-                console.log('⚠️ Profile is not completed - setting new user flag');
-                setIsNewUser(true);
-              }
-
-              const provider = session.user.app_metadata?.provider;
-              if (provider === 'twitter') {
-                handleTwitterConnection(session.user);
-              }
-            } catch (error) {
-              console.error('❌ Error checking profile after sign in:', error);
-            }
-          }, 0);
-        } else if (event === 'SIGNED_OUT') {
+          console.log('✅ User signed in');
+          // Don't make any database calls that could hang on mobile
+          setIsNewUser(true); // Always treat as new user to be safe
+        }
+        if (event === 'SIGNED_OUT') {
           console.log('👋 User signed out - clearing new user flag');
           setIsNewUser(false);
         }
@@ -111,20 +91,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
 
       if (session?.user) {
-        setTimeout(async () => {
-          try {
-            const { completed, error } = await checkProfileCompletion(session.user.id);
-            if (!error && completed) {
-              setIsNewUser(false);
-            } else {
-              setIsNewUser(true);
-            }
-            console.log('📊 Initial profile check - isNewUser:', !completed);
-          } catch (error) {
-            console.error('❌ Error in initial profile check:', error);
-            setIsNewUser(true);
-          }
-        }, 0);
+        // Don't make database calls on initial load that could hang
+        setIsNewUser(true);
+        console.log('📊 Initial session - setting as new user to avoid mobile hang');
       }
     });
 
