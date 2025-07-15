@@ -183,43 +183,17 @@ const Hero = () => {
 
           {/* Trust Indicators */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-border">
-            <div className="text-center">
+        <div className="pt-12 border-t border-border">
+          <div className="flex flex-wrap justify-center gap-6">
+            <div className="text-center px-6">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm" style={{ 
                 background: `linear-gradient(to bottom right, ${COLORS.yellow}33, ${COLORS.orange}33)` 
               }}>
-                <Shield className="w-8 h-8" style={{ color: COLORS.orange }} />
-              </div>
-              <p className="text-lg font-semibold text-foreground">Verified Profiles</p>
-              <p className="text-sm text-muted-foreground">Wallet & Identity Verified</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm" style={{ 
-                background: `linear-gradient(to bottom right, ${COLORS.coral}33, ${COLORS.red}33)` 
-              }}>
-                <Heart className="w-8 h-8" style={{ color: COLORS.red }} />
-              </div>
-              <p className="text-lg font-semibold text-foreground">Dual Purpose</p>
-              <p className="text-sm text-muted-foreground">Dating & Networking</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm" style={{ 
-                background: `linear-gradient(to bottom right, ${COLORS.red}33, ${COLORS.magenta}33)` 
-              }}>
-                <Users className="w-8 h-8" style={{ color: COLORS.magenta }} />
-              </div>
-              <p className="text-lg font-semibold text-foreground">Web3 Community</p>
-              <p className="text-sm text-muted-foreground">Professionals & Builders</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm" style={{ 
-                background: `linear-gradient(to bottom right, ${COLORS.yellow}33, ${COLORS.orange}33)` 
-              }}>
-                <Sparkles className="w-8 h-8" style={{ color: COLORS.orange }} />
-              </div>
-              <p className="text-lg font-semibold text-foreground">Smart Matching</p>
-              <p className="text-sm text-muted-foreground">AI-Powered Connections</p>
-            </div>
-          </div>
+      <div className="mt-16 text-center">
+        <div className="inline-flex items-center px-6 py-3 rounded-full border border-gray-700 bg-gray-800/50">
+          <span className="text-lg font-medium text-gray-300">
+            Join the Web3 dating revolution
+          </span>
         </div>
       </div>
     </section>
