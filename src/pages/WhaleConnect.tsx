@@ -83,7 +83,7 @@ const WhaleConnect = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-web3-orange/10 via-background to-web3-orange/20">
       <Header />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="text-center space-y-6 mb-12">
