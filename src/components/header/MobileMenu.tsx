@@ -17,10 +17,19 @@ interface MobileMenuProps {
 const MobileMenu = ({ isOpen, user, onNavClick, onAuthClick, onProfileClick, onSignOut }: MobileMenuProps) => {
   if (!isOpen) return null;
 
+  const authRequiredItems = ['Daily Matches', 'My Matches', 'Discover'];
+  
+  const filteredItems = navigationItems.filter(item => {
+    if (authRequiredItems.includes(item.name)) {
+      return user !== null;
+    }
+    return true;
+  });
+
   return (
     <div className="md:hidden py-4 border-t border-border bg-background">
       <nav className="flex flex-col space-y-4">
-        {navigationItems.map((item) => (
+        {filteredItems.map((item) => (
           <button
             key={item.name}
             onClick={() => onNavClick(item.href)}
