@@ -183,17 +183,20 @@ const Hero = () => {
 
           {/* Trust Indicators */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-border">
-        <div className="pt-12 border-t border-border">
-          <div className="flex flex-wrap justify-center gap-6">
             <div className="text-center px-6">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm" style={{ 
                 background: `linear-gradient(to bottom right, ${COLORS.yellow}33, ${COLORS.orange}33)` 
               }}>
-      <div className="mt-16 text-center">
-        <div className="inline-flex items-center px-6 py-3 rounded-full border border-gray-700 bg-gray-800/50">
-          <span className="text-lg font-medium text-gray-300">
-            Join the Web3 dating revolution
-          </span>
+                <div className="mt-16 text-center">
+                  <div className="inline-flex items-center px-6 py-3 rounded-full border border-gray-700 bg-gray-800/50">
+                    <span className="text-lg font-medium text-gray-300">
+                      Join the Web3 dating revolution
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
