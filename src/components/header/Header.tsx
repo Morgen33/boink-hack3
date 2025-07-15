@@ -8,6 +8,7 @@ import Navigation from "./Navigation";
 import UserMenu from "./UserMenu";
 import AuthButtons from "./AuthButtons";
 import MobileMenu from "./MobileMenu";
+import MailNotification from "./MailNotification";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -64,7 +65,10 @@ const Header = () => {
             {loading ? (
               <div className="w-8 h-8 animate-spin rounded-full border-2 border-border border-t-web3-red"></div>
             ) : user ? (
-              <UserMenu user={user} onSignOut={handleSignOut} />
+              <div className="flex items-center space-x-2">
+                <MailNotification variant="desktop" />
+                <UserMenu user={user} onSignOut={handleSignOut} />
+              </div>
             ) : (
               <AuthButtons />
             )}

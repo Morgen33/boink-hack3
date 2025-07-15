@@ -4,6 +4,7 @@ import { User, LogOut, Settings } from "lucide-react";
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { navigationItems } from "@/constants/navigation";
+import MailNotification from "./MailNotification";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -52,6 +53,7 @@ const MobileMenu = ({ isOpen, user, onNavClick, onAuthClick, onProfileClick, onS
                   <p className="text-sm font-medium">{user.user_metadata?.full_name || user.email}</p>
                 </div>
               </div>
+              <MailNotification variant="mobile" className="w-full justify-start" />
               <Button
                 variant="outline"
                 className="w-full justify-start"
