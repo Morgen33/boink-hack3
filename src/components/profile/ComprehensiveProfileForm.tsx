@@ -17,18 +17,12 @@ import { supabase } from '@/integrations/supabase/client';
 import SocialMediaConnections from '@/components/SocialMediaConnections';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface PhotoObject {
-  id: string;
-  url: string;
-  file: File;
-}
-
 interface FormData {
   // Purpose Selection
   purposes: string[];
   
   // Base Profile
-  photos: PhotoObject[];
+  photos: File[];
   birthdate: Date | undefined;
   showBirthdate: boolean;
   bio: string;
@@ -40,9 +34,9 @@ interface FormData {
   defiProtocols: string[];
   biggestWin: string;
   biggestLoss: string;
-  nftImages: PhotoObject[];
+  nftImages: File[];
   memeCoinHoldings: string;
-  favoriteMemesImages: PhotoObject[];
+  favoriteMemesImages: File[];
   favoriteMemesCaptions: string[];
   investmentPhilosophy: string;
   
@@ -196,58 +190,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
         throw new Error('You must be logged in to upload photos');
       }
 
-      const approvedFiles: any[] = [];
-
-      for (let index = 0; index < files.length; index++) {
-        const file = files[index];
-        
-        // Convert image to base64 for AI moderation
-        const base64 = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsDataURL(file);
-        });
-
-        // Check with AI moderation for profile photos
-        try {
-          const { data: moderationResult, error: moderationError } = await supabase.functions.invoke('ai-image-moderation', {
-            body: {
-              imageBase64: base64,
-              context: 'profile_photos'
-            }
-          });
-
-          if (moderationError) {
-            console.error('Moderation error:', moderationError);
-            toast({
-              title: "Moderation unavailable",
-              description: `Could not verify ${file.name}. Uploading anyway.`,
-              variant: "default",
-            });
-          } else if (!moderationResult.approved) {
-            toast({
-              title: `❌ ${file.name} rejected`,
-              description: moderationResult.reason || 'Please upload a clear photo of yourself',
-              variant: "destructive",
-            });
-            continue;
-          } else {
-            toast({
-              title: `✅ ${file.name} approved`,
-              description: 'Photo looks great!',
-              variant: "default",
-            });
-          }
-        } catch (moderationError) {
-          console.error('AI moderation failed:', moderationError);
-          toast({
-            title: "Moderation unavailable",
-            description: `Could not verify ${file.name}. Uploading anyway.`,
-            variant: "default",
-          });
-        }
-
-        // Upload approved file
+      const uploadPromises = Array.from(files).map(async (file, index) => {
         const fileExt = file.name.split('.').pop();
         const fileName = `${user.id}/${Date.now()}_${index}.${fileExt}`;
         
@@ -255,33 +198,22 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
           .from('profile-photos')
           .upload(fileName, file);
 
-        if (uploadError) {
-          toast({
-            title: "Upload failed",
-            description: `Failed to upload ${file.name}`,
-            variant: "destructive",
-          });
-          continue;
-        }
+        if (uploadError) throw uploadError;
 
         const { data: { publicUrl } } = supabase.storage
           .from('profile-photos')
           .getPublicUrl(fileName);
 
-        approvedFiles.push({
-          id: `${Date.now()}-${index}`,
-          url: publicUrl,
-          file
-        });
-      }
+        return file;
+      });
 
-      if (approvedFiles.length > 0) {
-        updateFormData({ photos: [...formData.photos, ...approvedFiles] });
-        toast({
-          title: "Photos uploaded! 📸",
-          description: `Successfully uploaded ${approvedFiles.length} photo(s).`,
-        });
-      }
+      const uploadedFiles = await Promise.all(uploadPromises);
+      updateFormData({ photos: [...formData.photos, ...uploadedFiles] });
+
+      toast({
+        title: "Photos uploaded! 📸",
+        description: `Successfully uploaded ${files.length} photo(s).`,
+      });
 
     } catch (error: any) {
       console.error('Error uploading photos:', error);
@@ -304,11 +236,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
 
     setIsUploading(true);
     try {
-      const uploadedFiles = Array.from(files).map(file => ({
-        id: `${Date.now()}-${Math.random()}`,
-        url: URL.createObjectURL(file),
-        file
-      }));
+      const uploadedFiles = Array.from(files);
       updateFormData({ nftImages: [...formData.nftImages, ...uploadedFiles] });
       
       toast({
@@ -336,105 +264,13 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
 
     setIsUploading(true);
     try {
-      const approvedFiles: any[] = [];
+      const uploadedFiles = Array.from(files);
+      updateFormData({ favoriteMemesImages: [...formData.favoriteMemesImages, ...uploadedFiles] });
       
-      for (const file of Array.from(files)) {
-        // Convert image to base64 for AI moderation
-        const base64 = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsDataURL(file);
-        });
-
-        // Check with AI moderation for meme images
-        try {
-          const { data: moderationResult, error: moderationError } = await supabase.functions.invoke('ai-image-moderation', {
-            body: {
-              imageBase64: base64,
-              context: 'meme_images'
-            }
-          });
-
-          if (moderationError) {
-            console.error('Moderation error:', moderationError);
-            // Fallback to manual confirmation
-            const confirmed = window.confirm(
-              `🚨 MODERATION UNAVAILABLE 🚨\n\n` +
-              `For ${file.name}, please confirm you're uploading:\n` +
-              "✅ Memes, GIFs, funny images, crypto jokes\n\n" +
-              "❌ NOT uploading:\n" +
-              "• Selfies or personal photos\n" +
-              "• Inappropriate content\n\n" +
-              "Click OK to proceed!"
-            );
-            
-            if (confirmed) {
-              approvedFiles.push({
-                id: `${Date.now()}-${Math.random()}`,
-                url: URL.createObjectURL(file),
-                file
-              });
-              toast({
-                title: "Upload without verification",
-                description: `${file.name} uploaded (moderation unavailable)`,
-                variant: "default",
-              });
-            }
-          } else if (!moderationResult.approved) {
-            toast({
-              title: `❌ ${file.name} rejected`,
-              description: moderationResult.reason || 'Please upload memes/funny images only, not personal photos',
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: `✅ ${file.name} approved`,
-              description: 'Great meme!',
-              variant: "default",
-            });
-            
-            approvedFiles.push({
-              id: `${Date.now()}-${Math.random()}`,
-              url: URL.createObjectURL(file),
-              file
-            });
-          }
-        } catch (moderationError) {
-          console.error('AI moderation failed:', moderationError);
-          // Fallback to manual confirmation
-          const confirmed = window.confirm(
-            `🚨 MODERATION UNAVAILABLE 🚨\n\n` +
-            `For ${file.name}, please confirm you're uploading:\n` +
-            "✅ Memes, GIFs, funny images, crypto jokes\n\n" +
-            "❌ NOT uploading:\n" +
-            "• Selfies or personal photos\n" +
-            "• Inappropriate content\n\n" +
-            "Click OK to proceed!"
-          );
-          
-          if (confirmed) {
-            approvedFiles.push({
-              id: `${Date.now()}-${Math.random()}`,
-              url: URL.createObjectURL(file),
-              file
-            });
-            toast({
-              title: "Upload without verification",
-              description: `${file.name} uploaded (moderation unavailable)`,
-              variant: "default",
-            });
-          }
-        }
-      }
-
-      if (approvedFiles.length > 0) {
-        updateFormData({ favoriteMemesImages: [...formData.favoriteMemesImages, ...approvedFiles] });
-        toast({
-          title: "Meme images uploaded! 😂",
-          description: `Successfully uploaded ${approvedFiles.length} approved meme image(s).`,
-        });
-      }
-      
+      toast({
+        title: "Meme images uploaded! 😂",
+        description: `Successfully uploaded ${files.length} meme image(s).`,
+      });
     } catch (error: any) {
       console.error('Error uploading meme images:', error);
       toast({
@@ -718,33 +554,6 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
               {/* Profile Photos */}
               <div className="space-y-3">
                 <Label className="text-lg font-semibold">Profile Photos (2-6 photos) *</Label>
-                
-                {/* Display uploaded photos */}
-                {formData.photos.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                    {formData.photos.map((photo, index) => (
-                      <div key={index} className="relative">
-                        <img 
-                          src={photo.url} 
-                          alt={`Profile photo ${index + 1}`}
-                          className="w-full h-32 object-cover rounded-lg border"
-                        />
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          className="absolute top-2 right-2 w-6 h-6 p-0"
-                          onClick={() => {
-                            const newPhotos = formData.photos.filter((_, i) => i !== index);
-                            updateFormData({ photos: newPhotos });
-                          }}
-                        >
-                          <X className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                
                 <div className="border-2 border-dashed border-muted rounded-xl p-12 text-center hover:border-primary/50 transition-colors">
                   <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground mb-4 text-lg">Drag and drop photos or click to browse</p>
@@ -877,33 +686,6 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
 
                 <div className="space-y-3">
                   <Label className="text-lg font-semibold">Showcase NFT Images</Label>
-                  
-                  {/* Display uploaded NFT images */}
-                  {formData.nftImages && formData.nftImages.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                      {formData.nftImages.map((image, index) => (
-                        <div key={index} className="relative">
-                          <img 
-                            src={image.url} 
-                            alt={`NFT image ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg border border-purple-200"
-                          />
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            className="absolute top-2 right-2 w-6 h-6 p-0"
-                            onClick={() => {
-                              const newImages = formData.nftImages?.filter((_, i) => i !== index) || [];
-                              updateFormData({ nftImages: newImages });
-                            }}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  
                   <div className="border-2 border-dashed border-purple-300 rounded-xl p-8 text-center hover:border-purple-500 transition-colors">
                     <Upload className="w-8 h-8 mx-auto mb-3 text-purple-500" />
                     <p className="text-muted-foreground mb-3">Upload your favorite NFT images</p>
@@ -941,7 +723,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 <div className="space-y-3">
                   <Label className="text-lg font-semibold">Meme Coin Holdings</Label>
                   <Input
-                    placeholder="BOINK, DOGE, SHIB, PEPE, WIF, BONK, FLOKI..."
+                    placeholder="DOGE, SHIB, PEPE, WIF, BONK, FLOKI..."
                     value={formData.memeCoinHoldings}
                     onChange={(e) => updateFormData({ memeCoinHoldings: e.target.value })}
                     className="text-base h-12"
@@ -956,44 +738,10 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                 <p className="text-muted-foreground">Share your favorite crypto meme images</p>
                 
                 <div className="space-y-3">
-                  <Label className="text-lg font-semibold">Upload Funny Meme Pics 😂</Label>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Upload funny memes, crypto jokes, or reaction gifs - NOT personal photos! This helps show your sense of humor and crypto personality. 🚫 No selfies allowed here!
-                  </p>
-                  
-                  {/* Display uploaded meme images */}
-                  {formData.favoriteMemesImages && formData.favoriteMemesImages.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                      {formData.favoriteMemesImages.map((image, index) => (
-                        <div key={index} className="relative">
-                          <img 
-                            src={image.url} 
-                            alt={`Meme image ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg border border-red-200"
-                          />
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            className="absolute top-2 right-2 w-6 h-6 p-0"
-                            onClick={() => {
-                              const newImages = formData.favoriteMemesImages?.filter((_, i) => i !== index) || [];
-                              updateFormData({ favoriteMemesImages: newImages });
-                            }}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  
-                  <div className="border-2 border-dashed border-red-300 rounded-xl p-8 text-center hover:border-red-500 transition-colors bg-gradient-to-br from-yellow-50 to-orange-50">
+                  <Label className="text-lg font-semibold">Upload Funny Meme Pics</Label>
+                  <div className="border-2 border-dashed border-red-300 rounded-xl p-8 text-center hover:border-red-500 transition-colors">
                     <Upload className="w-8 h-8 mx-auto mb-3 text-red-500" />
-                    <p className="font-semibold text-red-700 mb-2">Upload Memes & Funny Images Only!</p>
-                    <div className="text-sm text-gray-600 mb-4 space-y-1">
-                      <p className="text-green-600">✅ Perfect: Crypto memes, reaction GIFs, funny tweets, wojaks, pepe memes</p>
-                      <p className="text-red-600">❌ Not allowed: Selfies, personal photos, inappropriate content</p>
-                    </div>
+                    <p className="text-muted-foreground mb-3">Upload your favorite crypto meme images</p>
                     <Input
                       id="meme-upload"
                       type="file"
@@ -1009,7 +757,7 @@ const ComprehensiveProfileForm = ({ onSubmit, initialData }: ComprehensiveProfil
                       onClick={() => document.getElementById('meme-upload')?.click()}
                       disabled={isUploading}
                     >
-                      {isUploading ? 'Uploading...' : 'Upload Meme Images 😂'}
+                      {isUploading ? 'Uploading...' : 'Upload Meme Images'}
                     </Button>
                     {formData.favoriteMemesImages?.length > 0 && (
                       <p className="text-sm text-muted-foreground mt-2">

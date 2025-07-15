@@ -1,63 +1,63 @@
 
 import { MemeOption, MemeMatchup } from './types';
 
-// Real meme options with authentic meme energy
+// Placeholder meme options - you can replace these with actual meme images later
 export const memeOptions: MemeOption[] = [
   {
-    id: 'pudding-dick',
-    title: 'I Love Pudding',
-    image: '/lovable-uploads/c88180c4-37b0-42d7-844d-ca5de9532a57.png',
-    category: 'Chaos',
-    tags: ['inappropriate', 'chaotic', 'unhinged']
+    id: 'stonks',
+    title: 'Stonks',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=400&fit=crop',
+    category: 'Trading',
+    tags: ['gains', 'bullish', 'stocks']
   },
   {
-    id: 'take-one-for-team',
-    title: 'Take One For Team',
-    image: '/lovable-uploads/cb40035d-41b9-4b89-bdaa-4916fa01062d.png',
-    category: 'Loyalty',
-    tags: ['reluctant', 'team-player', 'sacrifice']
+    id: 'diamond-hands',
+    title: 'Diamond Hands',
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=400&fit=crop',
+    category: 'Trading',
+    tags: ['hodl', 'diamond', 'hold']
   },
   {
-    id: 'drives-me-up-wall',
-    title: 'Drives Me Up The Wall',
-    image: '/lovable-uploads/0a1149c2-c0b4-4ce6-afe2-fbfd6c180b0f.png',
-    category: 'Frustration',
-    tags: ['annoyed', 'frustrated', 'angry']
+    id: 'paper-hands',
+    title: 'Paper Hands',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=400&fit=crop',
+    category: 'Trading',
+    tags: ['weak', 'sell', 'paper']
   },
   {
-    id: 'magic-wand',
-    title: 'Magic Wand Racecars',
-    image: '/lovable-uploads/4d82c8cb-c08f-4afe-aaf4-4348d1346513.png',
-    category: 'Inappropriate',
-    tags: ['innuendo', 'inappropriate', 'chaotic']
+    id: 'to-the-moon',
+    title: 'To The Moon',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+    category: 'Bullish',
+    tags: ['moon', 'rocket', 'gains']
   },
   {
-    id: 'cholo-yolo',
-    title: 'Cholo YOLO',
-    image: '/lovable-uploads/59344510-546d-4d0a-ab0a-360a77dbf81e.png',
-    category: 'Risky',
-    tags: ['yolo', 'dangerous', 'extreme']
+    id: 'ape-together',
+    title: 'Apes Together Strong',
+    image: 'https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?w=400&h=400&fit=crop',
+    category: 'Community',
+    tags: ['apes', 'community', 'strong']
   },
   {
-    id: 'meanwhile-walmart',
-    title: 'Meanwhile At Walmart',
-    image: '/lovable-uploads/75900601-28eb-478a-9c00-e62643b98646.png',
-    category: 'Chaos',
-    tags: ['walmart', 'chaos', 'weird']
+    id: 'doge',
+    title: 'Much Wow Doge',
+    image: 'https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop',
+    category: 'Meme Coins',
+    tags: ['doge', 'wow', 'shiba']
   },
   {
-    id: 'going-places',
-    title: 'Going Places',
-    image: '/lovable-uploads/c81d2cb4-ccf6-4189-b387-c3dc3d3ac2a2.png',
-    category: 'Smart',
-    tags: ['clever', 'genius', 'smart']
+    id: 'rekt',
+    title: 'Get Rekt',
+    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop',
+    category: 'Bearish',
+    tags: ['rekt', 'loss', 'bear']
   },
   {
-    id: 'true-friendship',
-    title: 'True Friendship',
-    image: '/lovable-uploads/a31f8ca5-87e4-4491-8130-2571cf03c732.png',
-    category: 'Friendship',
-    tags: ['loyalty', 'friendship', 'support']
+    id: 'lambo',
+    title: 'When Lambo',
+    image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=400&fit=crop',
+    category: 'Lifestyle',
+    tags: ['lambo', 'rich', 'goals']
   }
 ];
 
