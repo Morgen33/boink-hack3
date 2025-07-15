@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import PlatformIntent from "./pages/PlatformIntent";
 import Account from "./pages/Account";
 import ComprehensiveProfile from "./pages/ComprehensiveProfile";
+import WhaleConnect from "./pages/WhaleConnect";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/profile/:profileId" element={<ProfileDetail />} />
               <Route path="/discover" element={<Discover />} />
               <Route path="/token" element={<Token />} />
+              <Route path="/whale-connect" element={<WhaleConnect />} />
               <Route path="/we-support" element={<WeSupport />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

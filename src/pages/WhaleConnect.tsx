@@ -11,7 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
-import { Whale, Shield, Crown, Coins, Users, MessageSquare } from 'lucide-react';
+import { Fish, Shield, Crown, Coins, Users, MessageSquare } from 'lucide-react';
 
 const formSchema = z.object({
   walletAddress: z.string().min(1, 'Wallet address is required'),
@@ -89,7 +89,7 @@ const WhaleConnect = () => {
           <div className="text-center space-y-6 mb-12">
             <div className="flex justify-center">
               <div className="p-4 bg-gradient-to-r from-web3-red to-web3-magenta rounded-full">
-                <Whale className="w-12 h-12 text-white" />
+                <Fish className="w-12 h-12 text-white" />
               </div>
             </div>
             <h1 className="text-5xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
@@ -144,7 +144,7 @@ const WhaleConnect = () => {
           <Card className="shadow-2xl border-border/50">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2">
-                <Whale className="w-6 h-6 text-web3-red" />
+                <Fish className="w-6 h-6 text-web3-red" />
                 Whale Application Form
               </CardTitle>
               <CardDescription>

@@ -716,6 +716,39 @@ export type Database = {
           },
         ]
       }
+      whale_applications: {
+        Row: {
+          contact_method: string
+          created_at: string
+          holdings_percentage: string | null
+          id: string
+          interests: string[]
+          message: string | null
+          updated_at: string
+          wallet_address: string
+        }
+        Insert: {
+          contact_method: string
+          created_at?: string
+          holdings_percentage?: string | null
+          id?: string
+          interests?: string[]
+          message?: string | null
+          updated_at?: string
+          wallet_address: string
+        }
+        Update: {
+          contact_method?: string
+          created_at?: string
+          holdings_percentage?: string | null
+          id?: string
+          interests?: string[]
+          message?: string | null
+          updated_at?: string
+          wallet_address?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
