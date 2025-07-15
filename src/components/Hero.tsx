@@ -157,14 +157,6 @@ const Hero = () => {
             >
               {getMainCTAText()}
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              onClick={() => navigate('/discover')}
-              className="border-2 text-xl px-12 py-6 rounded-full transition-all duration-300"
-            >
-              Explore Profiles
-            </Button>
           </div>
 
           {/* Trust Indicators */}
