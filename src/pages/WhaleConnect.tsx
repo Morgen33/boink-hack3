@@ -96,7 +96,7 @@ const WhaleConnect = () => {
               Whale Connect Program
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              If you hold 1% or more of the $BOINK supply, we want to connect. We're offering exclusive perks including 
+              If you hold 1% or more of the $BOINK supply, we want to connect. We're offering exclusive perlks including 
               NFT access, governance roles, revenue opportunities, and more. All submissions are private.
             </p>
           </div>
