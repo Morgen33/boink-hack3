@@ -190,7 +190,7 @@ const Hero = () => {
                 <div className="mt-16 text-center">
                   <div className="inline-flex items-center px-6 py-3 rounded-full border border-gray-700 bg-gray-800/50">
                     <span className="text-lg font-medium text-gray-300">
-                      Join the Web3 dating revolution
+                      Connect with the community
                     </span>
                   </div>
                 </div>

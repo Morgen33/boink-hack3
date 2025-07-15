@@ -98,7 +98,7 @@ const Web3Features = () => {
         <div className="mt-20 text-center">
           <div className="inline-flex items-center px-8 py-4 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
             <span className="text-xl font-medium text-gray-300">
-              Join the Web3 dating revolution today!
+              Connect with the community today!
             </span>
           </div>
         </div>
