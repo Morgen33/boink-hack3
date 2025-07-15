@@ -153,7 +153,7 @@ const Hero = () => {
               size="lg" 
               onClick={handleMainCTA}
               disabled={authLoading || profileLoading}
-              className="bg-gradient-to-r from-web3-red to-web3-magenta hover:from-web3-red/90 hover:to-web3-magenta/90 text-white text-xl px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-gradient-to-r from-web3-red to-web3-magenta hover:from-web3-red/90 hover:to-web3-magenta/90 text-white text-2xl px-16 py-8 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 font-bold"
             >
               {getMainCTAText()}
             </Button>
