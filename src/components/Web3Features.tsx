@@ -95,30 +95,11 @@ const Web3Features = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div className="animate-fade-in">
-            <div className="text-4xl font-bold bg-gradient-to-r from-web3-yellow to-web3-orange bg-clip-text text-transparent mb-2">
-              1K+
-            </div>
-            <p className="text-gray-300">Web3 Professionals</p>
-          </div>
-          <div className="animate-fade-in" style={{animationDelay: '0.2s'}}>
-            <div className="text-4xl font-bold bg-gradient-to-r from-web3-orange to-web3-coral bg-clip-text text-transparent mb-2">
-              500+
-            </div>
-            <p className="text-gray-300">Successful Connections</p>
-          </div>
-          <div className="animate-fade-in" style={{animationDelay: '0.4s'}}>
-            <div className="text-4xl font-bold bg-gradient-to-r from-web3-coral to-web3-red bg-clip-text text-transparent mb-2">
-              2
-            </div>
-            <p className="text-gray-300">Profile Types</p>
-          </div>
-          <div className="animate-fade-in" style={{animationDelay: '0.6s'}}>
-            <div className="text-4xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent mb-2">
-              24/7
-            </div>
-            <p className="text-gray-300">Platform Active</p>
+        <div className="mt-20 text-center">
+          <div className="inline-flex items-center px-8 py-4 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
+            <span className="text-xl font-medium text-gray-300">
+              Join the Web3 dating revolution today!
+            </span>
           </div>
         </div>
       </div>
