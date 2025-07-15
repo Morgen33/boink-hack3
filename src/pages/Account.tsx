@@ -43,7 +43,7 @@ const Account = () => {
           .from('profiles')
           .select('dating_profile_completed, networking_profile_completed, platform_intent, full_name, location, age')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
         setProfileStats(data);
