@@ -24,8 +24,8 @@ const Index = () => {
   const { profile, loading: profileLoading } = useProfileData();
   const navigate = useNavigate();
   
-  // Use profile flow to redirect authenticated users appropriately
-  useProfileFlow();
+  // Disable useProfileFlow to prevent mobile deadlock
+  // useProfileFlow();
 
   useEffect(() => {
     // Check if user has seen the MVP disclaimer before

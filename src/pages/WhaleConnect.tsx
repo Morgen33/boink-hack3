@@ -24,10 +24,10 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const interestOptions = [
-  { id: 'whale-advisory', label: 'Community Advisory', icon: Crown },
-  { id: 'early-access', label: 'Early Access Opportunities', icon: Shield },
-  { id: 'special-initiatives', label: 'Special Project Initiatives', icon: Coins },
-  { id: 'community-events', label: 'Exclusive Community Events', icon: Users },
+  { id: 'whale-advisory', label: 'Whale Advisory Circle', icon: Crown },
+  { id: 'nft-access', label: 'NFT Access / Pre-Mints', icon: Shield },
+  { id: 'revenue-share', label: 'Revenue Share / Vesting Deals', icon: Coins },
+  { id: 'lockups-lp', label: 'Lockups / LP Incentives', icon: Users },
   { id: 'collaboration', label: 'General Collaboration', icon: MessageSquare },
 ];
 
@@ -81,48 +81,48 @@ const WhaleConnect = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-web3-orange/10 via-background to-web3-orange/20">
+    <div className="min-h-screen bg-gradient-to-br from-web3-red/10 via-background to-web3-magenta/10">
       <Header />
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="text-center space-y-6 mb-12">
             <div className="flex justify-center">
-              <div className="p-4 bg-gradient-to-r from-web3-orange to-web3-orange/80 rounded-full">
+              <div className="p-4 bg-gradient-to-r from-web3-red to-web3-magenta rounded-full">
                 <Fish className="w-12 h-12 text-white" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-web3-orange to-web3-orange/80 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
               Whale Connect Program
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              If you hold 1% or more of the $BOINK supply, we want to connect. We're offering exclusive perlks and 
-              opportunities for major holders. All submissions are private.
+              If you hold 1% or more of the $BOINK supply, we want to connect. We're offering exclusive perlks including 
+              NFT access, governance roles, revenue opportunities, and more. All submissions are private.
             </p>
           </div>
 
           {/* Benefits Preview */}
           <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <Card className="border-web3-orange/20 hover:border-web3-orange/40 transition-colors">
+            <Card className="border-web3-red/20 hover:border-web3-red/40 transition-colors">
               <CardHeader className="text-center">
-                <Crown className="w-8 h-8 mx-auto text-web3-orange mb-2" />
-                <CardTitle className="text-lg">Community Access</CardTitle>
+                <Crown className="w-8 h-8 mx-auto text-web3-red mb-2" />
+                <CardTitle className="text-lg">Exclusive Access</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground text-center">
-                  Connect with other major holders and participate in community discussions
+                  Join the Whale Advisory Circle and get early access to major decisions
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="border-web3-orange/20 hover:border-web3-orange/40 transition-colors">
+            <Card className="border-web3-magenta/20 hover:border-web3-magenta/40 transition-colors">
               <CardHeader className="text-center">
-                <Coins className="w-8 h-8 mx-auto text-web3-orange mb-2" />
-                <CardTitle className="text-lg">Special Opportunities</CardTitle>
+                <Coins className="w-8 h-8 mx-auto text-web3-magenta mb-2" />
+                <CardTitle className="text-lg">Revenue Share</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground text-center">
-                  Get early notification about potential opportunities
+                  Participate in revenue sharing and vesting deals
                 </p>
               </CardContent>
             </Card>
@@ -130,11 +130,11 @@ const WhaleConnect = () => {
             <Card className="border-web3-orange/20 hover:border-web3-orange/40 transition-colors">
               <CardHeader className="text-center">
                 <Shield className="w-8 h-8 mx-auto text-web3-orange mb-2" />
-                <CardTitle className="text-lg">Premium Access</CardTitle>
+                <CardTitle className="text-lg">Premium NFTs</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground text-center">
-                  Potential early access to various project initiatives
+                  Priority access to NFT drops and pre-mint opportunities
                 </p>
               </CardContent>
             </Card>
@@ -144,7 +144,7 @@ const WhaleConnect = () => {
           <Card className="shadow-2xl border-border/50">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2">
-                <Fish className="w-6 h-6 text-web3-orange" />
+                <Fish className="w-6 h-6 text-web3-red" />
                 Whale Application Form
               </CardTitle>
               <CardDescription>
@@ -310,7 +310,7 @@ const WhaleConnect = () => {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-gradient-to-r from-web3-orange to-web3-orange/80 hover:from-web3-orange/90 hover:to-web3-orange/70 text-white px-12 py-4 text-lg font-semibold"
+                      className="bg-gradient-to-r from-web3-red to-web3-magenta hover:from-web3-red/90 hover:to-web3-magenta/90 text-white px-12 py-4 text-lg font-semibold"
                     >
                       {isSubmitting ? 'Submitting...' : 'Submit Application'}
                     </Button>

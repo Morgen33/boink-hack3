@@ -62,7 +62,7 @@ const AboutYouStep = ({ data, onUpdate }: AboutYouStepProps) => {
           id="interests"
           value={data.interests}
           onChange={(e) => handleInputChange('interests', e.target.value)}
-          placeholder="DeFi, NFTs, Gaming, Reading, Music, Art, Memes, Yield Farming, Travel"
+          placeholder="DeFi, NFTs, Gaming, Music, Art, Memes, Yield Farming, Travel"
         />
         <p className="text-xs text-muted-foreground">
           Separate multiple interests with commas. Mix crypto and non-crypto interests!
