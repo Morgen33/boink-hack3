@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
 import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
@@ -5,15 +6,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfileData } from "@/hooks/useProfileData";
-
-// Define our specific color palette
-const COLORS = {
-  yellow: "#FBE24F",
-  orange: "#FFA70F",
-  coral: "#FF7A55",
-  red: "#F51F3B",
-  magenta: "#E809CB",
-};
 
 const Hero = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -105,7 +97,7 @@ const Hero = () => {
           <div className="relative h-80 md:h-96 -mb-4">
             <ParticleTextEffect
               text="BOINK"
-              colors={[COLORS.yellow.substring(1), COLORS.orange.substring(1), COLORS.coral.substring(1), COLORS.red.substring(1), COLORS.magenta.substring(1)]}
+              colors={['FBE24F', 'FFA70F', 'FF7A55', 'F51F3B', 'E809CB']}
               className="absolute inset-0"
               animationForce={100}
               particleDensity={3}
@@ -117,10 +109,9 @@ const Hero = () => {
             {/* Color-changing circular ring background */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div 
-                className="w-80 h-80 rounded-full p-2"
+                className="w-80 h-80 rounded-full p-2 bg-gradient-web3"
                 style={{
-                  animation: 'spin 8s linear infinite',
-                  background: `linear-gradient(135deg, ${COLORS.yellow}, ${COLORS.orange}, ${COLORS.coral}, ${COLORS.red}, ${COLORS.magenta})`
+                  animation: 'spin 8s linear infinite'
                 }}
               >
                 <div className="w-full h-full rounded-full bg-background" />
@@ -141,15 +132,12 @@ const Hero = () => {
           </div>
           
           <h2 className="text-3xl md:text-4xl font-semibold mb-4 bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
-            Where crypto culture meets human connection.
+            Where crypto culture meets human connection. Finally.
           </h2>
           
           {/* Hackathon Badge */}
-          <div className="inline-flex items-center px-4 py-2 rounded-full border mb-6" style={{ 
-            background: `linear-gradient(to right, ${COLORS.yellow}33, ${COLORS.orange}33)`,
-            borderColor: `${COLORS.orange}4D` 
-          }}>
-            <span className="text-sm font-medium" style={{ color: COLORS.orange }}>
+          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-web3-yellow/20 to-web3-orange/20 rounded-full border border-web3-orange/30 mb-6">
+            <span className="text-sm font-medium text-web3-orange dark:text-yellow-300">
               Built for Bonk Hackathon 2025 🚀
             </span>
           </div>
@@ -165,36 +153,49 @@ const Hero = () => {
               size="lg" 
               onClick={handleMainCTA}
               disabled={authLoading || profileLoading}
-              style={{
-                background: `linear-gradient(to right, ${COLORS.red}, ${COLORS.magenta})`,
-                color: 'white',
-                fontSize: '1.5rem',
-                padding: '2rem 4rem',
-                borderRadius: '9999px',
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.3s ease',
-                fontWeight: 'bold'
-              }}
-              className="hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-2xl px-16 py-8 rounded-full"
+              className="bg-gradient-to-r from-web3-red to-web3-magenta hover:from-web3-red/90 hover:to-web3-magenta/90 text-white text-xl px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
               {getMainCTAText()}
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => navigate('/discover')}
+              className="border-2 text-xl px-12 py-6 rounded-full transition-all duration-300"
+            >
+              Explore Profiles
             </Button>
           </div>
 
           {/* Trust Indicators */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-border">
-            <div className="text-center px-6">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm" style={{ 
-                background: `linear-gradient(to bottom right, ${COLORS.yellow}33, ${COLORS.orange}33)` 
-              }}>
-                <div className="mt-16 text-center">
-                  <div className="inline-flex items-center px-6 py-3 rounded-full border border-gray-700 bg-gray-800/50">
-                    <span className="text-lg font-medium text-gray-300">
-                      Connect with the community
-                    </span>
-                  </div>
-                </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/20 dark:to-green-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Shield className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
+              <p className="text-lg font-semibold text-foreground">Verified Profiles</p>
+              <p className="text-sm text-muted-foreground">Wallet & Identity Verified</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-pink-200 dark:from-red-900/20 dark:to-pink-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Heart className="w-8 h-8 text-red-500 dark:text-red-400" />
+              </div>
+              <p className="text-lg font-semibold text-foreground">Dual Purpose</p>
+              <p className="text-sm text-muted-foreground">Dating & Networking</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Users className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <p className="text-lg font-semibold text-foreground">Web3 Community</p>
+              <p className="text-sm text-muted-foreground">Professionals & Builders</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-web3-yellow/20 to-web3-orange/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Sparkles className="w-8 h-8 text-web3-orange" />
+              </div>
+              <p className="text-lg font-semibold text-foreground">Smart Matching</p>
+              <p className="text-sm text-muted-foreground">AI-Powered Connections</p>
             </div>
           </div>
         </div>
