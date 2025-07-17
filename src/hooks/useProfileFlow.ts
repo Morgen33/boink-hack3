@@ -13,8 +13,8 @@ export const useProfileFlow = () => {
       // Don't redirect if we're still loading or no user
       if (loading || !user) return;
 
-      // Don't redirect if user is on auth or account pages
-      const protectedPaths = ['/auth', '/account'];
+      // Don't redirect if user is on auth, account, or profile pages
+      const protectedPaths = ['/auth', '/account', '/profile'];
       if (protectedPaths.some(path => location.pathname.startsWith(path))) {
         return;
       }
@@ -23,7 +23,7 @@ export const useProfileFlow = () => {
         // Check user's profile status
         const { data: profile, error } = await supabase
           .from('profiles')
-          .select('platform_intent, profile_completed, networking_completed')
+          .select('platform_intent, profile_completed, networking_completed, dating_profile_completed')
           .eq('id', user.id)
           .single();
 
@@ -32,9 +32,16 @@ export const useProfileFlow = () => {
           return;
         }
 
-        // Redirect users to account page if they're not already there
-        // The account page will handle showing platform intent selection if needed
-        if (location.pathname !== '/account') {
+        // Only redirect if user needs to set platform intent OR complete their profile
+        const needsPlatformIntent = !profile?.platform_intent;
+        const needsProfileCompletion = profile?.platform_intent && !profile?.profile_completed;
+        
+        if (needsPlatformIntent || needsProfileCompletion) {
+          console.log('🔄 User needs setup, redirecting to account:', {
+            needsPlatformIntent,
+            needsProfileCompletion,
+            current_path: location.pathname
+          });
           navigate('/account');
         }
 
