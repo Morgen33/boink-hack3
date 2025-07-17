@@ -68,6 +68,14 @@ const WeSupport = () => {
       website: "https://pixio.myapps.ai/",
       imageUrl: "/lovable-uploads/c4dad640-8e57-4a14-920c-f1baf8e619a9.png",
       socialType: "twitter" as const
+    },
+    {
+      name: "AI Tutor",
+      description: "Personalized AI-powered learning platform that provides intelligent tutoring and educational assistance for students across various subjects",
+      twitter: "https://x.com/myaitutor",
+      website: "https://account.myapps.ai/",
+      imageUrl: "/lovable-uploads/3a9453e6-a166-42dc-8c6d-5513288fc087.png",
+      socialType: "twitter" as const
     }
   ];
 
