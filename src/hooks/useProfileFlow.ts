@@ -13,8 +13,8 @@ export const useProfileFlow = () => {
       // Don't redirect if we're still loading or no user
       if (loading || !user) return;
 
-      // Don't redirect if user is on auth, platform-intent, or profile setup pages
-      const protectedPaths = ['/auth', '/platform-intent', '/profile/setup'];
+      // Don't redirect if user is on auth or account pages
+      const protectedPaths = ['/auth', '/account'];
       if (protectedPaths.some(path => location.pathname.startsWith(path))) {
         return;
       }
@@ -32,15 +32,11 @@ export const useProfileFlow = () => {
           return;
         }
 
-        // If user hasn't chosen platform intent, redirect to platform intent page
-        if (!profile?.platform_intent) {
-          navigate('/platform-intent');
-          return;
+        // Redirect users to account page if they're not already there
+        // The account page will handle showing platform intent selection if needed
+        if (location.pathname !== '/account') {
+          navigate('/account');
         }
-
-        // Don't automatically redirect to account - let users stay on home page
-        // They can navigate to account manually if needed
-        // navigate('/account');
 
       } catch (error) {
         console.error('Error in profile flow check:', error);
