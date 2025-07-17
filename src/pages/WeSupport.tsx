@@ -159,85 +159,98 @@ const WeSupport = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-web3 bg-[length:400%_400%] animate-gradient-shift relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-web3-yellow/20 rounded-full mix-blend-multiply filter blur-xl animate-float"></div>
+        <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-web3-magenta/20 rounded-full mix-blend-multiply filter blur-xl animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-web3-coral/15 rounded-full mix-blend-multiply filter blur-xl animate-float" style={{animationDelay: '1s'}}></div>
+      </div>
+
       {/* Header */}
-      <div className="bg-white shadow-sm">
+      <div className="relative z-10 bg-black/20 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <a href="/" className="text-2xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
+            <a href="/" className="text-3xl font-bold text-white hover:scale-105 transition-transform duration-300">
               Boink
             </a>
             <nav className="hidden md:flex space-x-8">
-              <a href="/" className="text-gray-600 hover:text-gray-900 transition-colors">Home</a>
-              <a href="/discover" className="text-gray-600 hover:text-gray-900 transition-colors">Discover</a>
-              <a href="/events" className="text-gray-600 hover:text-gray-900 transition-colors">Events</a>
-              <a href="/we-support" className="text-web3-red font-semibold">We Support</a>
+              <a href="/" className="text-white/80 hover:text-white transition-colors duration-300 hover:scale-105 transform">Home</a>
+              <a href="/discover" className="text-white/80 hover:text-white transition-colors duration-300 hover:scale-105 transform">Discover</a>
+              <a href="/events" className="text-white/80 hover:text-white transition-colors duration-300 hover:scale-105 transform">Events</a>
+              <a href="/we-support" className="text-white font-semibold border-b-2 border-white/50">We Support</a>
             </nav>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-16">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 py-16">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        <div className="text-center mb-20 animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 bg-clip-text bg-gradient-to-r from-white to-white/80">
             Communities We Support
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed">
             Boink proudly supports these amazing crypto communities. Together, we're building 
             the future of Web3 dating and bringing people together through shared values and interests.
           </p>
         </div>
 
         {/* Communities Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {supportedCommunities.map((community, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-              <CardContent className="p-4">
+            <div 
+              key={index} 
+              className="group relative bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-white/40 hover:bg-white/15 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-web3-magenta/20 animate-fade-in"
+              style={{animationDelay: `${index * 0.1}s`}}
+            >
+              {/* Glow effect */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-web3-yellow/0 via-web3-coral/0 to-web3-magenta/0 group-hover:from-web3-yellow/10 group-hover:via-web3-coral/10 group-hover:to-web3-magenta/10 transition-all duration-500"></div>
+              
+              <div className="relative z-10">
                 {/* Image or Placeholder */}
-                <div className="w-full h-48 rounded-lg mb-3 flex items-center justify-center overflow-hidden bg-white">
+                <div className="w-full h-48 rounded-xl mb-4 flex items-center justify-center overflow-hidden bg-white/20 backdrop-blur-sm group-hover:scale-105 transition-transform duration-300">
                   {community.imageUrl ? (
                     <img 
                       src={community.imageUrl} 
                       alt={community.name}
-                      className="w-full h-full object-contain rounded-lg"
+                      className="w-full h-full object-contain rounded-xl"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                    <div className="w-full h-full bg-gradient-to-br from-white/20 to-white/10 rounded-xl flex items-center justify-center border-2 border-dashed border-white/30">
                       <div className="text-center">
-                        <div className="w-8 h-8 mx-auto mb-2 bg-gray-400 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 mx-auto mb-2 bg-white/30 rounded-full flex items-center justify-center">
                           <span className="text-white text-sm">📸</span>
                         </div>
-                        <p className="text-xs text-gray-500">Image placeholder</p>
+                        <p className="text-xs text-white/70">Image placeholder</p>
                       </div>
                     </div>
                   )}
                 </div>
 
                 {/* Community Info */}
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-web3-light transition-colors duration-300">
                   {community.name}
                 </h3>
-                <p className="text-gray-600 mb-3 text-sm">
+                <p className="text-white/80 mb-4 text-sm leading-relaxed">
                   {community.description}
                 </p>
 
-                 {/* Social Links */}
-                <div className="space-y-2">
+                {/* Social Links */}
+                <div className="space-y-3">
                   {community.twitter && (
                     <a
                       href={community.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors group-hover:scale-105 transform duration-200"
+                      className="inline-flex items-center text-web3-light hover:text-web3-yellow transition-colors duration-300 group/link"
                     >
-                      <Twitter className="w-4 h-4 mr-2" />
+                      <Twitter className="w-4 h-4 mr-2 group-hover/link:scale-110 transition-transform duration-300" />
                       <span className="text-sm font-medium">Follow on X</span>
-                      <ExternalLink className="w-3 h-3 ml-1" />
+                      <ExternalLink className="w-3 h-3 ml-1 group-hover/link:translate-x-1 transition-transform duration-300" />
                     </a>
                   )}
-
                   
                   {community.website && (
                     <div>
@@ -245,62 +258,67 @@ const WeSupport = () => {
                         href={community.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-green-500 hover:text-green-600 transition-colors group-hover:scale-105 transform duration-200"
+                        className="inline-flex items-center text-web3-peach hover:text-web3-coral transition-colors duration-300 group/link"
                       >
-                        <ExternalLink className="w-4 h-4 mr-2" />
+                        <ExternalLink className="w-4 h-4 mr-2 group-hover/link:scale-110 transition-transform duration-300" />
                         <span className="text-sm font-medium">Visit Website</span>
                       </a>
                     </div>
                   )}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
 
         {/* Call to Action */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-web3-yellow/10 to-web3-orange/10 rounded-2xl p-8 border border-web3-orange/20">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Want to see your community here?
-            </h2>
-            <p className="text-gray-600 mb-6">
-              We're always looking to support more amazing crypto communities. 
-              Reach out to us and let's build something together!
-            </p>
+        <div className="text-center animate-fade-in">
+          <div className="relative bg-white/10 backdrop-blur-lg rounded-3xl p-10 border border-white/20 max-w-4xl mx-auto overflow-hidden">
+            {/* Background gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-web3-coral/20 via-web3-magenta/20 to-web3-red/20 rounded-3xl"></div>
             
-            <form onSubmit={handleContactSubmit} className="max-w-md mx-auto space-y-4">
-              <Input
-                type="text"
-                placeholder="Your Name"
-                value={contactForm.name}
-                onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full"
-                required
-              />
-              <Input
-                type="email"
-                placeholder="Your Email"
-                value={contactForm.email}
-                onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full"
-                required
-              />
-              <Textarea
-                placeholder="Tell us about your community and how we can work together..."
-                value={contactForm.message}
-                onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
-                className="w-full h-24 resize-none"
-                required
-              />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-web3-red to-web3-magenta text-white font-semibold rounded-full hover:opacity-90 transition-opacity disabled:opacity-50"
-              >
-                {isSubmitting ? "Sending..." : "Get in Touch"}
-              </Button>
-            </form>
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                Want to see your community here?
+              </h2>
+              <p className="text-white/90 mb-8 text-lg">
+                We're always looking to support more amazing crypto communities. 
+                Reach out to us and let's build something together!
+              </p>
+              
+              <form onSubmit={handleContactSubmit} className="max-w-md mx-auto space-y-6">
+                <Input
+                  type="text"
+                  placeholder="Your Name"
+                  value={contactForm.name}
+                  onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                  className="w-full bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-web3-light focus:ring-web3-light/50 backdrop-blur-sm"
+                  required
+                />
+                <Input
+                  type="email"
+                  placeholder="Your Email"
+                  value={contactForm.email}
+                  onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                  className="w-full bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-web3-light focus:ring-web3-light/50 backdrop-blur-sm"
+                  required
+                />
+                <Textarea
+                  placeholder="Tell us about your community and how we can work together..."
+                  value={contactForm.message}
+                  onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                  className="w-full h-32 resize-none bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-web3-light focus:ring-web3-light/50 backdrop-blur-sm"
+                  required
+                />
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-web3-coral to-web3-magenta text-white font-semibold rounded-full py-3 px-8 hover:from-web3-red hover:to-web3-pink transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-web3-magenta/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {isSubmitting ? "Sending..." : "Get in Touch"}
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
       </main>
