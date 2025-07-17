@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 const WeSupport = () => {
+  const { toast } = useToast();
   const supportedCommunities = [
     {
       name: "OG $PEANUT",
@@ -82,6 +83,13 @@ const WeSupport = () => {
       website: "https://shibarmycall.site/",
       imageUrl: "/lovable-uploads/4a6ee6fe-4d1d-4eac-89d3-5dee75336f46.png",
       socialType: "twitter" as const
+    },
+    {
+      name: "Crypto Fight Club",
+      description: "Underground crypto community bringing fighters together in the digital arena",
+      twitter: "https://x.com/CFConSolana",
+      imageUrl: "/lovable-uploads/69920a1b-cbdf-43b5-9795-aa06eae29bc3.png",
+      socialType: "twitter" as const
     }
   ];
 
@@ -96,7 +104,11 @@ const WeSupport = () => {
     e.preventDefault();
     
     if (!contactForm.name || !contactForm.email || !contactForm.message) {
-      toast.error("Please fill in all fields");
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -114,11 +126,18 @@ const WeSupport = () => {
 
       if (error) throw error;
 
-      toast.success("Message sent successfully! We'll get back to you soon.");
+      toast({
+        title: "Success",
+        description: "Message sent successfully! We'll get back to you soon."
+      });
       setContactForm({ name: '', email: '', message: '' });
     } catch (error: any) {
       console.error('Error sending contact email:', error);
-      toast.error("Failed to send message. Please try again.");
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive"
+      });
     } finally {
       setIsSubmitting(false);
     }
