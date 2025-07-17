@@ -71,7 +71,7 @@ const WeSupport = () => {
     },
     {
       name: "AI Tutor",
-      description: "Personalized AI-powered learning platform that provides intelligent tutoring and educational assistance for students across various subjects",
+      description: "AI Tutor will break you free with all of the latest models, cutting edge tools, and unlimited messages.",
       twitter: "https://x.com/myaitutor",
       website: "https://account.myapps.ai/",
       imageUrl: "/lovable-uploads/3a9453e6-a166-42dc-8c6d-5513288fc087.png",
