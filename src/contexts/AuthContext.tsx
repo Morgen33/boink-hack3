@@ -73,18 +73,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
 
         if (event === 'SIGNED_IN' && session?.user) {
-          console.log('✅ User signed in, redirecting to /account');
-          // Defer any database calls to prevent deadlocks
-          setTimeout(() => {
-            setIsNewUser(true);
-            // Force redirect to account page after successful Google sign-in
-            if (window.location.pathname === '/auth' || window.location.pathname === '/') {
-              window.location.href = '/account';
-            }
-          }, 100);
+          console.log('✅ User signed in successfully');
+          setIsNewUser(true);
         }
         if (event === 'SIGNED_OUT') {
-          console.log('👋 User signed out - clearing new user flag');
+          console.log('👋 User signed out');
           setIsNewUser(false);
         }
         
@@ -142,15 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithGoogle = async () => {
     try {
-      // Clean up any existing auth state first
-      cleanupAuthState();
-      
-      // Attempt to sign out any existing session
-      try {
-        await supabase.auth.signOut({ scope: 'global' });
-      } catch (err) {
-        console.warn('Pre-signin cleanup failed, continuing');
-      }
+      console.log('🔄 Starting Google OAuth...');
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -160,11 +145,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       
       if (error) {
-        console.error('Error signing in with Google:', error);
+        console.error('❌ Google OAuth error:', error);
         throw error;
       }
+      
+      console.log('✅ Google OAuth initiated successfully');
     } catch (error) {
-      console.error('Error in Google sign in:', error);
+      console.error('❌ Error in Google sign in:', error);
       throw error;
     }
   };
