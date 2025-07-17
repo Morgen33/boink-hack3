@@ -52,6 +52,13 @@ const WeSupport = () => {
       website: "https://shibarmycall.site/",
       imageUrl: "/lovable-uploads/4a6ee6fe-4d1d-4eac-89d3-5dee75336f46.png",
       socialType: "twitter" as const
+    },
+    {
+      name: "DefiTimez Mag",
+      description: "DeFiTimeZ is a multilingual digital magazine dedicated to educating readers about decentralized finance (DeFi), blockchain, and cryptocurrency, featuring weekly deep dives into the latest trends and projects in the space",
+      website: "https://defitimez.com/",
+      imageUrl: "/lovable-uploads/27c8a8df-2ef1-48a3-9908-670f2dd47f1e.png",
+      socialType: "website" as const
     }
   ];
 
@@ -122,25 +129,18 @@ const WeSupport = () => {
 
                 {/* Social Links */}
                 <div className="space-y-2">
-                  <a
-                    href={community.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors group-hover:scale-105 transform duration-200"
-                  >
-                    {community.socialType === "twitter" ? (
-                      <>
-                        <Twitter className="w-4 h-4 mr-2" />
-                        <span className="text-sm font-medium">Follow on X</span>
-                      </>
-                    ) : (
-                      <>
-                        <Instagram className="w-4 h-4 mr-2" />
-                        <span className="text-sm font-medium">Follow on Instagram</span>
-                      </>
-                    )}
-                    <ExternalLink className="w-3 h-3 ml-1" />
-                  </a>
+                  {community.twitter && (
+                    <a
+                      href={community.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors group-hover:scale-105 transform duration-200"
+                    >
+                      <Twitter className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Follow on X</span>
+                      <ExternalLink className="w-3 h-3 ml-1" />
+                    </a>
+                  )}
                   
                   {community.website && (
                     <div>
