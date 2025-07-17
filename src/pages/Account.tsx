@@ -29,12 +29,17 @@ const Account = () => {
   const [loading, setLoading] = useState(true);
   const [intentLoading, setIntentLoading] = useState(false);
   const [isAgeVerified, setIsAgeVerified] = useState(false);
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { conversations, loading: conversationsLoading, getUnreadCount } = useConversations(user);
 
   useEffect(() => {
+    // Wait for auth to finish loading before making decisions
+    if (authLoading) {
+      return;
+    }
+
     if (!user) {
       console.log('❌ No user found, redirecting to auth');
       navigate('/auth');
@@ -71,7 +76,7 @@ const Account = () => {
     };
 
     fetchProfileStats();
-  }, [user, navigate, toast]);
+  }, [user, authLoading, navigate, toast]);
 
   const calculateOverallProgress = () => {
     if (!profileStats) return 0;
@@ -141,7 +146,7 @@ const Account = () => {
     }
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-web3-red/10 via-background to-web3-magenta/10">
         <Header />
