@@ -19,7 +19,6 @@ import Messages from "./pages/Messages";
 import Token from "./pages/Token";
 import WeSupport from "./pages/WeSupport";
 import NotFound from "./pages/NotFound";
-import PlatformIntent from "./pages/PlatformIntent";
 import Account from "./pages/Account";
 import ComprehensiveProfile from "./pages/ComprehensiveProfile";
 import WhaleConnect from "./pages/WhaleConnect";
@@ -42,7 +41,6 @@ const App = () => (
               <Route path="/events" element={<EventsPage />} />
               <Route path="/games" element={<Games />} />
               <Route path="/auth" element={<Auth />} />
-              <Route path="/platform-intent" element={<PlatformIntent />} />
               <Route path="/account" element={<Account />} />
               <Route path="/profile/setup" element={<Profile />} />
               <Route path="/profile" element={<Profile />} />
