@@ -1,4 +1,4 @@
-import { ExternalLink, Twitter, Instagram } from "lucide-react";
+import { ExternalLink, Twitter, Instagram, MessageCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -98,6 +98,13 @@ const WeSupport = () => {
       website: "https://shibarmycall.site/",
       imageUrl: "/lovable-uploads/4a6ee6fe-4d1d-4eac-89d3-5dee75336f46.png",
       socialType: "twitter" as const
+    },
+    {
+      name: "Bae Bot",
+      description: "AI-powered Telegram bot for the crypto community",
+      telegram: "https://t.me/+1yYsMIAIoF42ZTQy",
+      imageUrl: "/lovable-uploads/0f9e0179-5f0c-4e3f-85ba-84a62530d2b6.png",
+      socialType: "telegram" as const
     }
   ];
 
@@ -216,7 +223,7 @@ const WeSupport = () => {
                   {community.description}
                 </p>
 
-                {/* Social Links */}
+                 {/* Social Links */}
                 <div className="space-y-2">
                   {community.twitter && (
                     <a
@@ -229,6 +236,21 @@ const WeSupport = () => {
                       <span className="text-sm font-medium">Follow on X</span>
                       <ExternalLink className="w-3 h-3 ml-1" />
                     </a>
+                  )}
+
+                  {community.telegram && (
+                    <div>
+                      <a
+                        href={community.telegram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors group-hover:scale-105 transform duration-200"
+                      >
+                        <MessageCircle className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">Join Telegram</span>
+                        <ExternalLink className="w-3 h-3 ml-1" />
+                      </a>
+                    </div>
                   )}
                   
                   {community.website && (
