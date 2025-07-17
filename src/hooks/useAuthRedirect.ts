@@ -30,7 +30,7 @@ export const useAuthRedirect = () => {
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate('/account');
     }
   }, [user, navigate]);
 };
