@@ -77,18 +77,26 @@ const WeSupport = () => {
       socialType: "twitter" as const
     },
     {
+      name: "Crypto Fight Club",
+      description: "Underground crypto community bringing fighters together in the digital arena",
+      twitter: "https://x.com/CFConSolana",
+      imageUrl: "/lovable-uploads/69920a1b-cbdf-43b5-9795-aa06eae29bc3.png",
+      socialType: "twitter" as const
+    },
+    {
+      name: "Metal Warriors",
+      description: "Enter the Metal Warriorverse! Four alien outlaws bringing their unique brand of metal music, graphic novels, digital collectibles and more to Earth's most worthy",
+      twitter: "https://x.com/MetalWarriorOFL",
+      website: "https://metalwarrior.com/",
+      imageUrl: "/lovable-uploads/162943d8-170e-471a-bf00-a300a9637ffb.png",
+      socialType: "twitter" as const
+    },
+    {
       name: "Shiba Army",
       description: "Shiba Army community",
       twitter: "https://x.com/shibaarmycall",
       website: "https://shibarmycall.site/",
       imageUrl: "/lovable-uploads/4a6ee6fe-4d1d-4eac-89d3-5dee75336f46.png",
-      socialType: "twitter" as const
-    },
-    {
-      name: "Crypto Fight Club",
-      description: "Underground crypto community bringing fighters together in the digital arena",
-      twitter: "https://x.com/CFConSolana",
-      imageUrl: "/lovable-uploads/69920a1b-cbdf-43b5-9795-aa06eae29bc3.png",
       socialType: "twitter" as const
     }
   ];
