@@ -70,13 +70,6 @@ const WeSupport = () => {
       socialType: "twitter" as const
     },
     {
-      name: "Kori",
-      description: "Content creator and crypto enthusiast",
-      twitter: "https://x.com/pomkori",
-      imageUrl: "/lovable-uploads/e6e0a477-c9fe-46b3-b7a4-04c351f7e3b5.png",
-      socialType: "twitter" as const
-    },
-    {
       name: "Crypto Fight Club",
       description: "Underground crypto community bringing fighters together in the digital arena",
       twitter: "https://x.com/CFConSolana",
@@ -89,6 +82,13 @@ const WeSupport = () => {
       twitter: "https://x.com/MetalWarriorOFL",
       website: "https://metalwarrior.com/",
       imageUrl: "/lovable-uploads/162943d8-170e-471a-bf00-a300a9637ffb.png",
+      socialType: "twitter" as const
+    },
+    {
+      name: "Kori",
+      description: "Content creator and crypto enthusiast",
+      twitter: "https://x.com/pomkori",
+      imageUrl: "/lovable-uploads/e6e0a477-c9fe-46b3-b7a4-04c351f7e3b5.png",
       socialType: "twitter" as const
     },
     {
