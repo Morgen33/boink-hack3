@@ -5,13 +5,10 @@ import { Heart } from 'lucide-react';
 import { MINIMUM_AGE } from '@/utils/ageVerification';
 import { AuthForm } from '@/components/auth/AuthForm';
 import { GoogleSignIn } from '@/components/auth/GoogleSignIn';
-import { useAuthRedirect } from '@/hooks/useAuthRedirect';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
-  
-  useAuthRedirect();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-web3-red/10 via-background to-web3-magenta/10 flex items-center justify-center p-4">
