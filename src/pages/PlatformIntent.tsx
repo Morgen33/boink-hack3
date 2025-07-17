@@ -11,9 +11,33 @@ import AgeVerificationModal from '@/components/AgeVerificationModal';
 const PlatformIntent = () => {
   const [loading, setLoading] = useState(false);
   const [isAgeVerified, setIsAgeVerified] = useState(false);
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  
+  // Add diagnostic logging
+  console.log('🔍 PlatformIntent component mounting');
+  
+  let user, navigate, toast;
+  
+  try {
+    const authContext = useAuth();
+    user = authContext.user;
+    navigate = useNavigate();
+    toast = useToast().toast;
+    
+    console.log('✅ Auth context loaded, user:', user?.email || 'No user');
+    console.log('✅ Navigate and toast loaded successfully');
+  } catch (error) {
+    console.error('❌ Critical error loading hooks:', error);
+    return (
+      <div style={{ background: 'white', color: 'black', padding: '20px', minHeight: '100vh' }}>
+        <h1>Authentication Error</h1>
+        <p>There was a problem loading the authentication system.</p>
+        <p>Error: {error?.toString()}</p>
+        <button onClick={() => window.location.reload()} style={{ padding: '10px', margin: '10px', background: 'blue', color: 'white' }}>
+          Reload Page
+        </button>
+      </div>
+    );
+  }
 
   const handleIntentSelection = async (intent: 'dating' | 'networking' | 'both') => {
     if (!user || !isAgeVerified) return;
@@ -45,6 +69,23 @@ const PlatformIntent = () => {
     }
   };
 
+  // Emergency fallback if no user
+  if (!user) {
+    console.log('❌ No user found in PlatformIntent');
+    return (
+      <div style={{ background: 'white', color: 'black', padding: '20px', minHeight: '100vh' }}>
+        <h1>Loading user authentication...</h1>
+        <p>If this persists, please refresh the page.</p>
+        <button onClick={() => window.location.href = '/auth'} style={{ padding: '10px', margin: '10px', background: 'blue', color: 'white' }}>
+          Go to Sign In
+        </button>
+        <button onClick={() => window.location.reload()} style={{ padding: '10px', margin: '10px', background: 'green', color: 'white' }}>
+          Refresh Page
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
       <AgeVerificationModal 
@@ -52,7 +93,8 @@ const PlatformIntent = () => {
         onVerified={() => setIsAgeVerified(true)} 
       />
       
-      <div className="min-h-screen bg-gradient-to-br from-web3-red/10 via-background to-web3-magenta/10 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-web3-red/10 via-background to-web3-magenta/10 flex items-center justify-center p-4"
+           style={{ background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(255, 255, 255, 1) 50%, rgba(236, 72, 153, 0.1) 100%)', minHeight: '100vh' }}>
         <div className="max-w-4xl w-full">
           {/* Age Verification Notice */}
           <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
