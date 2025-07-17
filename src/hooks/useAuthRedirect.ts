@@ -27,9 +27,12 @@ export const useAuthRedirect = () => {
     }
   }, [toast]);
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated - but not during initial OAuth callback
   useEffect(() => {
-    if (user) {
+    // Don't redirect if we're processing an OAuth callback
+    const isOAuthCallback = window.location.search.includes('code=') || window.location.hash.includes('access_token');
+    
+    if (user && !isOAuthCallback) {
       navigate('/account');
     }
   }, [user, navigate]);
