@@ -73,11 +73,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
 
         if (event === 'SIGNED_IN' && session?.user) {
-          console.log('✅ User signed in');
+          console.log('✅ User signed in, redirecting to /account');
           // Defer any database calls to prevent deadlocks
           setTimeout(() => {
             setIsNewUser(true);
-          }, 0);
+            // Force redirect to account page after successful Google sign-in
+            if (window.location.pathname === '/auth' || window.location.pathname === '/') {
+              window.location.href = '/account';
+            }
+          }, 100);
         }
         if (event === 'SIGNED_OUT') {
           console.log('👋 User signed out - clearing new user flag');
