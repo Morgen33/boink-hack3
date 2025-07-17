@@ -273,15 +273,15 @@ const WeSupport = () => {
 
         {/* Call to Action */}
         <div className="text-center animate-fade-in">
-          <div className="relative bg-white/10 backdrop-blur-lg rounded-3xl p-10 border border-white/20 max-w-4xl mx-auto overflow-hidden">
+          <div className="relative bg-white/95 backdrop-blur-lg rounded-3xl p-10 border border-white/30 max-w-4xl mx-auto overflow-hidden">
             {/* Background gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-web3-coral/20 via-web3-magenta/20 to-web3-red/20 rounded-3xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-web3-coral/10 via-web3-magenta/10 to-web3-red/10 rounded-3xl"></div>
             
             <div className="relative z-10">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                 Want to see your community here?
               </h2>
-              <p className="text-white/90 mb-8 text-lg">
+              <p className="text-gray-700 mb-8 text-lg">
                 We're always looking to support more amazing crypto communities. 
                 Reach out to us and let's build something together!
               </p>
@@ -292,7 +292,7 @@ const WeSupport = () => {
                   placeholder="Your Name"
                   value={contactForm.name}
                   onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-web3-light focus:ring-web3-light/50 backdrop-blur-sm"
+                  className="w-full bg-white/80 border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-web3-red focus:ring-web3-red/50"
                   required
                 />
                 <Input
@@ -300,14 +300,14 @@ const WeSupport = () => {
                   placeholder="Your Email"
                   value={contactForm.email}
                   onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
-                  className="w-full bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-web3-light focus:ring-web3-light/50 backdrop-blur-sm"
+                  className="w-full bg-white/80 border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-web3-red focus:ring-web3-red/50"
                   required
                 />
                 <Textarea
                   placeholder="Tell us about your community and how we can work together..."
                   value={contactForm.message}
                   onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
-                  className="w-full h-32 resize-none bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-web3-light focus:ring-web3-light/50 backdrop-blur-sm"
+                  className="w-full h-32 resize-none bg-white/80 border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-web3-red focus:ring-web3-red/50"
                   required
                 />
                 <Button
