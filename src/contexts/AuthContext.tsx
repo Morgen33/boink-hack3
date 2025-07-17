@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { cleanupAuthState, robustSignOut } from '@/utils/authCleanup';
 
 interface AuthContextType {
   user: User | null;
@@ -70,20 +71,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('🔄 Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
 
         if (event === 'SIGNED_IN' && session?.user) {
           console.log('✅ User signed in');
-          // Don't make any database calls that could hang on mobile
-          setIsNewUser(true); // Always treat as new user to be safe
+          // Defer any database calls to prevent deadlocks
+          setTimeout(() => {
+            setIsNewUser(true);
+          }, 0);
         }
         if (event === 'SIGNED_OUT') {
           console.log('👋 User signed out - clearing new user flag');
           setIsNewUser(false);
         }
+        
+        setLoading(false);
       }
     );
 
+    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       console.log('🚀 Initial session check:', session?.user?.email || 'No user');
       setSession(session);
@@ -91,9 +96,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
 
       if (session?.user) {
-        // Don't make database calls on initial load that could hang
+        console.log('📊 Initial session - setting as new user');
         setIsNewUser(true);
-        console.log('📊 Initial session - setting as new user to avoid mobile hang');
       }
     });
 
@@ -133,14 +137,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/platform-intent`
+    try {
+      // Clean up any existing auth state first
+      cleanupAuthState();
+      
+      // Attempt to sign out any existing session
+      try {
+        await supabase.auth.signOut({ scope: 'global' });
+      } catch (err) {
+        console.warn('Pre-signin cleanup failed, continuing');
       }
-    });
-    if (error) {
-      console.error('Error signing in with Google:', error);
+      
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/platform-intent`
+        }
+      });
+      
+      if (error) {
+        console.error('Error signing in with Google:', error);
+        throw error;
+      }
+    } catch (error) {
+      console.error('Error in Google sign in:', error);
       throw error;
     }
   };
@@ -159,11 +179,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Error signing out:', error);
-      throw error;
-    }
+    console.log('🚪 Starting robust sign out');
+    await robustSignOut(supabase);
   };
 
   const clearNewUserFlag = () => {

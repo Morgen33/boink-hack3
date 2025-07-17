@@ -33,9 +33,12 @@ const Account = () => {
 
   useEffect(() => {
     if (!user) {
+      console.log('❌ No user found, redirecting to auth');
       navigate('/auth');
       return;
     }
+
+    console.log('👤 Fetching profile for user:', user.email);
 
     const fetchProfileStats = async () => {
       try {
@@ -45,13 +48,18 @@ const Account = () => {
           .eq('id', user.id)
           .maybeSingle();
 
-        if (error) throw error;
+        if (error) {
+          console.error('❌ Error fetching profile:', error);
+          throw error;
+        }
+        
+        console.log('📊 Profile data loaded:', data);
         setProfileStats(data);
       } catch (error: any) {
-        console.error('Error fetching profile stats:', error);
+        console.error('❌ Error fetching profile stats:', error);
         toast({
           title: "Error",
-          description: "Failed to load account information.",
+          description: "Failed to load account information. Please try refreshing the page.",
           variant: "destructive",
         });
       } finally {
@@ -118,12 +126,30 @@ const Account = () => {
       <div className="min-h-screen bg-gradient-to-br from-web3-red/10 via-background to-web3-magenta/10">
         <Header />
         <div className="container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center">Failed to load account information.</div>
+          <div className="max-w-4xl mx-auto text-center space-y-4">
+            <h1 className="text-4xl font-bold text-muted-foreground">Setting up your profile...</h1>
+            <p className="text-lg text-muted-foreground">
+              It looks like your profile is still being created. This usually takes just a few seconds.
+            </p>
+            <div className="space-x-4">
+              <Button onClick={() => navigate('/platform-intent')}>
+                Complete Profile Setup
+              </Button>
+              <Button variant="outline" onClick={() => window.location.reload()}>
+                Refresh Page
+              </Button>
+            </div>
           </div>
         </div>
       </div>
     );
+  }
+
+  // If user has no platform intent yet, redirect to platform intent
+  if (profileStats && !profileStats.platform_intent) {
+    console.log('👤 User has no platform intent, redirecting to platform-intent');
+    navigate('/platform-intent');
+    return null;
   }
 
   return (

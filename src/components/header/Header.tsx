@@ -18,10 +18,13 @@ const Header = () => {
 
   const handleSignOut = async () => {
     try {
+      console.log('🚪 Signing out user');
       await signOut();
-      navigate('/');
+      // The AuthContext's signOut will handle the redirect
     } catch (error) {
       console.error('Error signing out:', error);
+      // Force redirect anyway
+      navigate('/auth');
     }
   };
 
