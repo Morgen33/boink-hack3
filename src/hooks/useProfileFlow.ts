@@ -38,9 +38,9 @@ export const useProfileFlow = () => {
           return;
         }
 
-        // All users with platform intent go to account page
-        // They can choose which forms to complete from there
-        navigate('/account');
+        // Don't automatically redirect to account - let users stay on home page
+        // They can navigate to account manually if needed
+        // navigate('/account');
 
       } catch (error) {
         console.error('Error in profile flow check:', error);
