@@ -32,25 +32,10 @@ const WeSupport = () => {
       socialType: "twitter" as const
     },
     {
-      name: "Kori",
-      description: "Content creator and crypto enthusiast",
-      twitter: "https://x.com/pomkori",
-      imageUrl: "/lovable-uploads/e6e0a477-c9fe-46b3-b7a4-04c351f7e3b5.png",
-      socialType: "twitter" as const
-    },
-    {
       name: "Defcon 7",
       description: "Defcon 7 crypto community",
       twitter: "https://x.com/Defcon7_",
       imageUrl: "/lovable-uploads/4ab6d780-12c5-4b87-8960-05c18e7caa3b.png",
-      socialType: "twitter" as const
-    },
-    {
-      name: "Shiba Army",
-      description: "Shiba Army community",
-      twitter: "https://x.com/shibaarmycall",
-      website: "https://shibarmycall.site/",
-      imageUrl: "/lovable-uploads/4a6ee6fe-4d1d-4eac-89d3-5dee75336f46.png",
       socialType: "twitter" as const
     },
     {
@@ -75,6 +60,21 @@ const WeSupport = () => {
       twitter: "https://x.com/myaitutor",
       website: "https://account.myapps.ai/",
       imageUrl: "/lovable-uploads/3a9453e6-a166-42dc-8c6d-5513288fc087.png",
+      socialType: "twitter" as const
+    },
+    {
+      name: "Kori",
+      description: "Content creator and crypto enthusiast",
+      twitter: "https://x.com/pomkori",
+      imageUrl: "/lovable-uploads/e6e0a477-c9fe-46b3-b7a4-04c351f7e3b5.png",
+      socialType: "twitter" as const
+    },
+    {
+      name: "Shiba Army",
+      description: "Shiba Army community",
+      twitter: "https://x.com/shibaarmycall",
+      website: "https://shibarmycall.site/",
+      imageUrl: "/lovable-uploads/4a6ee6fe-4d1d-4eac-89d3-5dee75336f46.png",
       socialType: "twitter" as const
     }
   ];
