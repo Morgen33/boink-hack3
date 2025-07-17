@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfileData } from '@/hooks/useProfileData';
-import { useProfileFlow } from '@/hooks/useProfileFlow';
+
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import PrototypeSlider from "@/components/PrototypeSlider";
@@ -24,7 +24,7 @@ const Index = () => {
   const { profile, loading: profileLoading } = useProfileData();
   const navigate = useNavigate();
   
-  useProfileFlow();
+  
 
   useEffect(() => {
     // Check if user has seen the MVP disclaimer before
