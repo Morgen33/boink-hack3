@@ -16,13 +16,15 @@ export const GoogleSignIn = ({ loading, setLoading }: GoogleSignInProps) => {
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
-      console.log('Starting Google sign in...');
-      console.log('Current origin:', window.location.origin);
-      console.log('Is in iframe:', isInIframe);
+      console.log('🔄 STARTING Google sign in...');
+      console.log('📍 Current URL:', window.location.href);
+      console.log('🌐 Origin:', window.location.origin);
+      console.log('🖼️ Is in iframe:', isInIframe);
       
       if (isInIframe) {
-        // Open OAuth in new window when in iframe
+        console.log('⚠️ In iframe - opening popup');
         const authUrl = `https://pizlzaomylxreizohewd.supabase.co/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(window.location.origin)}/account`;
+        console.log('🔗 Auth URL:', authUrl);
         window.open(authUrl, '_blank', 'width=500,height=600,scrollbars=yes,resizable=yes');
         
         toast({
@@ -33,6 +35,7 @@ export const GoogleSignIn = ({ loading, setLoading }: GoogleSignInProps) => {
         return;
       }
       
+      console.log('✅ Not in iframe - proceeding with normal OAuth');
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -41,11 +44,16 @@ export const GoogleSignIn = ({ loading, setLoading }: GoogleSignInProps) => {
       });
       
       if (error) {
-        console.error('Google auth error:', error);
+        console.error('❌ OAuth ERROR:', error);
+        console.error('❌ Error details:', JSON.stringify(error, null, 2));
         throw error;
       }
+      
+      console.log('✅ OAuth call completed successfully');
     } catch (error: any) {
-      console.error('Google sign-in error:', error);
+      console.error('❌ CATCH BLOCK - Google sign-in error:', error);
+      console.error('❌ Error message:', error.message);
+      console.error('❌ Error stack:', error.stack);
       toast({
         title: "Google Sign-in Error",
         description: error.message || "Failed to sign in with Google. Please check your configuration.",
@@ -53,6 +61,7 @@ export const GoogleSignIn = ({ loading, setLoading }: GoogleSignInProps) => {
       });
     } finally {
       setLoading(false);
+      console.log('🏁 Google sign-in attempt finished');
     }
   };
 
