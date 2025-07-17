@@ -56,9 +56,10 @@ const WeSupport = () => {
     {
       name: "DefiTimez Mag",
       description: "DeFiTimeZ is a multilingual digital magazine dedicated to educating readers about decentralized finance (DeFi), blockchain, and cryptocurrency, featuring weekly deep dives into the latest trends and projects in the space",
+      twitter: "https://x.com/DeFiTimeZ",
       website: "https://defitimez.com/",
       imageUrl: "/lovable-uploads/27c8a8df-2ef1-48a3-9908-670f2dd47f1e.png",
-      socialType: "website" as const
+      socialType: "twitter" as const
     }
   ];
 
