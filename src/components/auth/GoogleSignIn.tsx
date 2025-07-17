@@ -22,7 +22,7 @@ export const GoogleSignIn = ({ loading, setLoading }: GoogleSignInProps) => {
       
       if (isInIframe) {
         // Open OAuth in new window when in iframe
-        const authUrl = `https://pizlzaomylxreizohewd.supabase.co/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(window.location.origin)}/`;
+        const authUrl = `https://pizlzaomylxreizohewd.supabase.co/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(window.location.origin)}/account`;
         window.open(authUrl, '_blank', 'width=500,height=600,scrollbars=yes,resizable=yes');
         
         toast({
@@ -36,7 +36,7 @@ export const GoogleSignIn = ({ loading, setLoading }: GoogleSignInProps) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/platform-intent`
+          redirectTo: `${window.location.origin}/account`
         }
       });
       

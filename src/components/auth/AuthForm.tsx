@@ -77,7 +77,7 @@ export const AuthForm = ({ isLogin, onToggleMode, loading, setLoading }: AuthFor
             email: data.email,
             password: data.password,
             options: {
-              emailRedirectTo: `${window.location.origin}/platform-intent`,
+              emailRedirectTo: `${window.location.origin}/account`,
               data: {
                 full_name: sanitizeInput(data.fullName),
                 location: sanitizeInput(data.location),
