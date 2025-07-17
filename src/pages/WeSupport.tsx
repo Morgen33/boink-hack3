@@ -202,7 +202,7 @@ const WeSupport = () => {
           {supportedCommunities.map((community, index) => (
             <div 
               key={index} 
-              className="group relative bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-white/40 hover:bg-white/15 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-web3-magenta/20 animate-fade-in"
+              className="group relative bg-white/95 backdrop-blur-lg rounded-2xl p-6 border border-white/30 hover:border-white/50 hover:bg-white transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-web3-magenta/20 animate-fade-in"
               style={{animationDelay: `${index * 0.1}s`}}
             >
               {/* Glow effect */}
@@ -230,10 +230,10 @@ const WeSupport = () => {
                 </div>
 
                 {/* Community Info */}
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-web3-light transition-colors duration-300">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-web3-red transition-colors duration-300">
                   {community.name}
                 </h3>
-                <p className="text-white/80 mb-4 text-sm leading-relaxed">
+                <p className="text-gray-700 mb-4 text-sm leading-relaxed">
                   {community.description}
                 </p>
 
@@ -244,7 +244,7 @@ const WeSupport = () => {
                       href={community.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center text-web3-light hover:text-web3-yellow transition-colors duration-300 group/link"
+                      className="inline-flex items-center text-blue-600 hover:text-web3-red transition-colors duration-300 group/link"
                     >
                       <Twitter className="w-4 h-4 mr-2 group-hover/link:scale-110 transition-transform duration-300" />
                       <span className="text-sm font-medium">Follow on X</span>
@@ -258,7 +258,7 @@ const WeSupport = () => {
                         href={community.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-web3-peach hover:text-web3-coral transition-colors duration-300 group/link"
+                        className="inline-flex items-center text-green-600 hover:text-web3-coral transition-colors duration-300 group/link"
                       >
                         <ExternalLink className="w-4 h-4 mr-2 group-hover/link:scale-110 transition-transform duration-300" />
                         <span className="text-sm font-medium">Visit Website</span>
