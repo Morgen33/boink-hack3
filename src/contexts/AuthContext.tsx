@@ -75,6 +75,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (event === 'SIGNED_IN' && session?.user) {
           console.log('✅ User signed in successfully');
           setIsNewUser(true);
+          
+          // If user just signed in and we're on auth page, redirect to account
+          if (window.location.pathname === '/auth') {
+            console.log('🔄 Redirecting from /auth to /account');
+            window.location.href = '/account';
+          }
         }
         if (event === 'SIGNED_OUT') {
           console.log('👋 User signed out');
