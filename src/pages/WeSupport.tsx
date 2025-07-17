@@ -1,5 +1,11 @@
 import { ExternalLink, Twitter, Instagram } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const WeSupport = () => {
   const supportedCommunities = [
@@ -78,6 +84,45 @@ const WeSupport = () => {
       socialType: "twitter" as const
     }
   ];
+
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!contactForm.name || !contactForm.email || !contactForm.message) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: contactForm.name,
+          email: contactForm.email,
+          message: contactForm.message,
+          subject: "Community Partnership Inquiry"
+        }
+      });
+
+      if (error) throw error;
+
+      toast.success("Message sent successfully! We'll get back to you soon.");
+      setContactForm({ name: '', email: '', message: '' });
+    } catch (error: any) {
+      console.error('Error sending contact email:', error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
@@ -188,12 +233,39 @@ const WeSupport = () => {
               We're always looking to support more amazing crypto communities. 
               Reach out to us and let's build something together!
             </p>
-            <a
-              href="/auth"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-web3-red to-web3-magenta text-white font-semibold rounded-full hover:opacity-90 transition-opacity"
-            >
-              Get in Touch
-            </a>
+            
+            <form onSubmit={handleContactSubmit} className="max-w-md mx-auto space-y-4">
+              <Input
+                type="text"
+                placeholder="Your Name"
+                value={contactForm.name}
+                onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                className="w-full"
+                required
+              />
+              <Input
+                type="email"
+                placeholder="Your Email"
+                value={contactForm.email}
+                onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                className="w-full"
+                required
+              />
+              <Textarea
+                placeholder="Tell us about your community and how we can work together..."
+                value={contactForm.message}
+                onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                className="w-full h-24 resize-none"
+                required
+              />
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-web3-red to-web3-magenta text-white font-semibold rounded-full hover:opacity-90 transition-opacity disabled:opacity-50"
+              >
+                {isSubmitting ? "Sending..." : "Get in Touch"}
+              </Button>
+            </form>
           </div>
         </div>
       </main>
