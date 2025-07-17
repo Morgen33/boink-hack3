@@ -60,6 +60,14 @@ const WeSupport = () => {
       website: "https://defitimez.com/",
       imageUrl: "/lovable-uploads/27c8a8df-2ef1-48a3-9908-670f2dd47f1e.png",
       socialType: "twitter" as const
+    },
+    {
+      name: "Pixio",
+      description: "AI-powered creative platform offering innovative solutions for digital content creation and automation",
+      twitter: "https://x.com/pixio_ai",
+      website: "https://pixio.myapps.ai/",
+      imageUrl: "/lovable-uploads/c4dad640-8e57-4a14-920c-f1baf8e619a9.png",
+      socialType: "twitter" as const
     }
   ];
 
