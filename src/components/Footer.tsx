@@ -63,9 +63,7 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              The safest and most trusted Web3 dating platform for the Bonk community. 
-              Connecting crypto enthusiasts, DeFi builders, and 
-              blockchain innovators worldwide.
+              Boink is your on-chain connection engine. Date, collab, or just vibe with the ones who get it.
             </p>
             <div className="flex space-x-4 mb-6">
               <div className="flex items-center text-sm text-gray-400">
