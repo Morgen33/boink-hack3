@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -65,10 +66,10 @@
     --web3-light: 30 100% 82%;
 
     /* Gradient Variables */
-    --gradient-web3: linear-gradient(135deg, hsl(var(--web3-yellow)) 0%, hsl(var(--web3-orange)) 25%, hsl(var(--web3-coral)) 50%, hsl(var(--web3-red)) 75%, hsl(var(--web3-magenta)) 100%);
-    --gradient-warm: linear-gradient(135deg, hsl(var(--web3-peach)) 0%, hsl(var(--web3-salmon)) 50%, hsl(var(--web3-light)) 100%);
-    --gradient-cool: linear-gradient(135deg, hsl(var(--web3-pink)) 0%, hsl(var(--web3-magenta)) 50%, hsl(var(--web3-red)) 100%);
-    --gradient-soft: linear-gradient(135deg, hsl(var(--web3-light)) 0%, hsl(var(--web3-cream)) 50%, hsl(var(--web3-peach)) 100%);
+    --gradient-web3: linear-gradient(135deg, hsl(50, 95%, 64%) 0%, hsl(39, 100%, 53%) 25%, hsl(14, 100%, 67%) 50%, hsl(347, 91%, 54%) 75%, hsl(312, 93%, 48%) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(25, 98%, 66%) 0%, hsl(356, 98%, 70%) 50%, hsl(30, 100%, 82%) 100%);
+    --gradient-cool: linear-gradient(135deg, hsl(342, 50%, 58%) 0%, hsl(312, 93%, 48%) 50%, hsl(347, 91%, 54%) 100%);
+    --gradient-soft: linear-gradient(135deg, hsl(30, 100%, 82%) 0%, hsl(33, 100%, 74%) 50%, hsl(25, 98%, 66%) 100%);
   }
 
   .dark {
