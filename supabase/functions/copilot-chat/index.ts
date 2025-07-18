@@ -18,13 +18,15 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, userId } = await req.json();
+    const body = await req.json();
+    const { messages, metadata } = body;
     
     // Initialize Supabase client for context
     const supabase = createClient(supabaseUrl!, supabaseServiceKey!);
     
     // Get user profile for context
     let userContext = '';
+    const userId = metadata?.userId;
     if (userId) {
       const { data: profile } = await supabase
         .from('profiles')
