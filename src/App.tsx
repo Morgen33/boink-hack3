@@ -8,7 +8,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/contexts/SecurityContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useIntercom } from "@/hooks/useIntercom";
-import { useAuth } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import EventsPage from "./pages/Events";
 import Games from "./pages/Games";
@@ -29,22 +28,8 @@ import WhaleConnect from "./pages/WhaleConnect";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const { user } = useAuth();
-  
-  // Create user object for Intercom
-  const intercomUser = user ? {
-    user_id: user.id,
-    name: user.user_metadata?.full_name || user.email?.split('@')[0],
-    email: user.email,
-    created_at: Math.floor(new Date(user.created_at).getTime() / 1000)
-  } : undefined;
-
-  // Initialize Intercom with your App ID and user data
-  const { showIntercom, hideIntercom } = useIntercom('ob1wk7lg', intercomUser);
-
-  // Make Intercom functions globally available
-  (window as any).showIntercom = showIntercom;
-  (window as any).hideIntercom = hideIntercom;
+  // Initialize Intercom with your App ID
+  useIntercom('ob1wk7lg');
 
   return (
     <QueryClientProvider client={queryClient}>
