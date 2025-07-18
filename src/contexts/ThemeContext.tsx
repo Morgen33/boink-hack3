@@ -20,21 +20,26 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Initialize theme on mount
-  useEffect(() => {
+  // Initialize theme immediately to prevent white flash
+  const getInitialTheme = () => {
+    if (typeof window === 'undefined') return false;
+    
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setIsDarkMode(true);
+    return savedTheme === 'dark' || (!savedTheme && prefersDark);
+  };
+
+  const [isDarkMode, setIsDarkMode] = useState(getInitialTheme);
+
+  // Apply theme to document on mount and changes
+  useEffect(() => {
+    if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
-      setIsDarkMode(false);
       document.documentElement.classList.remove('dark');
     }
-  }, []);
+  }, [isDarkMode]);
 
   const toggleTheme = () => {
     const newDarkMode = !isDarkMode;
