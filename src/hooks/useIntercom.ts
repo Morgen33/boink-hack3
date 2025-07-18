@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from 'react';
 
 declare global {
@@ -7,7 +8,14 @@ declare global {
   }
 }
 
-export const useIntercom = (appId: string) => {
+interface IntercomUserData {
+  user_id?: string;
+  name?: string;
+  email?: string;
+  created_at?: number;
+}
+
+export const useIntercom = (appId: string, userData?: IntercomUserData) => {
   const scriptLoaded = useRef(false);
   const initAttempted = useRef(false);
 
@@ -27,11 +35,24 @@ export const useIntercom = (appId: string) => {
       return;
     }
 
+    // Set up Intercom settings with user data
+    const baseSettings = {
+      app_id: appId,
+      hide_default_launcher: false,
+      alignment: 'right',
+      horizontal_padding: 20,
+      vertical_padding: 20,
+    };
+
+    // Merge with user data if provided
+    window.intercomSettings = userData ? { ...baseSettings, ...userData } : baseSettings;
+    console.log('📋 Intercom settings configured:', window.intercomSettings);
+
     // Check if Intercom already exists
     if (window.Intercom) {
       console.log('✅ Intercom already exists, updating settings...');
       try {
-        window.Intercom('update', { app_id: appId });
+        window.Intercom('update', window.intercomSettings);
         window.Intercom('show');
         console.log('✅ Intercom updated and shown');
       } catch (error) {
@@ -39,16 +60,6 @@ export const useIntercom = (appId: string) => {
       }
       return;
     }
-
-    // Set up Intercom settings first
-    window.intercomSettings = {
-      app_id: appId,
-      hide_default_launcher: false,
-      alignment: 'right',
-      horizontal_padding: 20,
-      vertical_padding: 20,
-    };
-    console.log('📋 Intercom settings configured:', window.intercomSettings);
 
     // Create Intercom stub function using official method
     const intercomStub = function() {
@@ -145,7 +156,19 @@ export const useIntercom = (appId: string) => {
         }
       }
     };
-  }, [appId]);
+  }, [appId, userData?.user_id, userData?.name, userData?.email, userData?.created_at]);
+
+  // Update Intercom when user data changes
+  useEffect(() => {
+    if (window.Intercom && userData) {
+      console.log('🔄 Updating Intercom with new user data:', userData);
+      try {
+        window.Intercom('update', userData);
+      } catch (error) {
+        console.error('❌ Error updating Intercom user data:', error);
+      }
+    }
+  }, [userData?.user_id, userData?.name, userData?.email, userData?.created_at]);
 
   const showIntercom = () => {
     if (window.Intercom) {
