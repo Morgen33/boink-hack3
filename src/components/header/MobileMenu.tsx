@@ -5,6 +5,7 @@ import { User as SupabaseUser } from '@supabase/supabase-js';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { navigationItems } from "@/constants/navigation";
 import MailNotification from "./MailNotification";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -40,6 +41,10 @@ const MobileMenu = ({ isOpen, user, onNavClick, onAuthClick, onProfileClick, onS
           </button>
         ))}
         <div className="flex flex-col space-y-2 px-4 pt-4 border-t border-border">
+          <div className="flex items-center justify-between pb-2">
+            <span className="text-sm font-medium text-foreground">Theme</span>
+            <ThemeToggle variant="ghost" size="sm" />
+          </div>
           {user ? (
             <div className="space-y-2">
               <div className="flex items-center space-x-2 px-2 py-1">

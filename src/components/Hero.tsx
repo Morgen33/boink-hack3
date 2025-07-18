@@ -1,44 +1,16 @@
 
 import { Button } from "@/components/ui/button";
 import { ParticleTextEffect } from "@/components/ui/interactive-text-particle";
-import { Shield, Heart, Users, Sparkles, Coins, Sun, Moon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Shield, Heart, Users, Sparkles, Coins } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfileData } from "@/hooks/useProfileData";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Hero = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const { profile, loading: profileLoading } = useProfileData();
-
-  // Check for saved theme preference or default to light mode
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDarkMode(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   const handleMainCTA = () => {
     if (authLoading || profileLoading) return;
@@ -64,14 +36,7 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 bg-background text-foreground">
       {/* Day/Night Toggle Button */}
       <div className="absolute top-28 right-6 z-20">
-        <Button 
-          onClick={toggleDarkMode} 
-          variant="outline" 
-          size="icon" 
-          className="rounded-full border-2 transition-all duration-300"
-        >
-          {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-        </Button>
+        <ThemeToggle className="rounded-full border-2" />
       </div>
 
       {/* Floating Hearts and Coins */}

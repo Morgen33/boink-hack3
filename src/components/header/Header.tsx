@@ -9,6 +9,7 @@ import UserMenu from "./UserMenu";
 import AuthButtons from "./AuthButtons";
 import MobileMenu from "./MobileMenu";
 import MailNotification from "./MailNotification";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -65,6 +66,7 @@ const Header = () => {
 
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             {loading ? (
               <div className="w-8 h-8 animate-spin rounded-full border-2 border-border border-t-web3-red"></div>
             ) : user ? (
