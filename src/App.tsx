@@ -28,8 +28,12 @@ import WhaleConnect from "./pages/WhaleConnect";
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Initialize Intercom with your App ID
-  useIntercom('ob1wk7lg');
+  // Initialize Intercom with your App ID and get control functions
+  const { showIntercom, hideIntercom } = useIntercom('ob1wk7lg');
+
+  // Make Intercom functions globally available
+  (window as any).showIntercom = showIntercom;
+  (window as any).hideIntercom = hideIntercom;
 
   return (
     <QueryClientProvider client={queryClient}>

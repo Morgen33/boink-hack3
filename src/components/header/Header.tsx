@@ -1,5 +1,5 @@
 
-import { Menu, X } from "lucide-react";
+import { Menu, X, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -56,6 +56,14 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  const handleHelpClick = () => {
+    if ((window as any).showIntercom) {
+      (window as any).showIntercom();
+    } else {
+      console.log('Intercom not yet loaded');
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="max-w-7xl mx-auto px-4">
@@ -66,6 +74,13 @@ const Header = () => {
 
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <button
+              onClick={handleHelpClick}
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+              title="Help & Support"
+            >
+              <HelpCircle className="w-5 h-5" />
+            </button>
             <ThemeToggle />
             {loading ? (
               <div className="w-8 h-8 animate-spin rounded-full border-2 border-border border-t-web3-red"></div>
