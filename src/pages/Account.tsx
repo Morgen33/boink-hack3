@@ -342,25 +342,6 @@ const Account = () => {
                   </CardContent>
                 </Card>
 
-                {/* Platform Intent */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                      Platform Intent
-                    </CardTitle>
-                    <CardDescription>
-                      What you're here for
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Badge variant="secondary" className="text-lg px-4 py-2">
-                      {profileStats.platform_intent === 'dating' && 'Dating'}
-                      {profileStats.platform_intent === 'networking' && 'Professional Networking'}
-                      {profileStats.platform_intent === 'both' && 'Dating & Networking'}
-                    </Badge>
-                  </CardContent>
-                </Card>
 
                 {/* Unified Profile Completion */}
                 <Card className="hover:shadow-lg transition-shadow">
@@ -518,9 +499,6 @@ const Account = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-4">
-                      <Button variant="outline" onClick={() => navigate('/platform-intent')}>
-                        Change Platform Intent
-                      </Button>
                       <Button variant="outline" onClick={() => navigate('/discover')}>
                         Start Discovering
                       </Button>
