@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/contexts/SecurityContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { IntercomProvider } from "@/components/IntercomProvider";
 import Index from "./pages/Index";
 import EventsPage from "./pages/Events";
 import Games from "./pages/Games";
@@ -32,6 +34,7 @@ const App = () => {
         <AuthProvider>
           <SecurityProvider>
             <TooltipProvider>
+              <IntercomProvider />
               <Toaster />
               <Sonner />
               <BrowserRouter>
