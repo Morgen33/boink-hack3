@@ -11,21 +11,21 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary to-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-web3-red/10 via-background to-web3-magenta/10 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Heart className="w-8 h-8 text-primary-foreground" />
+          <div className="w-16 h-16 bg-gradient-to-r from-web3-red to-web3-magenta rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Heart className="w-8 h-8 text-white" />
           </div>
-          <CardTitle className="text-2xl font-bold">
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
             Welcome to Boink
           </CardTitle>
           <CardDescription>
             {isLogin ? 'Sign in to your account' : `Create your account (${MINIMUM_AGE}+ only)`}
           </CardDescription>
           {!isLogin && (
-            <div className="mt-2 p-3 bg-muted border border-border rounded-lg">
-              <p className="text-sm text-muted-foreground">
+            <div className="mt-2 p-3 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg">
+              <p className="text-sm text-amber-800 dark:text-amber-200">
                 🔞 This platform is restricted to users 18 and over
               </p>
             </div>
