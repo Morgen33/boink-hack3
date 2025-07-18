@@ -142,11 +142,11 @@
   /* Safari mobile specific fixes */
   @supports (-webkit-touch-callout: none) {
     html {
-      background-color: hsl(240 10% 3.9%) !important; /* Default to dark to prevent white flash */
+      background-color: hsl(var(--background)) !important;
     }
     
     body {
-      background-color: hsl(240 10% 3.9%) !important;
+      background-color: hsl(var(--background)) !important;
     }
   }
 }
