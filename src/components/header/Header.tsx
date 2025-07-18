@@ -57,10 +57,19 @@ const Header = () => {
   };
 
   const handleHelpClick = () => {
+    console.log('Help button clicked');
+    console.log('Window.Intercom exists:', !!window.Intercom);
+    console.log('showIntercom function exists:', !!(window as any).showIntercom);
+    
     if ((window as any).showIntercom) {
+      console.log('Calling showIntercom...');
       (window as any).showIntercom();
+    } else if (window.Intercom) {
+      console.log('Calling Intercom show directly...');
+      window.Intercom('show');
     } else {
-      console.log('Intercom not yet loaded');
+      console.error('Intercom not loaded. Check App ID and network.');
+      alert('Intercom chat is not available. Please check your internet connection or contact support.');
     }
   };
 
