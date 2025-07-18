@@ -60,7 +60,7 @@ const CopilotChat = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-80 h-96 flex flex-col z-50 border-web3-magenta/20 bg-card/95 backdrop-blur-sm">
+        <Card className="fixed bottom-6 right-6 w-96 h-[500px] flex flex-col z-50 border-web3-magenta/20 bg-card/95 backdrop-blur-sm">
           <CardHeader className="bg-gradient-to-r from-web3-magenta to-web3-red text-white p-3 rounded-t-lg">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg flex items-center gap-2">
