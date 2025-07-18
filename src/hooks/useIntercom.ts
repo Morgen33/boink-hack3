@@ -9,41 +9,44 @@ declare global {
 
 export const useIntercom = (appId: string) => {
   useEffect(() => {
+    console.log('Initializing Intercom with App ID:', appId);
+
     // Set up Intercom settings
     window.intercomSettings = {
       app_id: appId,
       hide_default_launcher: false,
     };
 
+    // Check if Intercom is already loaded
+    if (window.Intercom) {
+      console.log('Intercom already loaded, booting...');
+      window.Intercom('reattach_activator');
+      window.Intercom('update', window.intercomSettings);
+      return;
+    }
+
+    // Create Intercom function stub
+    window.Intercom = function(...args: any[]) {
+      window.Intercom.q.push(args);
+    };
+    window.Intercom.q = [];
+
     // Load Intercom script
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
-    script.src = 'https://widget.intercom.io/widget/' + appId;
-
-    // Add script to head
-    const firstScript = document.getElementsByTagName('script')[0];
-    if (firstScript && firstScript.parentNode) {
-      firstScript.parentNode.insertBefore(script, firstScript);
-    }
-
-    // Initialize Intercom when script loads
+    script.src = `https://widget.intercom.io/widget/${appId}`;
+    
     script.onload = () => {
-      if (window.Intercom) {
-        window.Intercom('boot', window.intercomSettings);
-      }
+      console.log('Intercom script loaded successfully');
+    };
+    
+    script.onerror = () => {
+      console.error('Failed to load Intercom script');
     };
 
-    // Fallback initialization
-    const initializeIntercom = () => {
-      if (window.Intercom) {
-        window.Intercom('boot', window.intercomSettings);
-      } else {
-        setTimeout(initializeIntercom, 100);
-      }
-    };
-
-    setTimeout(initializeIntercom, 1000);
+    // Add script to document head
+    document.head.appendChild(script);
 
     // Cleanup function
     return () => {
