@@ -130,7 +130,7 @@ const CopilotChat = () => {
                   {suggestionPrompts.slice(0, 3).map((prompt, index) => (
                     <button
                       key={index}
-                      onClick={() => setInputValue(prompt)}
+                      onClick={() => sendMessage(prompt)}
                       className="block w-full text-left text-xs p-2 rounded bg-web3-magenta/10 hover:bg-web3-magenta/20 transition-colors"
                     >
                       {prompt}
