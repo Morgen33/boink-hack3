@@ -22,12 +22,22 @@ interface ThemeProviderProps {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Initialize theme immediately to prevent white flash
   const getInitialTheme = () => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === 'undefined') return true; // Default to dark for SSR
     
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    return savedTheme === 'dark' || (!savedTheme && prefersDark);
+    // Default to dark mode to prevent white flash on Safari mobile
+    const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark) || (!savedTheme);
+    
+    // Apply theme immediately to prevent flash
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    return isDark;
   };
 
   const [isDarkMode, setIsDarkMode] = useState(getInitialTheme);

@@ -127,7 +127,26 @@
     @apply border-border;
   }
 
+  html {
+    /* Prevent white flash on Safari mobile */
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
   body {
     @apply bg-background text-foreground;
+    /* Ensure Safari mobile gets the right background immediately */
+    background-color: hsl(var(--background)) !important;
+  }
+
+  /* Safari mobile specific fixes */
+  @supports (-webkit-touch-callout: none) {
+    html {
+      background-color: hsl(240 10% 3.9%) !important; /* Default to dark to prevent white flash */
+    }
+    
+    body {
+      background-color: hsl(240 10% 3.9%) !important;
+    }
   }
 }
