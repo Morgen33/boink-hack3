@@ -8,7 +8,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/contexts/SecurityContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useIntercom } from "@/hooks/useIntercom";
-import { useIntercomUserData } from "@/hooks/useIntercomUserData";
 import Index from "./pages/Index";
 import EventsPage from "./pages/Events";
 import Games from "./pages/Games";
@@ -31,9 +30,6 @@ const queryClient = new QueryClient();
 const App = () => {
   // Initialize Intercom with your App ID
   useIntercom('ob1wk7lg');
-  
-  // Initialize Intercom user data integration
-  useIntercomUserData();
 
   return (
     <QueryClientProvider client={queryClient}>
