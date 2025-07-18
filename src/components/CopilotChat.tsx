@@ -78,9 +78,9 @@ const CopilotChat = () => {
             </div>
           </CardHeader>
 
-          <CardContent className="flex-1 flex flex-col p-0">
+          <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-3">
+            <div className="flex-1 overflow-y-auto p-3 space-y-3 max-h-full">
               {messages.length === 0 && (
                 <div className="text-center py-4">
                   <div className="text-muted-foreground mb-3">
@@ -101,7 +101,7 @@ const CopilotChat = () => {
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                    className={`max-w-[80%] p-2 rounded-lg text-sm break-words whitespace-pre-wrap ${
                       message.role === 'user'
                         ? 'bg-gradient-to-r from-web3-magenta to-web3-red text-white'
                         : 'bg-muted text-foreground'
