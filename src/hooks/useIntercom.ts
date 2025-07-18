@@ -1,161 +1,54 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import Intercom from '@intercom/messenger-js-sdk';
 
-declare global {
-  interface Window {
-    Intercom: any;
-    intercomSettings: any;
-  }
+interface IntercomUser {
+  user_id?: string;
+  name?: string;
+  email?: string;
+  created_at?: number;
 }
 
-export const useIntercom = (appId: string) => {
-  const scriptLoaded = useRef(false);
-  const initAttempted = useRef(false);
-
+export const useIntercom = (appId: string, user?: IntercomUser) => {
   useEffect(() => {
-    // Prevent multiple initialization attempts
-    if (initAttempted.current) {
-      console.log('Intercom initialization already attempted');
-      return;
-    }
-    initAttempted.current = true;
-
-    console.log('🚀 Starting Intercom initialization with App ID:', appId);
-    
-    // Validate App ID
-    if (!appId || typeof appId !== 'string') {
-      console.error('❌ Invalid Intercom App ID provided:', appId);
-      return;
-    }
-
-    // Check if Intercom already exists
-    if (window.Intercom) {
-      console.log('✅ Intercom already exists, updating settings...');
-      try {
-        window.Intercom('update', { app_id: appId });
-        window.Intercom('show');
-        console.log('✅ Intercom updated and shown');
-      } catch (error) {
-        console.error('❌ Error updating existing Intercom:', error);
-      }
-      return;
-    }
-
-    // Set up Intercom settings first
-    window.intercomSettings = {
-      app_id: appId,
-      hide_default_launcher: false,
-      alignment: 'right',
-      horizontal_padding: 20,
-      vertical_padding: 20,
-    };
-    console.log('📋 Intercom settings configured:', window.intercomSettings);
-
-    // Create Intercom stub function using official method
-    const intercomStub = function() {
-      intercomStub.c(arguments);
-    };
-    intercomStub.q = [];
-    intercomStub.c = function(args: any) {
-      intercomStub.q.push(args);
-    };
-    window.Intercom = intercomStub;
-    console.log('🔧 Intercom stub function created');
-
-    // Create and load script using official snippet method
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.async = true;
-    script.src = `https://widget.intercom.io/widget/${appId}`;
-    script.id = 'intercom-script';
-    
-    // Enhanced error handling
-    script.onload = () => {
-      console.log('✅ Intercom script loaded successfully');
-      scriptLoaded.current = true;
+    try {
+      console.log('Initializing Intercom with app ID:', appId);
       
-      // Boot Intercom
-      try {
-        console.log('🚀 Booting Intercom...');
-        window.Intercom('boot', window.intercomSettings);
-        
-        // Additional verification
-        setTimeout(() => {
-          const launcher = document.querySelector('.intercom-launcher');
-          const frame = document.querySelector('#intercom-frame');
-          
-          if (launcher || frame) {
-            console.log('✅ Intercom widget elements found in DOM');
-          } else {
-            console.warn('⚠️ Intercom widget elements not found in DOM after boot');
-            // Try alternative boot method
-            window.Intercom('show');
-          }
-        }, 2000);
-        
-      } catch (error) {
-        console.error('❌ Error booting Intercom:', error);
-      }
-    };
-    
-    script.onerror = (error) => {
-      console.error('❌ Failed to load Intercom script:', error);
-      console.error('❌ Script URL was:', script.src);
-      console.error('❌ This could be due to:');
-      console.error('  - Network connectivity issues');
-      console.error('  - Incorrect App ID');
-      console.error('  - Ad blockers blocking the script');
-      console.error('  - CORS policy restrictions');
-    };
+      const intercomConfig: any = {
+        app_id: appId,
+      };
 
-    // Append script to head
-    const firstScript = document.getElementsByTagName('script')[0];
-    if (firstScript && firstScript.parentNode) {
-      firstScript.parentNode.insertBefore(script, firstScript);
-      console.log('📜 Intercom script added to DOM');
-    } else {
-      document.head.appendChild(script);
-      console.log('📜 Intercom script added to head');
+      // Add user data if available
+      if (user) {
+        if (user.user_id) intercomConfig.user_id = user.user_id;
+        if (user.name) intercomConfig.name = user.name;
+        if (user.email) intercomConfig.email = user.email;
+        if (user.created_at) intercomConfig.created_at = user.created_at;
+      }
+
+      console.log('Intercom config:', intercomConfig);
+      Intercom(intercomConfig);
+      console.log('Intercom initialized successfully');
+    } catch (error) {
+      console.error('Failed to initialize Intercom:', error);
     }
-
-    // Set up a timeout to check if Intercom loaded
-    const loadTimeout = setTimeout(() => {
-      if (!scriptLoaded.current) {
-        console.error('❌ Intercom script failed to load within 10 seconds');
-        console.error('❌ Possible issues:');
-        console.error('  - Check your internet connection');
-        console.error('  - Verify the App ID is correct');
-        console.error('  - Check if an ad blocker is interfering');
-        console.error('  - Verify domain is whitelisted in Intercom settings');
-      }
-    }, 10000);
-
-    // Cleanup function
-    return () => {
-      clearTimeout(loadTimeout);
-      const existingScript = document.getElementById('intercom-script');
-      if (existingScript) {
-        existingScript.remove();
-      }
-      if (window.Intercom) {
-        try {
-          window.Intercom('shutdown');
-          console.log('🔄 Intercom shutdown completed');
-        } catch (error) {
-          console.error('❌ Error during Intercom shutdown:', error);
-        }
-      }
-    };
-  }, [appId]);
+  }, [appId, user]);
 
   const showIntercom = () => {
-    if (window.Intercom) {
-      window.Intercom('show');
+    console.log('showIntercom called');
+    try {
+      Intercom({ app_id: appId });
+      console.log('Intercom show called');
+    } catch (error) {
+      console.error('Failed to show Intercom:', error);
     }
   };
 
   const hideIntercom = () => {
-    if (window.Intercom) {
-      window.Intercom('hide');
+    try {
+      // Hide is handled by the widget itself
+      console.log('Hide Intercom called');
+    } catch (error) {
+      console.error('Failed to hide Intercom:', error);
     }
   };
 
