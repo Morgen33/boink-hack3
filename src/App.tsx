@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/contexts/SecurityContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { useIntercomWithUserData } from "@/hooks/useIntercomWithUserData";
 import Index from "./pages/Index";
 import EventsPage from "./pages/Events";
 import Games from "./pages/Games";
@@ -28,9 +27,6 @@ import WhaleConnect from "./pages/WhaleConnect";
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Initialize Intercom with user data integration
-  useIntercomWithUserData('ob1wk7lg');
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
