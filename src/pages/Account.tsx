@@ -321,22 +321,33 @@ const Account = () => {
                       Basic Information
                     </CardTitle>
                     <CardDescription>
-                      Your core profile information (set during signup)
+                      Your core profile information
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid md:grid-cols-3 gap-4">
                       <div className="flex items-center gap-2">
                         <User className="w-4 h-4 text-muted-foreground" />
-                        <span className="font-medium">{profileStats.full_name}</span>
+                        {profileStats.full_name ? (
+                          <span className="font-medium">{profileStats.full_name}</span>
+                        ) : (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => navigate('/profile')}
+                            className="text-xs"
+                          >
+                            Add Your Name
+                          </Button>
+                        )}
                       </div>
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-muted-foreground" />
-                        <span>{profileStats.location}</span>
+                        <span>{profileStats.location || 'Not specified'}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-muted-foreground" />
-                        <span>{profileStats.age} years old</span>
+                        <span>{profileStats.age ? `${profileStats.age} years old` : 'Not specified'}</span>
                       </div>
                     </div>
                   </CardContent>
