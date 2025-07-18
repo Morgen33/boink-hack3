@@ -11,27 +11,31 @@ export const useIntercom = (appId: string) => {
   useEffect(() => {
     console.log('Initializing Intercom with App ID:', appId);
 
-    // Set up Intercom settings
-    window.intercomSettings = {
-      app_id: appId,
-      hide_default_launcher: false,
-    };
-
-    // Check if Intercom is already loaded
+    // Check if already loaded
     if (window.Intercom) {
-      console.log('Intercom already loaded, booting...');
-      window.Intercom('reattach_activator');
-      window.Intercom('update', window.intercomSettings);
+      console.log('Intercom already exists, updating...');
+      window.Intercom('update', { app_id: appId });
       return;
     }
 
-    // Create Intercom function stub
-    window.Intercom = function(...args: any[]) {
-      window.Intercom.q.push(args);
+    // Set up global settings
+    window.intercomSettings = {
+      app_id: appId,
     };
-    window.Intercom.q = [];
 
-    // Load Intercom script
+    // Initialize Intercom function
+    const intercomFunction = function(...args: any[]) {
+      if (intercomFunction.c) {
+        intercomFunction.c(args);
+      } else {
+        intercomFunction.q.push(args);
+      }
+    };
+    intercomFunction.q = [];
+    intercomFunction.c = null;
+    window.Intercom = intercomFunction;
+
+    // Load the script
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
@@ -39,14 +43,15 @@ export const useIntercom = (appId: string) => {
     
     script.onload = () => {
       console.log('Intercom script loaded successfully');
+      window.Intercom('boot', window.intercomSettings);
     };
     
-    script.onerror = () => {
-      console.error('Failed to load Intercom script');
+    script.onerror = (error) => {
+      console.error('Failed to load Intercom script:', error);
     };
 
-    // Add script to document head
-    document.head.appendChild(script);
+    const head = document.getElementsByTagName('head')[0];
+    head.appendChild(script);
 
     // Cleanup function
     return () => {
