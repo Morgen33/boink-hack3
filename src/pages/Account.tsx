@@ -6,8 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import Header from '@/components/Header';
-import { Heart, Users, CheckCircle, Circle, User, MapPin, Calendar, MessageCircle, Send, Zap, Shield } from 'lucide-react';
+import { Heart, Users, CheckCircle, Circle, User, MapPin, Calendar, MessageCircle, Send, Zap, Shield, Edit3, Save, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +31,9 @@ const Account = () => {
   const [loading, setLoading] = useState(true);
   const [intentLoading, setIntentLoading] = useState(false);
   const [isAgeVerified, setIsAgeVerified] = useState(false);
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState('');
+  const [nameSaving, setNameSaving] = useState(false);
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -144,6 +149,47 @@ const Account = () => {
     } finally {
       setIntentLoading(false);
     }
+  };
+
+  const handleStartEditName = () => {
+    setNameInput(profileStats?.full_name || '');
+    setEditingName(true);
+  };
+
+  const handleSaveName = async () => {
+    if (!user || !nameInput.trim()) return;
+    
+    setNameSaving(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ full_name: nameInput.trim() })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      // Update local state
+      setProfileStats(prev => prev ? { ...prev, full_name: nameInput.trim() } : null);
+      setEditingName(false);
+      
+      toast({
+        title: "Name updated!",
+        description: "Your name has been saved successfully.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setNameSaving(false);
+    }
+  };
+
+  const handleCancelEditName = () => {
+    setNameInput('');
+    setEditingName(false);
   };
 
   if (authLoading || loading) {
@@ -328,13 +374,54 @@ const Account = () => {
                     <div className="grid md:grid-cols-3 gap-4">
                       <div className="flex items-center gap-2">
                         <User className="w-4 h-4 text-muted-foreground" />
-                        {profileStats.full_name ? (
-                          <span className="font-medium">{profileStats.full_name}</span>
+                        {editingName ? (
+                          <div className="flex items-center gap-2 flex-1">
+                            <Input
+                              value={nameInput}
+                              onChange={(e) => setNameInput(e.target.value)}
+                              placeholder="Enter your full name"
+                              className="flex-1"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSaveName();
+                                if (e.key === 'Escape') handleCancelEditName();
+                              }}
+                              autoFocus
+                            />
+                            <Button
+                              size="sm"
+                              onClick={handleSaveName}
+                              disabled={nameSaving || !nameInput.trim()}
+                              className="px-2"
+                            >
+                              {nameSaving ? <div className="animate-spin w-3 h-3 border-2 border-white border-t-transparent rounded-full" /> : <Save className="w-3 h-3" />}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={handleCancelEditName}
+                              disabled={nameSaving}
+                              className="px-2"
+                            >
+                              <X className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        ) : profileStats.full_name ? (
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium">{profileStats.full_name}</span>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={handleStartEditName}
+                              className="px-2 h-6"
+                            >
+                              <Edit3 className="w-3 h-3" />
+                            </Button>
+                          </div>
                         ) : (
                           <Button 
                             variant="outline" 
                             size="sm"
-                            onClick={() => navigate('/profile')}
+                            onClick={handleStartEditName}
                             className="text-xs"
                           >
                             Add Your Name
