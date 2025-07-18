@@ -350,7 +350,7 @@ const Account = () => {
             {!showPlatformIntentSelection && (
               <>
                 {/* Account Header */}
-                <div className="text-center space-y-4">
+                <div className="text-center space-y-4 mt-8">
                   <h1 className="text-4xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
                     Your Account
                   </h1>
