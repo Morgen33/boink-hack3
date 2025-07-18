@@ -6,9 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SecurityProvider } from "@/contexts/SecurityContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { CopilotKit } from "@copilotkit/react-core";
-import { CopilotSidebar } from "@copilotkit/react-ui";
-import { CopilotProvider } from "@/components/CopilotProvider";
 import Index from "./pages/Index";
 import EventsPage from "./pages/Events";
 import Games from "./pages/Games";
@@ -35,37 +32,31 @@ const App = () => {
         <AuthProvider>
           <SecurityProvider>
             <TooltipProvider>
-              <CopilotKit runtimeUrl="https://pizlzaomylxreizohewd.supabase.co/functions/v1/copilot-chat">
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <CopilotSidebar>
-                    <CopilotProvider>
-                      <Routes>
-                        <Route path="/" element={<Index />} />
-                        <Route path="/daily-matches" element={<DailyMatches />} />
-                        <Route path="/my-matches" element={<MyMatches />} />
-                        <Route path="/messages" element={<Messages />} />
-                        <Route path="/events" element={<EventsPage />} />
-                        <Route path="/games" element={<Games />} />
-                        <Route path="/auth" element={<Auth />} />
-                        <Route path="/account" element={<Account />} />
-                        <Route path="/profile/setup" element={<Profile />} />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/profile/edit" element={<Profile />} />
-                        <Route path="/profile/comprehensive" element={<ComprehensiveProfile />} />
-                        <Route path="/profile/:profileId" element={<ProfileDetail />} />
-                        <Route path="/discover" element={<Discover />} />
-                        <Route path="/token" element={<Token />} />
-                        <Route path="/whale-connect" element={<WhaleConnect />} />
-                        <Route path="/we-support" element={<WeSupport />} />
-                        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                        <Route path="*" element={<NotFound />} />
-                      </Routes>
-                    </CopilotProvider>
-                  </CopilotSidebar>
-                </BrowserRouter>
-              </CopilotKit>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/daily-matches" element={<DailyMatches />} />
+                  <Route path="/my-matches" element={<MyMatches />} />
+                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/events" element={<EventsPage />} />
+                  <Route path="/games" element={<Games />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/account" element={<Account />} />
+                  <Route path="/profile/setup" element={<Profile />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile/edit" element={<Profile />} />
+                  <Route path="/profile/comprehensive" element={<ComprehensiveProfile />} />
+                  <Route path="/profile/:profileId" element={<ProfileDetail />} />
+                  <Route path="/discover" element={<Discover />} />
+                  <Route path="/token" element={<Token />} />
+                  <Route path="/whale-connect" element={<WhaleConnect />} />
+                  <Route path="/we-support" element={<WeSupport />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
             </TooltipProvider>
           </SecurityProvider>
         </AuthProvider>

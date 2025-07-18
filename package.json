@@ -11,9 +11,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@copilotkit/react-core": "^1.9.3",
-    "@copilotkit/react-textarea": "^1.9.3",
-    "@copilotkit/react-ui": "^1.9.3",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
