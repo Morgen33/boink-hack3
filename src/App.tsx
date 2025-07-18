@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -23,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import Account from "./pages/Account";
 import ComprehensiveProfile from "./pages/ComprehensiveProfile";
 import WhaleConnect from "./pages/WhaleConnect";
+import CopilotChat from "./components/CopilotChat";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +57,9 @@ const App = () => {
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+                
+                {/* Global Chat Assistant */}
+                <CopilotChat />
               </BrowserRouter>
             </TooltipProvider>
           </SecurityProvider>

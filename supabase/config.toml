@@ -1,3 +1,4 @@
+
 project_id = "pizlzaomylxreizohewd"
 
 [functions.generate-daily-matches]
@@ -7,4 +8,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.ai-enhanced-matching]
+verify_jwt = false
+
+[functions.copilot-chat]
 verify_jwt = false
