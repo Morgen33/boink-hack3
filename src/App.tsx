@@ -22,7 +22,6 @@ import NotFound from "./pages/NotFound";
 import Account from "./pages/Account";
 import ComprehensiveProfile from "./pages/ComprehensiveProfile";
 import WhaleConnect from "./pages/WhaleConnect";
-import AIChat from "./pages/AIChat";
 
 const queryClient = new QueryClient();
 
@@ -51,7 +50,6 @@ const App = () => (
               <Route path="/discover" element={<Discover />} />
               <Route path="/token" element={<Token />} />
               <Route path="/whale-connect" element={<WhaleConnect />} />
-              <Route path="/ai-chat" element={<AIChat />} />
               <Route path="/we-support" element={<WeSupport />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

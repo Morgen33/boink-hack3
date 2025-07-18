@@ -53,22 +53,22 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Web3 Dating Platform Colors */
-    --web3-yellow: hsl(50, 95%, 64%);
-    --web3-orange: hsl(39, 100%, 53%);
-    --web3-coral: hsl(14, 100%, 67%);
-    --web3-red: hsl(347, 91%, 54%);
-    --web3-magenta: hsl(312, 93%, 48%);
-    --web3-pink: hsl(342, 50%, 58%);
-    --web3-salmon: hsl(356, 98%, 70%);
-    --web3-peach: hsl(25, 98%, 66%);
-    --web3-cream: hsl(33, 100%, 74%);
-    --web3-light: hsl(30, 100%, 82%);
+    --web3-yellow: 50 95% 64%;
+    --web3-orange: 39 100% 53%;
+    --web3-coral: 14 100% 67%;
+    --web3-red: 347 91% 54%;
+    --web3-magenta: 312 93% 48%;
+    --web3-pink: 342 50% 58%;
+    --web3-salmon: 356 98% 70%;
+    --web3-peach: 25 98% 66%;
+    --web3-cream: 33 100% 74%;
+    --web3-light: 30 100% 82%;
 
     /* Gradient Variables */
-    --gradient-web3: linear-gradient(135deg, var(--web3-yellow) 0%, var(--web3-orange) 25%, var(--web3-coral) 50%, var(--web3-red) 75%, var(--web3-magenta) 100%);
-    --gradient-warm: linear-gradient(135deg, var(--web3-peach) 0%, var(--web3-salmon) 50%, var(--web3-light) 100%);
-    --gradient-cool: linear-gradient(135deg, var(--web3-pink) 0%, var(--web3-magenta) 50%, var(--web3-red) 100%);
-    --gradient-soft: linear-gradient(135deg, var(--web3-light) 0%, var(--web3-cream) 50%, var(--web3-peach) 100%);
+    --gradient-web3: linear-gradient(135deg, hsl(var(--web3-yellow)) 0%, hsl(var(--web3-orange)) 25%, hsl(var(--web3-coral)) 50%, hsl(var(--web3-red)) 75%, hsl(var(--web3-magenta)) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(var(--web3-peach)) 0%, hsl(var(--web3-salmon)) 50%, hsl(var(--web3-light)) 100%);
+    --gradient-cool: linear-gradient(135deg, hsl(var(--web3-pink)) 0%, hsl(var(--web3-magenta)) 50%, hsl(var(--web3-red)) 100%);
+    --gradient-soft: linear-gradient(135deg, hsl(var(--web3-light)) 0%, hsl(var(--web3-cream)) 50%, hsl(var(--web3-peach)) 100%);
   }
 
   .dark {
@@ -109,16 +109,16 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Web3 Dating Platform Colors (Dark Mode) */
-    --web3-yellow: hsl(50, 95%, 64%);
-    --web3-orange: hsl(39, 100%, 53%);
-    --web3-coral: hsl(14, 100%, 67%);
-    --web3-red: hsl(347, 91%, 54%);
-    --web3-magenta: hsl(312, 93%, 48%);
-    --web3-pink: hsl(342, 50%, 58%);
-    --web3-salmon: hsl(356, 98%, 70%);
-    --web3-peach: hsl(25, 98%, 66%);
-    --web3-cream: hsl(33, 100%, 74%);
-    --web3-light: hsl(30, 100%, 82%);
+    --web3-yellow: 50 95% 64%;
+    --web3-orange: 39 100% 53%;
+    --web3-coral: 14 100% 67%;
+    --web3-red: 347 91% 54%;
+    --web3-magenta: 312 93% 48%;
+    --web3-pink: 342 50% 58%;
+    --web3-salmon: 356 98% 70%;
+    --web3-peach: 25 98% 66%;
+    --web3-cream: 33 100% 74%;
+    --web3-light: 30 100% 82%;
   }
 }
 
