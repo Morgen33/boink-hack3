@@ -1,12 +1,21 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useProfileData } from '@/hooks/useProfileData';
 import Header from '@/components/Header';
 import SocialMediaConnections from '@/components/SocialMediaConnections';
 import MusicProfile from '@/components/MusicProfile';
+import ProfileWizard from '@/components/profile/ProfileWizard';
 
 const Account = () => {
   const { user, loading } = useAuth();
+  const { 
+    profile, 
+    loading: profileLoading, 
+    handleProfileSave, 
+    handleProfileComplete,
+    convertProfileToFormData 
+  } = useProfileData();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +24,7 @@ const Account = () => {
     }
   }, [user, loading, navigate]);
 
-  if (loading) {
+  if (loading || profileLoading) {
     return <div>Loading...</div>;
   }
 
@@ -23,10 +32,29 @@ const Account = () => {
     return null;
   }
 
+  // Show ProfileWizard if profile doesn't exist or isn't completed
+  const needsProfileSetup = !profile || !profile.profile_completed;
+  
+  if (needsProfileSetup) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-20 px-4">
+          <ProfileWizard
+            user={user}
+            initialData={profile ? convertProfileToFormData(profile) : undefined}
+            onComplete={handleProfileComplete}
+            onSave={handleProfileSave}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-20">
         <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight">Account Settings</h1>
           <p className="text-muted-foreground">Manage your profile and account preferences.</p>
