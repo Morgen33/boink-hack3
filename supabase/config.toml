@@ -12,3 +12,6 @@ verify_jwt = false
 
 [functions.copilot-chat]
 verify_jwt = false
+
+[functions.spotify-integration]
+verify_jwt = true

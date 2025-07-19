@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,6 +21,7 @@ import {
 import { useSocialMediaConnections } from '@/hooks/useSocialMediaConnections';
 import { useAuth } from '@/contexts/AuthContext';
 import { User } from '@supabase/supabase-js';
+import { useSpotifyIntegration } from '@/hooks/useSpotifyIntegration';
 
 interface SocialMediaConnectionsProps {
   user: User | null;
@@ -59,6 +59,7 @@ const platformNames = {
 
 const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
   const { signInWithTwitter } = useAuth();
+  const { connectToSpotify, isConnecting: isConnectingSpotify } = useSpotifyIntegration(user);
   const { connections, loading, addConnection, removeConnection } = useSocialMediaConnections(user);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<string>('');
@@ -92,6 +93,10 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
     }
   };
 
+  const handleSpotifyConnect = async () => {
+    await connectToSpotify();
+  };
+
   const getConnectedPlatforms = () => {
     return connections.map(conn => conn.platform);
   };
@@ -102,6 +107,7 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
   };
 
   const isTwitterConnected = getConnectedPlatforms().includes('twitter');
+  const isSpotifyConnected = getConnectedPlatforms().includes('spotify');
 
   if (loading) {
     return (
@@ -154,6 +160,39 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
                 className="bg-blue-500 hover:bg-blue-600"
               >
                 {isConnectingTwitter ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Connecting...
+                  </>
+                ) : (
+                  'Connect'
+                )}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Spotify OAuth Connection Button */}
+        {!isSpotifyConnected && (
+          <div className="p-4 border border-green-200 rounded-lg bg-green-50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-green-500">
+                  <Music className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-medium">Connect Spotify</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Connect your Spotify account to show your music taste in your profile
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={handleSpotifyConnect}
+                disabled={isConnectingSpotify}
+                className="bg-green-500 hover:bg-green-600"
+              >
+                {isConnectingSpotify ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     Connecting...
@@ -220,7 +259,7 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
           </div>
         )}
 
-        {getAvailablePlatforms().filter(platform => platform !== 'twitter').length > 0 && (
+        {getAvailablePlatforms().filter(platform => platform !== 'twitter' && platform !== 'spotify').length > 0 && (
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" className="w-full">
@@ -239,7 +278,7 @@ const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
                 <div className="space-y-2">
                   <Label>Platform</Label>
                   <div className="grid grid-cols-2 gap-2">
-                    {getAvailablePlatforms().filter(platform => platform !== 'twitter').map((platform) => {
+                    {getAvailablePlatforms().filter(platform => platform !== 'twitter' && platform !== 'spotify').map((platform) => {
                       const Icon = platformIcons[platform as keyof typeof platformIcons];
                       const platformName = platformNames[platform as keyof typeof platformNames];
                       const colorClass = platformColors[platform as keyof typeof platformColors];
