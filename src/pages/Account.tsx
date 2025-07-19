@@ -1,22 +1,21 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
-import ProfileSettings from '@/components/profile/ProfileSettings';
 import SocialMediaConnections from '@/components/SocialMediaConnections';
 import MusicProfile from '@/components/MusicProfile';
 
 const Account = () => {
-  const { user, isLoading } = useAuth();
-  const router = useRouter();
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      router.push('/auth');
+    if (!loading && !user) {
+      navigate('/auth');
     }
-  }, [user, isLoading, router]);
+  }, [user, loading, navigate]);
 
-  if (isLoading) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -35,9 +34,6 @@ const Account = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
-            {/* Profile Settings */}
-            <ProfileSettings user={user} />
-
             {/* Social Media Connections */}
             <SocialMediaConnections user={user} />
           </div>
@@ -45,8 +41,6 @@ const Account = () => {
           <div className="space-y-6">
             {/* Music Profile */}
             <MusicProfile user={user} />
-            
-            {/* Add other sections here as needed */}
           </div>
         </div>
       </div>

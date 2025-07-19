@@ -18,6 +18,14 @@ interface MusicData {
   currently_playing: any;
   music_genres: string[];
   listening_stats: any;
+  created_at?: string;
+  id?: string;
+  last_updated?: string;
+  playlists?: any;
+  recent_tracks?: any[];
+  spotify_user_id?: string;
+  updated_at?: string;
+  user_id?: string;
 }
 
 const MusicProfile = ({ user }: MusicProfileProps) => {
@@ -43,8 +51,37 @@ const MusicProfile = ({ user }: MusicProfileProps) => {
 
       if (error && error.code !== 'PGRST116') {
         console.error('Error fetching music data:', error);
-      } else {
-        setMusicData(data);
+      } else if (data) {
+        // Parse JSON fields from Supabase
+        const parseJson = (field: any): any[] => {
+          if (Array.isArray(field)) return field;
+          if (typeof field === 'string') {
+            try {
+              const parsed = JSON.parse(field);
+              return Array.isArray(parsed) ? parsed : [];
+            } catch {
+              return [];
+            }
+          }
+          return [];
+        };
+
+        const parsedData: MusicData = {
+          top_tracks: parseJson(data.top_tracks),
+          top_artists: parseJson(data.top_artists),
+          currently_playing: data.currently_playing,
+          music_genres: parseJson(data.music_genres).map((g: any) => String(g)),
+          listening_stats: data.listening_stats || {},
+          created_at: data.created_at,
+          id: data.id,
+          last_updated: data.last_updated,
+          playlists: data.playlists,
+          recent_tracks: parseJson(data.recent_tracks),
+          spotify_user_id: data.spotify_user_id,
+          updated_at: data.updated_at,
+          user_id: data.user_id
+        };
+        setMusicData(parsedData);
       }
     } catch (error) {
       console.error('Error:', error);
