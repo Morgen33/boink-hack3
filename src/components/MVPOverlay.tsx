@@ -25,7 +25,7 @@ const MVPOverlay = ({ onEnter }: MVPOverlayProps) => {
             We are now fully functioning and in beta testing
           </p>
           <p className="text-sm text-gray-500">
-            Where Degens Find Their Forever Person
+            Where Degens Find Their People
           </p>
         </CardHeader>
         
