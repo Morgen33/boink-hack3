@@ -34,6 +34,7 @@ const platformIcons = {
   linkedin: Linkedin,
   tiktok: Music,
   snapchat: Camera,
+  spotify: Music,
 };
 
 const platformColors = {
@@ -43,6 +44,7 @@ const platformColors = {
   linkedin: 'bg-blue-700',
   tiktok: 'bg-black',
   snapchat: 'bg-yellow-400',
+  spotify: 'bg-green-500',
 };
 
 const platformNames = {
@@ -52,6 +54,7 @@ const platformNames = {
   linkedin: 'LinkedIn',
   tiktok: 'TikTok',
   snapchat: 'Snapchat',
+  spotify: 'Spotify',
 };
 
 const SocialMediaConnections = ({ user }: SocialMediaConnectionsProps) => {
