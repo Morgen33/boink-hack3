@@ -19,8 +19,9 @@ const ProfileWizardValidation = ({
   steps, 
   validation 
 }: ProfileWizardValidationProps) => {
-  // Only show validation for steps 1-4
-  if (currentStep >= 5) {
+  // Only show validation for steps 2-4 (skip step 1 Platform Intent and steps 5+ which don't need validation)
+  // Step 1 is always valid once a selection is made, and progress bar shows completion
+  if (currentStep === 1 || currentStep >= 5) {
     return null;
   }
 
