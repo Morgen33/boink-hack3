@@ -32,8 +32,21 @@ const Account = () => {
     return null;
   }
 
-  // Show ProfileWizard if profile doesn't exist or isn't completed
-  const needsProfileSetup = !profile || !profile.profile_completed;
+  // Show ProfileWizard if profile doesn't exist or isn't completed properly
+  const needsProfileSetup = !profile || 
+    !profile.profile_completed || 
+    !profile.platform_intent ||
+    !profile.full_name ||
+    !profile.age;
+  
+  console.log('Account page - Profile status:', {
+    profile: !!profile,
+    profile_completed: profile?.profile_completed,
+    platform_intent: profile?.platform_intent,
+    full_name: profile?.full_name,
+    age: profile?.age,
+    needsProfileSetup
+  });
   
   if (needsProfileSetup) {
     return (
