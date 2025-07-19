@@ -32,38 +32,6 @@ const Account = () => {
     return null;
   }
 
-  // Show ProfileWizard if profile doesn't exist or isn't completed properly
-  const needsProfileSetup = !profile || 
-    !profile.profile_completed || 
-    !profile.platform_intent ||
-    !profile.full_name ||
-    !profile.age;
-  
-  console.log('Account page - Profile status:', {
-    profile: !!profile,
-    profile_completed: profile?.profile_completed,
-    platform_intent: profile?.platform_intent,
-    full_name: profile?.full_name,
-    age: profile?.age,
-    needsProfileSetup
-  });
-  
-  if (needsProfileSetup) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="pt-20 px-4">
-          <ProfileWizard
-            user={user}
-            initialData={profile ? convertProfileToFormData(profile) : undefined}
-            onComplete={handleProfileComplete}
-            onSave={handleProfileSave}
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -73,13 +41,22 @@ const Account = () => {
           <p className="text-muted-foreground">Manage your profile and account preferences.</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          {/* Profile Questionnaire - Always Available */}
+          <div className="xl:col-span-2">
+            <ProfileWizard
+              user={user}
+              initialData={profile ? convertProfileToFormData(profile) : undefined}
+              onComplete={handleProfileComplete}
+              onSave={handleProfileSave}
+            />
+          </div>
+
+          {/* Side Panel - Social Media & Music */}
           <div className="space-y-6">
             {/* Social Media Connections */}
             <SocialMediaConnections user={user} />
-          </div>
-
-          <div className="space-y-6">
+            
             {/* Music Profile */}
             <MusicProfile user={user} />
           </div>
@@ -87,6 +64,7 @@ const Account = () => {
       </div>
     </div>
   );
+
 };
 
 export default Account;
