@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,15 +24,29 @@ export const GoogleSignIn = ({ loading, setLoading }: GoogleSignInProps) => {
       
       if (isInIframe) {
         console.log('⚠️ In iframe - opening popup');
-        const authUrl = `https://pizlzaomylxreizohewd.supabase.co/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(window.location.origin)}/account`;
+        const authUrl = `https://pizlzaomylxreizohewd.supabase.co/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(window.location.origin + '/account')}`;
         console.log('🔗 Auth URL:', authUrl);
-        window.open(authUrl, '_blank', 'width=500,height=600,scrollbars=yes,resizable=yes');
+        
+        const popup = window.open(authUrl, 'google-auth', 'width=500,height=600,scrollbars=yes,resizable=yes');
         
         toast({
-          title: "OAuth Window Opened",
-          description: "Complete the sign-in in the new window. For best experience, test Google sign-in on the deployed site.",
+          title: "Authentication Window Opened",
+          description: "Complete the sign-in in the popup window. You may need to allow popups for this site.",
           variant: "default",
         });
+
+        // Listen for popup closure
+        const checkClosed = setInterval(() => {
+          if (popup?.closed) {
+            clearInterval(checkClosed);
+            setLoading(false);
+            // Check if auth was successful
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          }
+        }, 1000);
+
         return;
       }
       
