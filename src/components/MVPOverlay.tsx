@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, Users, Wallet, Calendar, User } from 'lucide-react';
+import { Sparkles, Users, Wallet, Calendar, User, Twitter, Music, Instagram, Facebook } from 'lucide-react';
 
 interface MVPOverlayProps {
   onEnter: () => void;
@@ -19,9 +19,12 @@ const MVPOverlay = ({ onEnter }: MVPOverlayProps) => {
             </div>
           </div>
           <CardTitle className="text-3xl font-bold bg-gradient-to-r from-web3-red to-web3-magenta bg-clip-text text-transparent">
-            Welcome to BOINK MVP!
+            Welcome to BOINK!
           </CardTitle>
           <p className="text-lg text-gray-600 mt-2">
+            We are now fully functioning and in beta testing
+          </p>
+          <p className="text-sm text-gray-500">
             Where Degens Find Their Forever Person
           </p>
         </CardHeader>
@@ -29,25 +32,25 @@ const MVPOverlay = ({ onEnter }: MVPOverlayProps) => {
         <CardContent className="space-y-6">
           <div className="bg-gradient-to-r from-web3-yellow/10 to-web3-orange/10 p-4 rounded-lg border border-web3-orange/20">
             <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-              <Users className="w-5 h-5 mr-2 text-web3-red" />
-              What's Available Now:
+              <Sparkles className="w-5 h-5 mr-2 text-web3-red" />
+              What's New:
             </h3>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center">
-                <div className="w-2 h-2 bg-web3-red rounded-full mr-3" />
-                Demo profiles to explore the matching experience
+                <Twitter className="w-4 h-4 mr-3 text-web3-red" />
+                Twitter X integration
               </li>
               <li className="flex items-center">
-                <div className="w-2 h-2 bg-web3-red rounded-full mr-3" />
-                Google login authentication
+                <Music className="w-4 h-4 mr-3 text-web3-red" />
+                Spotify integration
               </li>
               <li className="flex items-center">
-                <div className="w-2 h-2 bg-web3-red rounded-full mr-3" />
-                Profile creation and customization
+                <User className="w-4 h-4 mr-3 text-web3-red" />
+                Full profile form
               </li>
               <li className="flex items-center">
-                <div className="w-2 h-2 bg-web3-red rounded-full mr-3" />
-                Demo community events
+                <Sparkles className="w-4 h-4 mr-3 text-web3-red" />
+                NFT and meme image showcase
               </li>
             </ul>
           </div>
@@ -59,20 +62,20 @@ const MVPOverlay = ({ onEnter }: MVPOverlayProps) => {
             </h3>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center">
-                <div className="w-2 h-2 bg-web3-magenta rounded-full mr-3" />
-                Full social media integration
+                <Wallet className="w-4 h-4 mr-3 text-web3-magenta" />
+                Wallet integration
               </li>
               <li className="flex items-center">
-                <div className="w-2 h-2 bg-web3-magenta rounded-full mr-3" />
-                Crypto wallet connectivity
-              </li>
-              <li className="flex items-center">
-                <div className="w-2 h-2 bg-web3-magenta rounded-full mr-3" />
+                <Calendar className="w-4 h-4 mr-3 text-web3-magenta" />
                 Real community events and meetups
               </li>
               <li className="flex items-center">
-                <div className="w-2 h-2 bg-web3-magenta rounded-full mr-3" />
-                Advanced matching algorithms
+                <Instagram className="w-4 h-4 mr-3 text-web3-magenta" />
+                Instagram integration
+              </li>
+              <li className="flex items-center">
+                <Facebook className="w-4 h-4 mr-3 text-web3-magenta" />
+                Facebook integration
               </li>
             </ul>
           </div>
@@ -86,7 +89,7 @@ const MVPOverlay = ({ onEnter }: MVPOverlayProps) => {
               Enter App 🚀
             </Button>
             <p className="text-sm text-gray-500 mt-3">
-              Ready to explore the future of crypto dating?
+              Ready to explore the future of crypto dating in beta?
             </p>
           </div>
         </CardContent>
