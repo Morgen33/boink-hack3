@@ -93,7 +93,11 @@ const PhotoUpload = ({
 
       const uploadPromises = newFiles.map(async (file, index) => {
         const photoId = `${Date.now()}-${index}`;
-        const fileName = `${photoId}-${file.name}`;
+        
+        // Sanitize the filename for safe upload
+        const { sanitizeFileName } = await import('@/utils/securityUtils');
+        const sanitizedFileName = sanitizeFileName(file.name);
+        const fileName = `${photoId}-${sanitizedFileName}`;
         const filePath = `${user.id}/${fileName}`;
         
         console.log('Uploading file to path:', filePath);

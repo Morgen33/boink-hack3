@@ -15,7 +15,7 @@ export const VALIDATION_PATTERNS = {
   xssPatterns: /<script[^>]*>.*?<\/script>|javascript:|on\w+\s*=|<iframe|<object|<embed/i,
   htmlTags: /<[^>]*>/g,
   pathTraversal: /\.\.\//g,
-  fileName: /^[a-zA-Z0-9._-]+$/
+  fileName: /^[a-zA-Z0-9._\s-]+$/
 };
 
 // Enhanced file upload validation
@@ -137,10 +137,8 @@ export const validateFileUpload = (file: File): { valid: boolean; error?: string
     return { valid: false, error: 'File type not allowed for security reasons.' };
   }
 
-  // Validate filename characters
-  if (!VALIDATION_PATTERNS.fileName.test(file.name.replace(/\.[^/.]+$/, ""))) {
-    return { valid: false, error: 'Invalid characters in filename. Only letters, numbers, dots, hyphens, and underscores allowed.' };
-  }
+  // We'll sanitize the filename instead of rejecting it
+  // This makes the upload process more user-friendly
 
   // Check for double extensions (e.g., image.jpg.exe)
   const nameParts = file.name.split('.');
@@ -371,6 +369,29 @@ export const sanitizeError = (error: any): { message: string; code?: string } =>
     message: safeMessage,
     code: errorCode
   };
+};
+
+/**
+ * Sanitize filename for upload
+ */
+export const sanitizeFileName = (fileName: string): string => {
+  // Get file extension
+  const lastDotIndex = fileName.lastIndexOf('.');
+  const name = lastDotIndex > 0 ? fileName.substring(0, lastDotIndex) : fileName;
+  const extension = lastDotIndex > 0 ? fileName.substring(lastDotIndex) : '';
+  
+  // Sanitize the name part - keep only safe characters
+  const sanitizedName = name
+    .replace(/[^a-zA-Z0-9._\s-]/g, '') // Remove unsafe characters
+    .replace(/\s+/g, '_') // Replace spaces with underscores
+    .replace(/[._-]+/g, '_') // Replace multiple consecutive separators with single underscore
+    .replace(/^[._-]+|[._-]+$/g, '') // Remove leading/trailing separators
+    .substring(0, 100); // Limit length
+  
+  // Ensure we have a valid name
+  const finalName = sanitizedName || 'upload';
+  
+  return finalName + extension;
 };
 
 /**
