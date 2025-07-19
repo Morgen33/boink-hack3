@@ -21,7 +21,10 @@ export type Database = {
           created_at: string
           crypto_alignment: number | null
           id: string
+          music_compatibility: number | null
           personality_match: number | null
+          shared_artists: Json | null
+          shared_genres: Json | null
           shared_values_score: number | null
           target_user_id: string
           updated_at: string
@@ -33,7 +36,10 @@ export type Database = {
           created_at?: string
           crypto_alignment?: number | null
           id?: string
+          music_compatibility?: number | null
           personality_match?: number | null
+          shared_artists?: Json | null
+          shared_genres?: Json | null
           shared_values_score?: number | null
           target_user_id: string
           updated_at?: string
@@ -45,7 +51,10 @@ export type Database = {
           created_at?: string
           crypto_alignment?: number | null
           id?: string
+          music_compatibility?: number | null
           personality_match?: number | null
+          shared_artists?: Json | null
+          shared_genres?: Json | null
           shared_values_score?: number | null
           target_user_id?: string
           updated_at?: string
@@ -828,6 +837,62 @@ export type Database = {
           },
           {
             foreignKeyName: "user_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_music_data: {
+        Row: {
+          created_at: string | null
+          currently_playing: Json | null
+          id: string
+          last_updated: string | null
+          listening_stats: Json | null
+          music_genres: Json | null
+          playlists: Json | null
+          recent_tracks: Json | null
+          spotify_user_id: string | null
+          top_artists: Json | null
+          top_tracks: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          currently_playing?: Json | null
+          id?: string
+          last_updated?: string | null
+          listening_stats?: Json | null
+          music_genres?: Json | null
+          playlists?: Json | null
+          recent_tracks?: Json | null
+          spotify_user_id?: string | null
+          top_artists?: Json | null
+          top_tracks?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          currently_playing?: Json | null
+          id?: string
+          last_updated?: string | null
+          listening_stats?: Json | null
+          music_genres?: Json | null
+          playlists?: Json | null
+          recent_tracks?: Json | null
+          spotify_user_id?: string | null
+          top_artists?: Json | null
+          top_tracks?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_music_data_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
